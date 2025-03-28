@@ -1,18 +1,22 @@
 {
-  "$schema": "https://schema.tauri.app/config/2",
-  "productName": "three-kingdoms-killing",
+  "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
+  "productName": "ThreeKingdomsKilling",
   "version": "0.1.0",
-  "identifier": "com.three-kingdoms-killing.app",
+  "identifier": "com.tauri.dev",
   "build": {
-    "frontendDist": "../src"
+    "frontendDist": "assets",
+    "devUrl": "http://localhost:5173",
+    "beforeDevCommand": "bun dev",
+    "beforeBuildCommand": "bun build"
   },
   "app": {
-    "withGlobalTauri": true,
     "windows": [
       {
-        "title": "three-kingdoms-killing",
+        "title": "三国杀",
         "width": 800,
-        "height": 600
+        "height": 600,
+        "resizable": true,
+        "fullscreen": false
       }
     ],
     "security": {
