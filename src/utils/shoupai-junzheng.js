@@ -803,12 +803,13 @@ export default [
 		"point": "5",
 		"type": "武器"
 	},
-	{
-		"name": "木牛流马",
-		"suits": "♦",
-		"point": "5",
-		"type": "宝物"
-	},
+	// TODO 补充木牛流马牌的图片
+	// {
+	// 	"name": "木牛流马",
+	// 	"suits": "♦",
+	// 	"point": "5",
+	// 	"type": "宝物"
+	// },
 	{
 		"name": "火杀",
 		"suits": "♦",
