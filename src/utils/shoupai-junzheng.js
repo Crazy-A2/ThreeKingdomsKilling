@@ -1,4 +1,4 @@
-[
+export default [
 	{
 		"name": "闪电",
 		"suits": "♠",
@@ -102,7 +102,7 @@
 		"type": "延时锦囊"
 	},
 	{
-		"name": "青釭剑",
+		"name": "青钢剑",
 		"suits": "♠",
 		"point": "6",
 		"type": "武器"
