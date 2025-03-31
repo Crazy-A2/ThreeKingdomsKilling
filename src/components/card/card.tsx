@@ -33,6 +33,8 @@ export const Card = component$<CardProps>(props => {
 	return (
 		<>
 			<div>Card component works!</div>
+
+			<div style={styles.img} />
 			{shoupaiArray.map((element, index) => {
 				return (
 					<div
@@ -40,15 +42,24 @@ export const Card = component$<CardProps>(props => {
 						style={{
 							width: 93,
 							height: 130,
+							color: ['♦', '♥'].includes(element.suits) ? 'red' : 'black',
 							backgroundImage: `url(${import.meta.env.BASE_URL}image/card/${element.name}.png)`,
-						}}
-					/>
+						}}>
+						<div
+							style={{
+								display: 'flex',
+								flexDirection: 'column',
+								alignItems: 'center',
+								width: 23,
+							}}>
+							<span style={{ fontSize: 18, fontWeight: 700 }}>
+								{element.point}
+							</span>
+							<span>{element.suits}</span>
+						</div>
+					</div>
 				)
 			})}
-
-			<div style={{ display: 'flex' }}>
-				<div style={styles.img} />
-			</div>
 		</>
 	)
 })
