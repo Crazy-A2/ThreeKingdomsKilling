@@ -935,12 +935,12 @@ export default [
 		"point": "Q",
 		"type": "武器"
 	},
-	{
-		"name": "银月枪",
-		"suits": "♦",
-		"point": "Q",
-		"type": "武器"
-	},
+	// {
+	// 	"name": "银月枪",
+	// 	"suits": "♦",
+	// 	"point": "Q",
+	// 	"type": "武器"
+	// },
 	{
 		"name": "火攻",
 		"suits": "♦",

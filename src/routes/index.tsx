@@ -24,7 +24,7 @@ export default component$(() => {
 	)
 })
 
-// 定义页面头部信息
+// 定义该页面头部信息
 export const head: DocumentHead = {
 	title: '三国杀！！！！！！！！！',
 	meta: [

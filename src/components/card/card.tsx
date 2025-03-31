@@ -1,20 +1,24 @@
-import { component$ } from '@builder.io/qwik'
-import styles from "./card.module.css";
+import { component$, useStore } from '@builder.io/qwik'
+import shoupaiArray from '../../utils/shoupai-junzheng'
+
+import styles from './card.module.css'
 
 export interface CardProps {}
 
-// 定义游戏对局内的卡牌组件
+/**
+ * 手牌组件 定义游戏对局内的手牌
+ * 1. 卡片名称
+   2. 卡片类型
+   3. 卡片描述
+   4. 卡片效果
+   5. 卡片图片
+   6. 卡片属性
+   7. 卡片技能
+ */
 export const Card = component$<CardProps>(props => {
-	// 1. 卡片名称
-	// 2. 卡片类型
-	// 3. 卡片描述
-	// 4. 卡片效果
-	// 5. 卡片图片
-	// 6. 卡片属性
-	// 7. 卡片技能
-	// `${import.meta.env.BASE_URL}hands-junzheng.json`
-	const img = `${import.meta.env.BASE_URL}images/曹植.png`
-	const img2 = `${import.meta.env.BASE_URL}images/戏志才.png`
+	// const img = `${import.meta.env.BASE_URL}image/曹植.png`
+	// const img2 = `${import.meta.env.BASE_URL}image/戏志才.png`
+
 	// styles.img.backgroundImage=`url(${img2})`
 	// const style = {
 	// 	width: '400px',
@@ -22,11 +26,27 @@ export const Card = component$<CardProps>(props => {
 	// 	backgroundImage: `url(${img2})`,
 	// }
 
+	// shoupaiArray.forEach(element => {
+	// 	console.log(element)
+	// })
+
 	return (
 		<>
 			<div>Card component works!</div>
+			{shoupaiArray.map((element, index) => {
+				return (
+					<div
+						key={index}
+						style={{
+							width: 93,
+							height: 130,
+							backgroundImage: `url(${import.meta.env.BASE_URL}image/card/${element.name}.png)`,
+						}}
+					/>
+				)
+			})}
+
 			<div style={{ display: 'flex' }}>
-				<img src={img} />
 				<div style={styles.img} />
 			</div>
 		</>
