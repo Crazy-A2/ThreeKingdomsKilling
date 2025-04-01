@@ -1,4 +1,4 @@
-import { component$, useStore } from '@builder.io/qwik'
+import { component$ } from '@builder.io/qwik'
 import shoupaiArray from '../../utils/shoupai-junzheng'
 
 import styles from './card.module.css'
@@ -16,9 +16,6 @@ export interface CardProps {}
    7. 卡片技能
  */
 export const Card = component$<CardProps>(props => {
-	// const img = `${import.meta.env.BASE_URL}image/曹植.png`
-	// const img2 = `${import.meta.env.BASE_URL}image/戏志才.png`
-
 	// styles.img.backgroundImage=`url(${img2})`
 	// const style = {
 	// 	width: '400px',
@@ -35,31 +32,33 @@ export const Card = component$<CardProps>(props => {
 			<div>Card component works!</div>
 
 			<div style={styles.img} />
-			{shoupaiArray.map((element, index) => {
-				return (
-					<div
-						key={index}
-						style={{
-							width: 93,
-							height: 130,
-							color: ['♦', '♥'].includes(element.suits) ? 'red' : 'black',
-							backgroundImage: `url(${import.meta.env.BASE_URL}image/card/${element.name}.png)`,
-						}}>
+			<div style={{ display: 'flex' }}>
+				{shoupaiArray.map((element, index) => {
+					return (
 						<div
+							key={index}
 							style={{
-								display: 'flex',
-								flexDirection: 'column',
-								alignItems: 'center',
-								width: 23,
+								width: 93,
+								height: 130,
+								color: ['♦', '♥'].includes(element.suits) ? 'red' : 'black',
+								backgroundImage: `url(${import.meta.env.BASE_URL}image/card/${element.name}.png)`,
 							}}>
-							<span style={{ fontSize: 18, fontWeight: 700 }}>
-								{element.point}
-							</span>
-							<span>{element.suits}</span>
+							<div
+								style={{
+									display: 'flex',
+									flexDirection: 'column',
+									alignItems: 'center',
+									width: 23,
+								}}>
+								<span style={{ fontSize: 18, fontWeight: 700 }}>
+									{element.point}
+								</span>
+								<span>{element.suits}</span>
+							</div>
 						</div>
-					</div>
-				)
-			})}
+					)
+				})}
+			</div>
 		</>
 	)
 })
