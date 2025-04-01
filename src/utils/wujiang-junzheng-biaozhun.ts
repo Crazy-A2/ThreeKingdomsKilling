@@ -15,7 +15,7 @@ export default [
 		name: '界刘备',
 		gender: Gender.MALE, //     性别
 		country: Country.SHU, //    势力
-		health: 4, //               血量上限
+		maxHealth: 4, //               血量上限
 		currentHealth: 4, //        当前血量
 		skills: [
 			{
@@ -33,7 +33,7 @@ export default [
 		name: '界曹操',
 		gender: Gender.MALE,
 		country: Country.WEI,
-		health: 4,
+		maxHealth: 4,
 		currentHealth: 4,
 		skills: [
 			{
@@ -50,7 +50,7 @@ export default [
 		name: '界孙权',
 		gender: Gender.MALE,
 		country: Country.WU,
-		health: 4,
+		maxHealth: 4,
 		currentHealth: 4,
 		skills: [
 			{
@@ -70,7 +70,7 @@ export default [
 		name: '界关羽',
 		gender: Gender.MALE,
 		country: Country.SHU,
-		health: 4,
+		maxHealth: 4,
 		currentHealth: 4,
 		skills: [
 			{
@@ -95,7 +95,7 @@ export default [
 		name: '界张飞',
 		gender: Gender.MALE,
 		country: Country.SHU,
-		health: 4,
+		maxHealth: 4,
 		currentHealth: 4,
 		skills: [
 			{
@@ -115,7 +115,7 @@ export default [
 		name: '界赵云',
 		gender: Gender.MALE,
 		country: Country.SHU,
-		health: 4,
+		maxHealth: 4,
 		currentHealth: 4,
 		skills: [
 			{
@@ -134,7 +134,7 @@ export default [
 		name: '界马超',
 		gender: Gender.MALE,
 		country: Country.SHU,
-		health: 4,
+		maxHealth: 4,
 		currentHealth: 4,
 		skills: [
 			{
@@ -153,7 +153,7 @@ export default [
 		name: '界甘宁',
 		gender: Gender.MALE,
 		country: Country.WU,
-		health: 4,
+		maxHealth: 4,
 		currentHealth: 4,
 		skills: [
 			{
@@ -170,7 +170,7 @@ export default [
 		name: '界黄盖',
 		gender: Gender.MALE,
 		country: Country.WU,
-		health: 4,
+		maxHealth: 4,
 		currentHealth: 4,
 		skills: [
 			{
@@ -189,7 +189,7 @@ export default [
 		name: '界夏侯惇',
 		gender: Gender.MALE,
 		country: Country.WEI,
-		health: 4,
+		maxHealth: 4,
 		currentHealth: 4,
 		skills: [
 			{
@@ -211,7 +211,7 @@ export default [
 		name: '界张辽',
 		gender: Gender.MALE,
 		country: Country.WEI,
-		health: 4,
+		maxHealth: 4,
 		currentHealth: 4,
 		skills: [
 			{
@@ -224,7 +224,7 @@ export default [
 		name: '界许褚',
 		gender: Gender.MALE,
 		country: Country.WEI,
-		health: 4,
+		maxHealth: 4,
 		currentHealth: 4,
 		skills: [
 			{
@@ -239,7 +239,7 @@ export default [
 		name: '界吕布',
 		gender: Gender.MALE,
 		country: Country.QUN,
-		health: 5,
+		maxHealth: 5,
 		currentHealth: 5,
 		skills: [
 			{
@@ -261,7 +261,7 @@ export default [
 		name: '界华雄',
 		gender: Gender.MALE,
 		country: Country.QUN,
-		health: 6,
+		maxHealth: 6,
 		currentHealth: 6,
 		skills: [
 			{
@@ -278,7 +278,7 @@ export default [
 		name: '界诸葛亮',
 		gender: Gender.MALE,
 		country: Country.SHU,
-		health: 3,
+		maxHealth: 3,
 		currentHealth: 3,
 		skills: [
 			{
@@ -297,7 +297,7 @@ export default [
 		name: '界吕蒙',
 		gender: Gender.MALE,
 		country: Country.WU,
-		health: 4,
+		maxHealth: 4,
 		currentHealth: 4,
 		skills: [
 			{
@@ -322,7 +322,7 @@ export default [
 		name: '界周瑜',
 		gender: Gender.MALE,
 		country: Country.WU,
-		health: 3,
+		maxHealth: 3,
 		currentHealth: 3,
 		skills: [
 			{
@@ -344,7 +344,7 @@ export default [
 		name: '界陆逊',
 		gender: Gender.MALE,
 		country: Country.WU,
-		health: 3,
+		maxHealth: 3,
 		currentHealth: 3,
 		skills: [
 			{
@@ -361,7 +361,7 @@ export default [
 		name: '界司马懿',
 		gender: Gender.MALE,
 		country: Country.WEI,
-		health: 3,
+		maxHealth: 3,
 		currentHealth: 3,
 		skills: [
 			{
@@ -378,7 +378,7 @@ export default [
 		name: '界郭嘉',
 		gender: Gender.MALE,
 		country: Country.WEI,
-		health: 3,
+		maxHealth: 3,
 		currentHealth: 3,
 		skills: [
 			{
@@ -395,7 +395,7 @@ export default [
 		name: '界华佗',
 		gender: Gender.MALE,
 		country: Country.QUN,
-		health: 3,
+		maxHealth: 3,
 		currentHealth: 3,
 		skills: [
 			{
@@ -414,7 +414,7 @@ export default [
 		name: '界黄月英',
 		gender: Gender.FEMALE,
 		country: Country.SHU,
-		health: 3,
+		maxHealth: 3,
 		currentHealth: 3,
 		skills: [
 			{
@@ -435,7 +435,7 @@ export default [
 		name: '界大乔',
 		gender: Gender.FEMALE,
 		country: Country.WU,
-		health: 3,
+		maxHealth: 3,
 		currentHealth: 3,
 		skills: [
 			{
@@ -455,7 +455,7 @@ export default [
 		name: '界孙尚香',
 		gender: Gender.FEMALE,
 		country: Country.WU,
-		health: 3,
+		maxHealth: 3,
 		currentHealth: 3,
 		skills: [
 			{
@@ -472,7 +472,7 @@ export default [
 		name: '界甄姬',
 		gender: Gender.FEMALE,
 		country: Country.WEI,
-		health: 3,
+		maxHealth: 3,
 		currentHealth: 3,
 		skills: [
 			{
@@ -491,7 +491,7 @@ export default [
 		name: '界貂蝉',
 		gender: Gender.FEMALE,
 		country: Country.QUN,
-		health: 3,
+		maxHealth: 3,
 		currentHealth: 3,
 		skills: [
 			{
