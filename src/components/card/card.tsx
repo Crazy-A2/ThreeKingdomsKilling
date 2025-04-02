@@ -1,7 +1,5 @@
 import { component$ } from '@builder.io/qwik'
-import shoupaiArray from '../../utils/shoupai-junzheng'
-
-import styles from './card.module.css'
+import shoupaiArray from '../../data/shoupai-junzheng'
 
 export interface CardProps {}
 
@@ -16,13 +14,6 @@ export interface CardProps {}
    7. 卡片技能
  */
 export const Card = component$<CardProps>(props => {
-	// styles.img.backgroundImage=`url(${img2})`
-	// const style = {
-	// 	width: '400px',
-	// 	height: '600px',
-	// 	backgroundImage: `url(${img2})`,
-	// }
-
 	// shoupaiArray.forEach(element => {
 	// 	console.log(element)
 	// })
@@ -31,7 +22,6 @@ export const Card = component$<CardProps>(props => {
 		<>
 			<div>Card component works!</div>
 
-			<div style={styles.img} />
 			<div style={{ display: 'flex' }}>
 				{shoupaiArray.map((element, index) => {
 					return (
@@ -63,8 +53,8 @@ export const Card = component$<CardProps>(props => {
 	)
 })
 // 实现逻辑
-// 生成 json 数组，每个元素代表一张卡牌 	√
-// 读取 json 数组中的元素生成卡牌组件
+// 生成 json 数组，每个元素代表一张卡牌 		√
+// 读取 json 数组中的元素生成卡牌组件			√
 
 // 读取表格数据并生成表示卡牌的 json 数组
 // function getJson() {
