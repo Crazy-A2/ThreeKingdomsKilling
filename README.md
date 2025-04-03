@@ -17,7 +17,7 @@
 │       ├── animation                   // 动画
 |       ├── card                        // 卡牌
 |       |   └── delayedTrick            // 延时锦囊
-|       └-─ persona                     // 角色
+|       └-─ general                     // 武将
 ├── src
 │   ├── data                            // 数据
 │   │   ├── shoupai-junzheng            // 手牌数组
