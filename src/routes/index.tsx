@@ -1,6 +1,7 @@
 import { component$ } from '@builder.io/qwik'
 import type { DocumentHead } from '@builder.io/qwik-city'
 import { Card } from '../components/card/card.tsx'
+import { General } from '../components/general/general.js'
 
 export default component$(() => {
 	return (
@@ -18,6 +19,7 @@ export default component$(() => {
 			{/* <aside>：侧边栏，经常嵌套在 <main> 中。 */}
 			{/* <footer>：页脚。 */}
 			<section class='section bright'>
+				<General />
 				<Card />
 			</section>
 		</>
