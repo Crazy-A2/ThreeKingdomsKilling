@@ -10,12 +10,19 @@ export enum Country {
 	QUN = '群',
 }
 
-export default [
+// 主题色
+export const themeColor = new Map<Country, string>()
+themeColor.set(Country.QUN, 'rgba(255,255,255,0.5)')
+themeColor.set(Country.WEI, 'rgba(0, 4, 255, 0.5)')
+themeColor.set(Country.SHU, 'rgba(255, 0, 0, 0.5)')
+themeColor.set(Country.WU, 'rgba(26, 255, 0, 0.5)')
+
+export const wujiangArray = [
 	{
 		name: '界刘备',
 		gender: Gender.MALE, //     性别
 		country: Country.SHU, //    势力
-		maxHealth: 4, //               血量上限
+		maxHealth: 4, //            血量上限
 		currentHealth: 4, //        当前血量
 		skills: [
 			{
