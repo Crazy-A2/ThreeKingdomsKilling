@@ -1,6 +1,6 @@
 import { component$ } from '@builder.io/qwik'
 import type { DocumentHead } from '@builder.io/qwik-city'
-import { Card } from '../components/card/card.tsx'
+import { Hand } from '../components/hand/hand.js'
 import { General } from '../components/general/general.js'
 
 export default component$(() => {
@@ -20,7 +20,7 @@ export default component$(() => {
 			{/* <footer>：页脚。 */}
 			<section class='section bright'>
 				<General />
-				<Card />
+				<Hand />
 			</section>
 		</>
 	)
