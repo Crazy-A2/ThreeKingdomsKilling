@@ -1,3 +1,6 @@
 * {
 	box-sizing: border-box; /* 盒子宽度包含边框和内边距 */
+	/* 内外边距清除 */
+	margin: 0 0;
+	padding: 0;
 }
