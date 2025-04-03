@@ -1,10 +1,10 @@
 import { component$ } from '@builder.io/qwik'
 import shoupaiArray from '../../data/shoupai-junzheng'
 
-export interface CardProps {}
+export interface HandProps { }
 
 /**
- * 手牌组件 定义游戏对局内的手牌
+ * 手牌组件 渲染游戏对局内的手牌
  * 1. 卡片名称
    2. 卡片类型
    3. 卡片描述
@@ -13,14 +13,10 @@ export interface CardProps {}
    6. 卡片属性
    7. 卡片技能
  */
-export const Card = component$<CardProps>(props => {
-	// shoupaiArray.forEach(element => {
-	// 	console.log(element)
-	// })
-
+export const Hand = component$<HandProps>(props => {
 	return (
 		<>
-			<div>Card component works!</div>
+			<div>Hand component works!</div>
 
 			<div style={{ display: 'flex' }}>
 				{shoupaiArray.map((element, index) => {
