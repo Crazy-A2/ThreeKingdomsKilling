@@ -15,8 +15,8 @@ export interface GeneralProps { }
  * 240 * 307.5
  */
 export const General = component$<GeneralProps>(() => {
-  // const liubei = `${import.meta.env.BASE_URL}image/persona/界刘备.png`
-  // const sunquan = `${import.meta.env.BASE_URL}image/persona/界孙权.png`
+  // const liubei = `${import.meta.env.BASE_URL}image/general/界刘备.png`
+  // const sunquan = `${import.meta.env.BASE_URL}image/general/界孙权.png`
 
   // 720p
   const width = 160
@@ -42,7 +42,7 @@ export const General = component$<GeneralProps>(() => {
                 key: { index },
                 width,
                 height,
-                backgroundImage: `url(${import.meta.env.BASE_URL}image/persona/${element.name}.png)`,
+                backgroundImage: `url(${import.meta.env.BASE_URL}image/general/${element.name}.png)`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 borderRadius: '10px',
