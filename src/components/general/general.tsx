@@ -15,9 +15,6 @@ export interface GeneralProps { }
  * 240 * 307.5
  */
 export const General = component$<GeneralProps>(() => {
-  // const liubei = `${import.meta.env.BASE_URL}image/general/界刘备.png`
-  // const sunquan = `${import.meta.env.BASE_URL}image/general/界孙权.png`
-
   // 720p
   const width = 160
   const height = 205
@@ -57,43 +54,67 @@ export const General = component$<GeneralProps>(() => {
               }}>
                 <div style={{ color: 'black', textAlign: 'center' }}>{element.name}</div>
 
+                {/* 血条（体力条） */}
                 <HealthBar maxHealth={element.maxHealth} currentHealth={element.currentHealth} />
+                {/* 测试 */}
+                {/* <HealthBar maxHealth='3' currentHealth='3' /> */}
               </div>
             </div>
           )
         })}
       </div>
-
     </>
   )
 })
 
-
 // 考虑血条上限和当前血量
-// 方案1
+// 方案1                                ×
 // 渲染两组血条 （当前血量，最大血量）
 // 当前血量用颜色填充，最大血量用灰色填充
-// 方案2
+// 方案2                                √
 // 渲染一组血条，用颜色填充当前血量
 // 用灰色填充剩余血量
 export interface HealthBarProps { maxHealth: number, currentHealth: number }
 
 export const HealthBar = component$<HealthBarProps>((props) => {
+  const healthArray = useStore(new Array(+props.maxHealth).fill(0))
+  // healthArray.splice(+props.currentHealth, props.maxHealth - +props.currentHealth, 'glass3')
+  // 根据当前血量改变勾玉颜色
+  healthArray.fill(
+    `${(+props.currentHealth === +props.maxHealth)
+      ? 3
+      : props.currentHealth > 1
+        ? 2
+        : props.currentHealth}`,
+    0, +props.currentHealth
+  )
 
-  const healthArray: number[] = useStore(new Array(+props.maxHealth).fill(0))
+  // 测试
+  console.log(props.currentHealth, props.maxHealth, healthArray);
+  console.log('+props.currentHealth > 3', +props.currentHealth > 3);
+  console.log('+props.currentHealth === +props.maxHealth', +props.currentHealth === +props.maxHealth);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingBottom: 5 }}>
-      {
-        healthArray.map((el, index) => {
-          return <img
-            key={index}
-            style={{ width: '60%' }}
-            src={`${import.meta.env.BASE_URL}image/icon/${el}.png`}
-            alt='勾玉'
-          />
-        })
-      }
-    </div >
+    <>
+      <div style={healthBar}>
+        {
+          healthArray.map((el, index) => {
+            return <img
+              key={index}
+              style={{ width: '60%' }}
+              src={`${import.meta.env.BASE_URL}image/icon/${el}.png`}
+              alt='勾玉'
+            />
+          })
+        }
+      </div>
+    </>
   )
 })
+
+const healthBar = {
+  display: 'flex',
+  flexDirection: 'column-reverse', // 让有颜色的勾玉从下面开始渲染
+  alignItems: 'center',
+  paddingBottom: 5,
+}
