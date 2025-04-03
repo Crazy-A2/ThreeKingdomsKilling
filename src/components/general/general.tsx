@@ -51,6 +51,7 @@ export const General = component$<GeneralProps>(() => {
                 justifyContent: 'space-between',
                 height: '100%', width: '15%',
                 backgroundColor: themeColor.get(element.country),
+                lineHeight: 1.2,
               }}>
                 <div style={{ color: 'black', textAlign: 'center' }}>{element.name}</div>
 
