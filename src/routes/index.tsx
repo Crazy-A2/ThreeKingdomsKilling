@@ -1,9 +1,27 @@
-import { component$ } from '@builder.io/qwik'
+import { component$, useStore } from '@builder.io/qwik'
 import type { DocumentHead } from '@builder.io/qwik-city'
-import { Hand } from '../components/hand/hand.js'
+// import { Hand } from '../components/hand/hand.js'
 import { General } from '../components/general/general.js'
+import { wujiangArray, type Gender, type Country } from '../data/wujiang-junzheng-biaozhun'
 
 export default component$(() => {
+	const wujiangList: {
+		name: string;
+		gender: Gender;
+		country: Country;
+		maxHealth: number;
+		currentHealth: number;
+		skills: ({
+			name: string;
+			description: string;
+			display?: undefined;
+		} | {
+			display: boolean;
+			name: string;
+			description: string;
+		})[];
+	}[] = useStore([wujiangArray[0], wujiangArray[2]])
+
 	return (
 		<>
 			<h1>Hi 👋</h1>
@@ -19,8 +37,14 @@ export default component$(() => {
 			{/* <aside>：侧边栏，经常嵌套在 <main> 中。 */}
 			{/* <footer>：页脚。 */}
 			<section class='section bright'>
-				<General />
-				<Hand />
+				<div style={{ display: 'flex', justifyContent: 'space-between' }}>
+					{
+						wujiangList.map((element, index) => {
+							return <General wujiang={element} key={index} />
+						})
+					}
+				</div>
+				{/* <Hand /> */}
 			</section>
 		</>
 	)
