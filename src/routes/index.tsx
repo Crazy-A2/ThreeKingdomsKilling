@@ -1,9 +1,12 @@
 import { component$, useStore } from '@builder.io/qwik'
 import type { DocumentHead } from '@builder.io/qwik-city'
-// import { Hand } from '../components/hand/hand.js'
+import { Hand } from '../components/hand/hand.js'
 import { General } from '../components/general/general.js'
 import { wujiangArray, type Gender, type Country } from '../data/wujiang-junzheng-biaozhun'
+import { shoupaiArray, type CardType } from '../data/shoupai-junzheng'
 
+// 需要手牌来生成牌堆
+// 游戏开始时，按座次顺序，每名玩家从牌堆中摸四张牌
 export default component$(() => {
 	const wujiangList: {
 		name: string;
@@ -21,6 +24,13 @@ export default component$(() => {
 			description: string;
 		})[];
 	}[] = useStore([wujiangArray[0], wujiangArray[2]])
+
+	const shoupaiList: {
+		name: string;
+		suits: string;
+		point: string;
+		type: CardType;
+	}[] = useStore([...shoupaiArray])
 
 	return (
 		<>
@@ -44,7 +54,15 @@ export default component$(() => {
 						})
 					}
 				</div>
-				{/* <Hand /> */}
+
+
+				<div style={{ display: 'flex' }}>
+					{
+						shoupaiList.map((hand, index) => {
+							return <Hand hand={hand} key={index} />
+						})
+					}
+				</div>
 			</section>
 		</>
 	)

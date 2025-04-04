@@ -1,7 +1,14 @@
 import { component$ } from '@builder.io/qwik'
-import shoupaiArray from '../../data/shoupai-junzheng'
+import type { CardType } from '../../data/shoupai-junzheng'
 
-export interface HandProps { }
+export interface HandProps {
+	hand: {
+		name: string;
+		suits: string;
+		point: string;
+		type: CardType;
+	}
+}
 
 /**
  * 手牌组件 渲染游戏对局内的手牌
@@ -16,34 +23,26 @@ export interface HandProps { }
 export const Hand = component$<HandProps>(props => {
 	return (
 		<>
-			<div>Hand component works!</div>
-
-			<div style={{ display: 'flex' }}>
-				{shoupaiArray.map((element, index) => {
-					return (
-						<div
-							key={index}
-							style={{
-								width: 93,
-								height: 130,
-								color: ['♦', '♥'].includes(element.suits) ? 'red' : 'black',
-								backgroundImage: `url(${import.meta.env.BASE_URL}image/card/${element.name}.png)`,
-							}}>
-							<div
-								style={{
-									display: 'flex',
-									flexDirection: 'column',
-									alignItems: 'center',
-									width: 23,
-								}}>
-								<span style={{ fontSize: 18, fontWeight: 700 }}>
-									{element.point}
-								</span>
-								<span>{element.suits}</span>
-							</div>
-						</div>
-					)
-				})}
+			{/* <div>Hand component works!</div> */}
+			<div
+				style={{
+					width: 93,
+					height: 130,
+					color: ['♦', '♥'].includes(props.hand.suits) ? 'red' : 'black',
+					backgroundImage: `url(${import.meta.env.BASE_URL}image/card/${props.hand.name}.png)`,
+				}}>
+				<div
+					style={{
+						display: 'flex',
+						flexDirection: 'column',
+						alignItems: 'center',
+						width: 23,
+					}}>
+					<span style={{ fontSize: 18, fontWeight: 700 }}>
+						{props.hand.point}
+					</span>
+					<span>{props.hand.suits}</span>
+				</div>
 			</div>
 		</>
 	)

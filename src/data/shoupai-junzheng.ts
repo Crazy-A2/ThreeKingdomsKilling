@@ -8,7 +8,7 @@ export enum CardType {
 	BAO_WU,
 }
 
-export default [
+export const shoupaiArray = [
 	{
 		name: '闪电',
 		suits: '♠',
