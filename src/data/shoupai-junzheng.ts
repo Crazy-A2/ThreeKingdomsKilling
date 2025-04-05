@@ -8,7 +8,15 @@ export enum CardType {
 	BAO_WU,
 }
 
-export const shoupaiArray = [
+export interface Hand {
+	name: string
+	suits: string
+	point: string
+	type: CardType
+	srcIndex?: number // 原始索引位置
+}
+
+export const shoupaiArray: Hand[] = [
 	{
 		name: '闪电',
 		suits: '♠',

@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 export enum Gender {
 	FEMALE,
 	MALE,
@@ -17,7 +18,22 @@ themeColor.set(Country.WEI, 'rgba(0, 4, 255, 0.5)')
 themeColor.set(Country.SHU, 'rgba(255, 0, 0, 0.5)')
 themeColor.set(Country.WU, 'rgba(26, 255, 0, 0.5)')
 
-export const wujiangArray = [
+export interface Skill {
+	name: string
+	description: string
+	display?: undefined | boolean
+}
+
+export interface General {
+	name: string
+	gender: Gender
+	country: Country
+	maxHealth: number
+	currentHealth: number
+	skills: Skill[]
+}
+
+export const wujiangArray: General[] = [
 	{
 		name: '界刘备',
 		gender: Gender.MALE, //     性别
