@@ -18,10 +18,18 @@ themeColor.set(Country.WEI, 'rgba(0, 4, 255, 0.5)')
 themeColor.set(Country.SHU, 'rgba(255, 0, 0, 0.5)')
 themeColor.set(Country.WU, 'rgba(26, 255, 0, 0.5)')
 
+export enum TriggerTiming {
+	CHU_PAI, // 				出牌阶段
+	CHU_PAI_YI_CI, // 			出牌阶段限一次
+	SHOU_SHANG_YI_CI, // 		受到一次伤害时
+	SHOU_SHANG_YI_DIAN, // 		受到一点伤害时
+}
+
 export interface Skill {
-	name: string
-	description: string
-	display?: undefined | boolean
+	name: string // 						技能名
+	description: string // 					技能描述
+	display?: boolean // 					是否显示
+	triggerTiming?: TriggerTiming // 		触发时机
 }
 
 export interface General {
