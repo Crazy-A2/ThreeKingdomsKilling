@@ -1,39 +1,39 @@
-import { component$, useStore } from '@builder.io/qwik'
+import { component$, useStore, noSerialize } from '@builder.io/qwik'
 import type { DocumentHead } from '@builder.io/qwik-city'
-import { Hand } from '../components/hand/hand.js'
-import { General } from '../components/general/general.js'
-import { wujiangArray, type Gender, type Country } from '../data/wujiang-junzheng-biaozhun'
-import { shoupaiArray, type CardType } from '../data/shoupai-junzheng'
+// import { Hand } from '../components/hand/hand'
+import { General } from '../components/general/general'
+import { wujiangArray } from '../data/wujiang-junzheng-biaozhun'
+import type { General as WuJiang } from '../data/wujiang-junzheng-biaozhun'
+// import { shoupaiArray } from '../data/shoupai-junzheng'
+// import type { Hand as ShouPai } from '../data/shoupai-junzheng'
+import { Player } from '../utils/player'
+import { MyArea } from '../components/my-area/my-area'
 
-// 需要手牌来生成牌堆
-// 游戏开始时，按座次顺序，每名玩家从牌堆中摸四张牌
 export default component$(() => {
-	const wujiangList: {
-		name: string;
-		gender: Gender;
-		country: Country;
-		maxHealth: number;
-		currentHealth: number;
-		skills: ({
-			name: string;
-			description: string;
-			display?: undefined;
-		} | {
-			display: boolean;
-			name: string;
-			description: string;
-		})[];
-	}[] = useStore([wujiangArray[0], wujiangArray[2]])
+	const wujiangList: WuJiang[] = useStore([wujiangArray[0], wujiangArray[2]])
 
-	const shoupaiList: {
-		name: string;
-		suits: string;
-		point: string;
-		type: CardType;
-	}[] = useStore([...shoupaiArray])
+	// const shoupaiList: ShouPai[] = useStore([...shoupaiArray])
+
+	const player = new Player(wujiangList[0])
+	const player2 = new Player(wujiangList[1])
+
+	const player3 = noSerialize(new Player(wujiangList[1]))
+	// const player3 = noSerialize(useStore(new Player(wujiangList[1])))
 
 	return (
 		<>
+			<p>{player.general.skills[0].name}</p>
+			<p>{player.general.skills[0].description}</p>
+
+			<p>{player.general.skills[1].name}</p>
+			<p>{player.general.skills[1].description}</p>
+
+			<p>{player2.general.skills[0].name}</p>
+			<p>{player2.general.skills[0].description}</p>
+
+			<p>{player2.general.skills[1].name}</p>
+			<p>{player2.general.skills[1].description}</p>
+
 			<h1>Hi 👋</h1>
 			<div>
 				Can't wait to see what you build with qwik!
@@ -55,14 +55,18 @@ export default component$(() => {
 					}
 				</div>
 
-
-				<div style={{ display: 'flex' }}>
+				{/* <div style={{ display: 'flex' }}>
 					{
 						shoupaiList.map((hand, index) => {
 							return <Hand hand={hand} key={index} />
 						})
 					}
-				</div>
+				</div> */}
+
+				{/* 玩家区域 */}
+				<MyArea player={player3} />
+				{/* 测试 */}
+				{/* <MyArea /> */}
 			</section>
 		</>
 	)

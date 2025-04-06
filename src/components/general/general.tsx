@@ -1,8 +1,9 @@
 import { component$, useStore } from '@builder.io/qwik'
-import { themeColor, type Country } from '../../data/wujiang-junzheng-biaozhun';
+import { themeColor } from '../../data/wujiang-junzheng-biaozhun';
+import type { General as WuJiang } from '../../data/wujiang-junzheng-biaozhun'
 
 export interface GeneralProps {
-  wujiang: { name: string, country: Country, maxHealth: number, currentHealth: number }
+  wujiang: WuJiang
 }
 
 /**
@@ -79,20 +80,18 @@ const HealthBar = component$<HealthBarProps>((props) => {
   // console.log('+props.currentHealth === +props.maxHealth', +props.currentHealth === +props.maxHealth)
 
   return (
-    <>
-      <div style={healthBar}>
-        {
-          healthArray.map((el, index) => {
-            return <img
-              key={index}
-              style={{ width: '60%' }}
-              src={`${import.meta.env.BASE_URL}image/icon/${el}.png`}
-              alt='勾玉'
-            />
-          })
-        }
-      </div>
-    </>
+    <div style={healthBar}>
+      {
+        healthArray.map((el, index) => {
+          return <img
+            key={index}
+            style={{ width: '60%' }}
+            src={`${import.meta.env.BASE_URL}image/icon/${el}.png`}
+            alt='勾玉'
+          />
+        })
+      }
+    </div>
   )
 })
 
