@@ -86,7 +86,7 @@ const HealthBar = component$<HealthBarProps>((props) => {
           return <img
             key={index}
             style={{ width: '60%' }}
-            src={`${import.meta.env.BASE_URL}image/icon/${el}.png`}
+            src={`${import.meta.env.BASE_URL}image/magatama/${el}.png`}
             alt='勾玉'
           />
         })

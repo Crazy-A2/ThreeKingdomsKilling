@@ -29,11 +29,13 @@ export enum TriggerTiming {
 
 /** 技能类型 */
 export enum SkillType {
-	LORD = 'lord', // 						主公技
-	LOCK = 'lock', // 						锁定技
-	AROUSAL = 'arousal', // 				觉醒技
-	LIMIT = 'limit', // 					限定技
-	ORDINARY = 'ordinary', // 				普通技能
+	// LORD = 'lord', // 						主公技
+	// LOCK = 'lock', // 						锁定技
+	XIAN_DING = '限定',
+	JUE_XING = '觉醒',
+	PU_TONG = '普通',
+	BEI_DONG = '被动',
+	JIN_YONG = '禁用',
 }
 
 /** 技能 */
@@ -122,7 +124,7 @@ export const wujiangArray: General[] = [
 			{
 				name: '武圣',
 				description: `你的红色牌均可当【杀】使用或打出。
-                你的方片【杀】无距离限制。
+                你的方块【杀】无距离限制。
                 `,
 			},
 			{
