@@ -954,6 +954,7 @@ export const shoupaiArray: Hand[] = [
 		point: 'Q',
 		type: CardType.WU_QI,
 	},
+	// TODO 补充银月枪牌的图片
 	// {
 	// 	"name": "银月枪",
 	// 	"suits": "♦",

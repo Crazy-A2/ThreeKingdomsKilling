@@ -37,7 +37,7 @@ export function executeRoundAction(
 	action: HuiHe,
 	player: Player,
 	// params: Object = {}
-	params: any = {},
+	params: any = {}
 ): boolean {
 	let result = false
 	switch (action) {
@@ -101,12 +101,26 @@ function executeChuPai(player: Player): boolean {
 // 弃牌阶段逻辑
 function executeQiPai(player: Player): boolean {
 	console.log('弃牌阶段')
-	return false
+	if (player.handList.length <= player.general.currentHealth) {
+		return true
+	}
+	// 手牌数量大于当前体力值，需弃掉多出的手牌
+	const discardCount = player.handList.length - player.general.currentHealth
+
+	// TODO 需要确认对话框组件
+	console.log(`弃掉 ${discardCount} 张牌`)
+	qiPai(player)
+	return true
 }
 
 // 结束阶段逻辑
 function executeJieShu(player: Player): boolean {
 	console.log('结束阶段')
+	return false
+}
+
+function qiPai(player: Player): boolean {
+	// player.handList.splice(0, discardCount)
 	return false
 }
 
