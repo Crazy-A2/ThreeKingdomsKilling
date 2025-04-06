@@ -11,43 +11,58 @@ export enum Country {
 	QUN = '群',
 }
 
-// 主题色
+/** 势力主题色 */
 export const themeColor = new Map<Country, string>()
 themeColor.set(Country.QUN, 'rgba(255,255,255,0.5)')
 themeColor.set(Country.WEI, 'rgba(0, 4, 255, 0.5)')
 themeColor.set(Country.SHU, 'rgba(255, 0, 0, 0.5)')
 themeColor.set(Country.WU, 'rgba(26, 255, 0, 0.5)')
 
+/** 技能触发时机 */
 export enum TriggerTiming {
-	CHU_PAI, // 				出牌阶段
-	CHU_PAI_YI_CI, // 			出牌阶段限一次
-	SHOU_SHANG_YI_CI, // 		受到一次伤害时
-	SHOU_SHANG_YI_DIAN, // 		受到一点伤害时
+	CHU_PAI, // 							出牌阶段
+	CHU_PAI_YI_CI, // 						出牌阶段限一次
+	SHOU_SHANG_YI_CI, // 					受到一次伤害时
+	SHOU_SHANG_YI_DIAN, // 					受到一点伤害时
+	SHI_YONG_HUO_DA_CHU, // 				需要使用或打出相应牌时
 }
 
+/** 技能类型 */
+export enum SkillType {
+	LORD = 'lord', // 						主公技
+	LOCK = 'lock', // 						锁定技
+	AROUSAL = 'arousal', // 				觉醒技
+	LIMIT = 'limit', // 					限定技
+	ORDINARY = 'ordinary', // 				普通技能
+}
+
+/** 技能 */
 export interface Skill {
 	name: string // 						技能名
+	type?: SkillType // 					技能类型
 	description: string // 					技能描述
 	display?: boolean // 					是否显示
 	triggerTiming?: TriggerTiming // 		触发时机
+	do?: string // 							触发后对应的操作
 }
 
+/** 武将 */
 export interface General {
-	name: string
-	gender: Gender
-	country: Country
-	maxHealth: number
-	currentHealth: number
-	skills: Skill[]
+	name: string // 						武将名
+	gender: Gender // 			 			性别
+	country: Country // 					势力
+	maxHealth: number // 					血量上限
+	currentHealth: number // 				当前血量
+	skills: Skill[] // 						技能列表
 }
 
 export const wujiangArray: General[] = [
 	{
 		name: '界刘备',
-		gender: Gender.MALE, //     性别
-		country: Country.SHU, //    势力
-		maxHealth: 4, //            血量上限
-		currentHealth: 4, //        当前血量
+		gender: Gender.MALE,
+		country: Country.SHU,
+		maxHealth: 4,
+		currentHealth: 4,
 		skills: [
 			{
 				name: '仁德',
@@ -117,7 +132,7 @@ export const wujiangArray: General[] = [
                 1.该角色本回合非锁定技失效、不能使用或打出手牌。
                 2.你对其使用的红桃【杀】伤害+1。
                 若展示牌为红色：
-                1.你获得展示牌，然后你可令该角色回复1点体力。
+                你获得展示牌，然后你可令该角色回复1点体力。
                 `,
 			},
 		],
