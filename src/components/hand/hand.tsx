@@ -22,31 +22,37 @@ export interface HandProps {
  */
 export const Hand = component$<HandProps>(props => {
 	return (
-		<>
-			{/* <div>Hand component works!</div> */}
+		<div
+			style={{
+				width: 93,
+				height: 130,
+				color: ['♦', '♥'].includes(props.hand.suits) ? 'red' : 'black',
+				backgroundImage: `url(${import.meta.env.BASE_URL}image/card/${props.hand.name}.png)`,
+				backgroundSize: 'cover',
+				backgroundPosition: 'center',
+				backgroundRepeat: 'no-repeat',
+			}}
+			onClick$={() => { alert('点击了手牌') }}
+			// onMouseOver$={() => { alert('鼠标悬停在手牌上') }}
+			stoppropagation:click
+		>
+
 			<div
 				style={{
-					width: 93,
-					height: 130,
-					color: ['♦', '♥'].includes(props.hand.suits) ? 'red' : 'black',
-					backgroundImage: `url(${import.meta.env.BASE_URL}image/card/${props.hand.name}.png)`,
+					display: 'flex',
+					flexDirection: 'column',
+					alignItems: 'center',
+					width: 23,
 				}}>
-				<div
-					style={{
-						display: 'flex',
-						flexDirection: 'column',
-						alignItems: 'center',
-						width: 23,
-					}}>
-					<span style={{ fontSize: 18, fontWeight: 700 }}>
-						{props.hand.point}
-					</span>
-					<span>{props.hand.suits}</span>
-				</div>
+				<span style={{ fontSize: 18, fontWeight: 700 }}>
+					{props.hand.point}
+				</span>
+				<span>{props.hand.suits}</span>
 			</div>
-		</>
+		</div>
 	)
 })
+
 // 实现逻辑
 // 生成 json 数组，每个元素代表一张卡牌 		√
 // 读取 json 数组中的元素生成卡牌组件			√
