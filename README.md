@@ -10,7 +10,7 @@
 3. 运行 `bun run start`，会自动打开浏览器并运行
 
 
-## 项目结构
+<!-- ## 项目结构
 ```
 ├── public
 │   └── image                           // 图片资源
@@ -22,7 +22,7 @@
 │   ├── data                            // 数据
 │   │   ├── shoupai-junzheng            // 手牌数组
 │   │   └── wujiang-junzheng-biaozhun   // 武将数组-标准包
-```
+``` -->
 <!-- │   ├── components
 │   │   ├── Card
 │   │   ├── CardBack
