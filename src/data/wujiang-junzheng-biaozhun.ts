@@ -18,7 +18,7 @@ themeColor.set(Country.WEI, 'rgba(0, 4, 255, 0.5)')
 themeColor.set(Country.SHU, 'rgba(255, 0, 0, 0.5)')
 themeColor.set(Country.WU, 'rgba(26, 255, 0, 0.5)')
 
-/** 技能触发/解锁时机 */
+/** 技能触发/解锁时机 或者你可以理解为 细分的技能子类型 */
 export enum TriggerTiming {
 	CHU_PAI, // 							出牌阶段无次数限制
 	CHU_PAI_YI_CI, // 						出牌阶段限一次
