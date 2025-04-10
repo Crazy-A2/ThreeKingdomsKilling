@@ -7,10 +7,10 @@ import type { Player } from '../utils/player'
 import { createPlayer, changePlayerGeneral } from '../utils/player'
 import { MyArea } from '../components/my-area/my-area'
 import { Decks } from '../components/decks/decks'
-
-// export const playerContext = createContextId<Player>('playerContext')
+import { initDecks, drawTheCards } from '../utils/game'
 
 export default component$(() => {
+	const decks = useStore(initDecks()) // 牌堆
 	const wujiangList: WuJiang[] = useStore([wujiangArray[0], wujiangArray[2]])
 
 	// const shoupaiList: ShouPai[] = useStore([...shoupaiArray])
@@ -20,17 +20,17 @@ export default component$(() => {
 	const clickCount = useSignal(0)
 
 	useVisibleTask$(({ track }) => {
-		// const flag = track(() => clickCount.value)
 		const flag = track(clickCount)
 		console.log({ flag })
 
 		if (flag === 0) { return }
-		changePlayerGeneral(me, wujiangList[0])
 
-		console.log({ wujiang: wujiangArray[0] })
+		me.handList.push(...drawTheCards(decks, 4)) // 玩家摸牌
+		console.log({ me })
 
-		// me.general = wujiangArray[0]
-		// me.skillList = wujiangArray[0].skills
+
+		// changePlayerGeneral(me, wujiangList[0]) // 更换指定玩家的武将
+		// console.log({ wujiang: wujiangArray[0] })
 	})
 
 	return (
@@ -43,7 +43,7 @@ export default component$(() => {
 				}
 			</div>
 
-			<Decks deckSize={180} />
+			<Decks deckSize={decks.length} />
 
 			<button onClick$={() => ++clickCount.value}>响应式测试</button>
 

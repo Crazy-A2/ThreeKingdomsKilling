@@ -1,7 +1,7 @@
 import { component$ } from '@builder.io/qwik';
 
 export interface DecksProps {
-  deckSize: number
+  deckSize: number // 牌堆大小
 }
 
 /**

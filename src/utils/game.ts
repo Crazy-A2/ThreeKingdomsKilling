@@ -20,12 +20,12 @@ export class Game {
 }
 
 /**
- * 获取牌堆
+ * 初始化牌堆
  * @description 牌堆初始值为完整的军争手牌数组
  * @returns 牌堆数组
  */
-export function getDecks(): Hand[] {
-	return [...shoupaiArray]
+export function initDecks(): Hand[] {
+	return shuffleDecks([...shoupaiArray])
 }
 
 /**

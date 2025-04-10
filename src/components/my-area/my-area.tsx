@@ -1,12 +1,9 @@
 import { component$, useStore } from '@builder.io/qwik'
 import type { Skill } from '../../data/wujiang-junzheng-biaozhun'
-import { SkillType, TriggerTiming } from '../../data/wujiang-junzheng-biaozhun'
-// import type { Hand as ShouPai } from '../../data/shoupai-junzheng'
+import type { Hand as ShouPai } from '../../data/shoupai-junzheng'
 import type { Player } from '../../utils/player'
 import { General } from '../general/general'
-// import { playerContext } from '../../routes/index'
 
-import { shoupaiArray } from '../../data/shoupai-junzheng'
 import { Hand } from '../hand/hand'
 
 export interface MyAreaProps {
@@ -15,40 +12,23 @@ export interface MyAreaProps {
 
 /** 我的区域（真人玩家操控）*/
 export const MyArea = component$<MyAreaProps>((props) => {
-    // const player = useContext(playerContext)
     return (
         <div style={{ display: 'flex', width: '100%', position: 'fixed', bottom: 0 }}>
             <General wujiang={props.player.general} />
 
-            <SkillArea skillList={props.player.skillList}/>
+            <SkillArea skillList={props.player.skillList} />
 
-            <HandArea />
+            <HandArea handList={props.player.handList} />
         </div>
     )
 })
 
-interface SkillAreaProps { 
+interface SkillAreaProps {
     skillList: Skill[] // 技能列表
 }
 
 /** 技能区 */
-const SkillArea = component$<SkillAreaProps>(({skillList}) => {
-    // 测试
-    // const skillList = useStore([
-    //     {
-    //         name: '仁德',
-    //         // type: SkillType.PU_TONG,
-    //         type: SkillType.JIN_YONG,
-    //         triggerTiming: TriggerTiming.CHU_PAI,
-    //         do: '',
-    //     },
-    //     {
-    //         name: '激将',
-    //         type: SkillType.BEI_DONG,
-    //         triggerTiming: TriggerTiming.SHI_YONG_HUO_DA_CHU,
-    //         do: '',
-    //     },
-    // ])
+const SkillArea = component$<SkillAreaProps>(({ skillList }) => {
 
     return (
         <div style={{
@@ -74,12 +54,11 @@ const SkillArea = component$<SkillAreaProps>(({skillList}) => {
     )
 })
 
-interface HandAreaProps { }
+interface HandAreaProps { handList: ShouPai[] }
 
 /** 手牌区 */
-const HandArea = component$<HandAreaProps>(() => {
-    const shoupaiList = useStore(shoupaiArray.slice(9, 13))
-
+const HandArea = component$<HandAreaProps>(props => {
+    // TODO BUG 手牌长度溢出时无法滚动 每张手牌仅渲染部分
     return (
         <div
             style={{
@@ -87,10 +66,12 @@ const HandArea = component$<HandAreaProps>(() => {
                 overflowX: 'auto',
                 backgroundColor: 'yellow',
             }}
-            onClick$={() => { alert('手牌区被点击了！！！'); shoupaiList.push(shoupaiArray[14]) }}
+            onClick$={() => {
+                alert('手牌区被点击了！！！');
+            }}
         >
             {
-                shoupaiList.map((hand, index) => {
+                props.handList.map((hand, index) => {
                     return <Hand hand={hand} key={index} />
                 })
             }
