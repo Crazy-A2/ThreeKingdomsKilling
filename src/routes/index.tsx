@@ -1,74 +1,54 @@
-import { component$, useStore, noSerialize } from '@builder.io/qwik'
+import { component$, useStore, useVisibleTask$, useSignal } from '@builder.io/qwik'
 import type { DocumentHead } from '@builder.io/qwik-city'
-// import { Hand } from '../components/hand/hand'
 import { General } from '../components/general/general'
 import { wujiangArray } from '../data/wujiang-junzheng-biaozhun'
 import type { General as WuJiang } from '../data/wujiang-junzheng-biaozhun'
-// import { shoupaiArray } from '../data/shoupai-junzheng'
-// import type { Hand as ShouPai } from '../data/shoupai-junzheng'
-import { Player } from '../utils/player'
+import type { Player } from '../utils/player'
+import { createPlayer, changePlayerGeneral } from '../utils/player'
 import { MyArea } from '../components/my-area/my-area'
+import { Decks } from '../components/decks/decks'
+
+// export const playerContext = createContextId<Player>('playerContext')
 
 export default component$(() => {
 	const wujiangList: WuJiang[] = useStore([wujiangArray[0], wujiangArray[2]])
 
 	// const shoupaiList: ShouPai[] = useStore([...shoupaiArray])
 
-	const player = new Player(wujiangList[0])
-	const player2 = new Player(wujiangList[1])
+	const me: Player = useStore(createPlayer(wujiangList[1]))
 
-	const player3 = noSerialize(new Player(wujiangList[1]))
-	// const player3 = noSerialize(useStore(new Player(wujiangList[1])))
+	const clickCount = useSignal(0)
+
+	useVisibleTask$(({ track }) => {
+		// const flag = track(() => clickCount.value)
+		const flag = track(clickCount)
+		console.log({ flag })
+
+		if (flag === 0) { return }
+		changePlayerGeneral(me, wujiangList[0])
+
+		console.log({ wujiang: wujiangArray[0] })
+
+		// me.general = wujiangArray[0]
+		// me.skillList = wujiangArray[0].skills
+	})
 
 	return (
-		<>
-			<p>{player.general.skills[0].name}</p>
-			<p>{player.general.skills[0].description}</p>
-
-			<p>{player.general.skills[1].name}</p>
-			<p>{player.general.skills[1].description}</p>
-
-			<p>{player2.general.skills[0].name}</p>
-			<p>{player2.general.skills[0].description}</p>
-
-			<p>{player2.general.skills[1].name}</p>
-			<p>{player2.general.skills[1].description}</p>
-
-			<h1>Hi 👋</h1>
-			<div>
-				Can't wait to see what you build with qwik!
-				<br />
-				Happy coding.
+		<main>
+			<div style={{ display: 'flex', justifyContent: 'space-between' }}>
+				{
+					wujiangList.map((element, index) => {
+						return <General wujiang={element} key={index} />
+					})
+				}
 			</div>
 
-			{/* <header>：页眉。 */}
-			{/* <nav>：导航栏。 */}
-			{/* <main>：主内容。主内容中还可以有各种子内容区段，可用<article>、<section> 和 <div> 等元素表示。 */}
-			{/* <aside>：侧边栏，经常嵌套在 <main> 中。 */}
-			{/* <footer>：页脚。 */}
-			<section class='section bright'>
-				<div style={{ display: 'flex', justifyContent: 'space-between' }}>
-					{
-						wujiangList.map((element, index) => {
-							return <General wujiang={element} key={index} />
-						})
-					}
-				</div>
+			<Decks deckSize={180} />
 
-				{/* <div style={{ display: 'flex' }}>
-					{
-						shoupaiList.map((hand, index) => {
-							return <Hand hand={hand} key={index} />
-						})
-					}
-				</div> */}
+			<button onClick$={() => ++clickCount.value}>响应式测试</button>
 
-				{/* 玩家区域 */}
-				<MyArea player={player3} />
-				{/* 测试 */}
-				{/* <MyArea /> */}
-			</section>
-		</>
+			<MyArea player={me} />
+		</main>
 	)
 })
 
