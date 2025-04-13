@@ -63,7 +63,7 @@ const HandArea = component$<HandAreaProps>(props => {
         <div
             style={{
                 display: 'flex', alignItems: 'end', flex: 1,
-                overflowX: 'auto',
+                overflowX: 'scroll',
                 backgroundColor: 'yellow',
             }}
             onClick$={() => {

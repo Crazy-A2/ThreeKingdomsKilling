@@ -13,8 +13,6 @@ export default component$(() => {
 	const decks = useStore(initDecks()) // 牌堆
 	const wujiangList: WuJiang[] = useStore([wujiangArray[0], wujiangArray[2]])
 
-	// const shoupaiList: ShouPai[] = useStore([...shoupaiArray])
-
 	const me: Player = useStore(createPlayer(wujiangList[1]))
 
 	const clickCount = useSignal(0)

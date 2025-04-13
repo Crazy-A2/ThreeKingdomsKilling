@@ -12,11 +12,11 @@ export interface GeneralProps {
  * 
  * 720p（最低分辨率）
  * 
- * 160 * 205
+ * 160 * 205 px
  * 
  * 1080p（PC最常见分辨率）
  * 
- * 240 * 307.5
+ * 240 * 307.5 px
  */
 export const General = component$<GeneralProps>(props => {
     // 720p
@@ -32,7 +32,7 @@ export const General = component$<GeneralProps>(props => {
             style={{
                 width,
                 height,
-                backgroundImage: `url(${import.meta.env.BASE_URL}image/general/${props.wujiang.name}.png)`,
+                backgroundImage: `url(${import.meta.env.BASE_URL}image/general/${props.wujiang.name}/1.png)`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 borderRadius: '10px',
