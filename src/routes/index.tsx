@@ -11,9 +11,9 @@ import { initDecks, drawTheCards } from '../utils/game'
 
 export default component$(() => {
 	const decks = useStore(initDecks()) // 牌堆
-	const wujiangList: WuJiang[] = useStore([wujiangArray[0], wujiangArray[2]])
+	const wujiangList: WuJiang[] = useStore([...wujiangArray.slice(0, 7)])
 
-	const me: Player = useStore(createPlayer(wujiangList[1]))
+	const me: Player = useStore(createPlayer(wujiangList[2]))
 
 	const clickCount = useSignal(0)
 
