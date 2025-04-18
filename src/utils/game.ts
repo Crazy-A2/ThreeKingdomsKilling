@@ -1,19 +1,23 @@
 import { shoupaiArray, type Hand } from '../data/shoupai-junzheng'
 
+export enum GameResult {
+	WIN, // 				胜利
+	LOSE, // 				失败
+	UNKNOWN, // 			未知
+}
+
 interface GameState {
-	isOver: boolean
-	isPaused: boolean
-	isWin: boolean
-	isLose: boolean
+	isOver: boolean // 		游戏是否结束
+	isPaused: boolean // 	游戏是否暂停
+	result: GameResult // 	游戏结果
 }
 
 // 定义游戏对象 包含整局游戏状态和通用游戏逻辑
 export class Game {
 	state: GameState = {
-		isOver: false, // 		游戏是否结束
-		isPaused: false, // 	游戏是否暂停
-		isWin: false, // 		游戏是否胜利
-		isLose: false, // 		游戏是否失败
+		isOver: false,
+		isPaused: false,
+		result: GameResult.UNKNOWN,
 	}
 
 	// 游戏逻辑

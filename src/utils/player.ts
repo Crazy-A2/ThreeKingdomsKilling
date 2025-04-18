@@ -6,6 +6,7 @@ import { HuiHe } from './round-stage'
  * 定义玩家对象
  */
 export interface Player {
+	isComputer: boolean // 						玩家是否为电脑
 	general: General //                         玩家使用的武将
 	handList: Hand[] //                    		玩家手牌列表
 	skillList: Skill[] //                  		玩家技能列表
@@ -17,10 +18,12 @@ export interface Player {
 /**
  * 创建玩家对象
  * @param general 玩家使用的武将对象
+ * @param isComputer 该玩家是否为电脑
  * @returns
  */
-export function createPlayer(general: General): Player {
+export function createPlayer(general: General, isComputer = false): Player {
 	return {
+		isComputer,
 		general,
 		handList: [],
 		skillList: general.skills,

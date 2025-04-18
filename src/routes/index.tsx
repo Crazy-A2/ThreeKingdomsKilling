@@ -16,9 +16,11 @@ export default component$(() => {
 	const discardPile = useStore([])
 
 	/** 其他玩家（电脑） */
-	const otherPlayers: Player[] = [...wujiangArray.slice(0, 1)].map((wujiang: WuJiang) => {
+	const getOthers = [...wujiangArray.slice(0, 1)].map((wujiang: WuJiang) => {
 		return createPlayer(wujiang)
 	})
+	const otherPlayers: Player[] = useStore(getOthers)
+
 	/** 我（真人玩家） */
 	const me: Player = useStore(createPlayer(wujiangArray[2], true))
 
@@ -39,7 +41,10 @@ export default component$(() => {
 			<div style={{ display: 'flex', justifyContent: 'space-around' }}>
 				{
 					otherPlayers.map((player, index) => {
-						return <General wujiang={player.general} key={index} />
+						return <General
+							key={index}
+							wujiang={player.general} isComputer={true} handCount={player.handList.length}
+						/>
 					})
 				}
 			</div>

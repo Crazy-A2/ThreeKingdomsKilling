@@ -1,10 +1,12 @@
-import { component$, useStore, useVisibleTask$ } from '@builder.io/qwik'
+import { component$, type CSSProperties, useStore, useVisibleTask$ } from '@builder.io/qwik'
 import { themeColor } from '../../data/wujiang-junzheng-biaozhun'
 import type { General as WuJiang } from '../../data/wujiang-junzheng-biaozhun'
 // import type { Player } from '../../utils/player'
 
 export interface GeneralProps {
     wujiang: WuJiang
+    isComputer?: boolean
+    handCount?: number
 }
 
 /**
@@ -36,7 +38,6 @@ export const General = component$<GeneralProps>(props => {
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 borderRadius: '10px',
-                overflow: 'hidden',
             }}
         >
             <div
@@ -45,16 +46,45 @@ export const General = component$<GeneralProps>(props => {
                     flexDirection: 'column',
                     justifyContent: 'space-between',
                     height: '100%', width: '15%',
+                    borderTopLeftRadius: '15px',
+                    borderBottomLeftRadius: '15px',
                     backgroundColor: themeColor.get(props.wujiang.country),
                 }}
             >
                 {/* 武将名 */}
                 <div style={{ color: 'black', textAlign: 'center', lineHeight: 1.2, }}>{props.wujiang.name}</div>
 
-                {/* 血条（体力条） */}
-                <HealthBar maxHealth={props.wujiang.maxHealth} currentHealth={props.wujiang.currentHealth} />
-                {/* 测试 */}
-                {/* <HealthBar maxHealth='3' currentHealth='3' /> */}
+                <div
+                    style={{ position: 'relative', height: '80px', paddingBottom: 10 }}
+                >
+                    {/* 血条（体力条） */}
+                    <HealthBar maxHealth={props.wujiang.maxHealth} currentHealth={props.wujiang.currentHealth} />
+
+                    {/* 手牌计数 */}
+                    {
+                        props.isComputer &&
+                        <div
+                            style={{
+                                width: 40,
+                                height: 40,
+                                color: 'black',
+                                fontSize: 'larger',
+                                lineHeight: 1.8,
+                                fontWeight: 900,
+                                textAlign: 'center',
+                                left: -6,
+                                bottom: -18,
+                                backgroundSize: 'contain',
+                                backgroundPosition: 'center',
+                                backgroundRepeat: 'no-repeat',
+                                backgroundImage: `url(${import.meta.env.BASE_URL}image/icon/handcard.png)`,
+                                position: 'absolute',
+                            }}
+                        >
+                            {props.handCount || 0}
+                        </div>
+                    }
+                </div>
             </div>
         </div>
     )
@@ -63,10 +93,10 @@ export const General = component$<GeneralProps>(props => {
 export interface HealthBarProps { maxHealth: number, currentHealth: number }
 
 const HealthBar = component$<HealthBarProps>((props) => {
+    // + 用来预防传入字符串的情况
     const healthArray = useStore(new Array(+props.maxHealth).fill(0))
-    // healthArray.splice(+props.currentHealth, props.maxHealth - +props.currentHealth, 'glass3')
 
-    useVisibleTask$((track) => {
+    useVisibleTask$(() => {
         // 根据当前血量改变勾玉颜色
         healthArray.fill(
             `${(+props.currentHealth === +props.maxHealth)
@@ -77,11 +107,6 @@ const HealthBar = component$<HealthBarProps>((props) => {
             0, +props.currentHealth
         )
     })
-
-    // 测试
-    // console.log(props.currentHealth, props.maxHealth, healthArray)
-    // console.log('+props.currentHealth > 3', +props.currentHealth > 3)
-    // console.log('+props.currentHealth === +props.maxHealth', +props.currentHealth === +props.maxHealth)
 
     return (
         <div style={healthBar}>
@@ -99,7 +124,7 @@ const HealthBar = component$<HealthBarProps>((props) => {
     )
 })
 
-const healthBar = {
+const healthBar: CSSProperties = {
     display: 'flex',
     flexDirection: 'column-reverse', // 让有颜色的勾玉从下面开始渲染
     alignItems: 'center',
