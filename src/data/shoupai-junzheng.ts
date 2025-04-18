@@ -1,19 +1,23 @@
+/** 手牌类型 */
 export enum CardType {
-	PU_TONG_JIN_NANG,
-	YAN_SHI_JIN_NANG,
-	JI_CHU,
-	WU_QI,
-	FANG_JU,
-	ZUO_QI,
-	BAO_WU,
+	PU_TONG_JIN_NANG, // 		普通锦囊
+	YAN_SHI_JIN_NANG, // 		延时锦囊
+	JI_CHU, //   				基础牌
+	WU_QI, // 					武器牌
+	FANG_JU, // 				防具牌
+	JIN_GONG_ZUO_QI, // 		进攻坐骑
+	FANG_YU_ZUO_QI, // 			防御坐骑
+	BAO_WU, // 					宝物牌
 }
 
+/** 定义手牌对象 */
 export interface Hand {
-	name: string
-	suits: string
-	point: string
-	type: CardType
-	srcIndex?: number // 原始索引位置
+	name: string // 			牌名
+	suits: string // 			花色
+	point: string // 			点数
+	type: CardType // 			牌型
+	srcIndex?: number // 		原始索引位置
+	isChoosed?: boolean // 		是否被选中
 }
 
 export const shoupaiArray: Hand[] = [
@@ -105,7 +109,7 @@ export const shoupaiArray: Hand[] = [
 		name: '绝影',
 		suits: '♠',
 		point: '5',
-		type: CardType.ZUO_QI,
+		type: CardType.FANG_YU_ZUO_QI,
 	},
 	{
 		name: '雷杀',
@@ -243,7 +247,7 @@ export const shoupaiArray: Hand[] = [
 		name: '大宛',
 		suits: '♠',
 		point: 'K',
-		type: CardType.ZUO_QI,
+		type: CardType.JIN_GONG_ZUO_QI,
 	},
 	{
 		name: '南蛮入侵',
@@ -339,7 +343,7 @@ export const shoupaiArray: Hand[] = [
 		name: '赤兔',
 		suits: '♥',
 		point: '5',
-		type: CardType.ZUO_QI,
+		type: CardType.JIN_GONG_ZUO_QI,
 	},
 	{
 		name: '桃',
@@ -483,7 +487,7 @@ export const shoupaiArray: Hand[] = [
 		name: '爪黄飞电',
 		suits: '♥',
 		point: 'K',
-		type: CardType.ZUO_QI,
+		type: CardType.FANG_YU_ZUO_QI,
 	},
 	{
 		name: '闪',
@@ -579,7 +583,7 @@ export const shoupaiArray: Hand[] = [
 		name: '的卢',
 		suits: '♣',
 		point: '5',
-		type: CardType.ZUO_QI,
+		type: CardType.FANG_YU_ZUO_QI,
 	},
 	{
 		name: '杀',
@@ -977,12 +981,12 @@ export const shoupaiArray: Hand[] = [
 		name: '紫骍',
 		suits: '♦',
 		point: 'K',
-		type: CardType.ZUO_QI,
+		type: CardType.JIN_GONG_ZUO_QI,
 	},
 	{
 		name: '骅骝',
 		suits: '♦',
 		point: 'K',
-		type: CardType.ZUO_QI,
+		type: CardType.FANG_YU_ZUO_QI,
 	},
 ]
