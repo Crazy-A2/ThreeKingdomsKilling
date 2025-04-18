@@ -14,15 +14,13 @@ export default component$(() => {
 	const decks = useStore(initDecks())
 	/** 弃牌堆 */
 	const discardPile = useStore([])
-	/** 测试 其他玩家 */
-	const otherPlayers: WuJiang[] | Player[] = useStore([...wujiangArray.slice(0, 1)])
-	otherPlayers.forEach((element: WuJiang | Player, index) => {
-		// element.handList.push(...drawTheCards(decks, 4)) // 玩家摸牌
-		element = createPlayer(element as WuJiang)
-		console.log({ element, index })
-	})
 
-	const me: Player = useStore(createPlayer(wujiangArray[2]))
+	/** 其他玩家（电脑） */
+	const otherPlayers: Player[] = [...wujiangArray.slice(0, 1)].map((wujiang: WuJiang) => {
+		return createPlayer(wujiang)
+	})
+	/** 我（真人玩家） */
+	const me: Player = useStore(createPlayer(wujiangArray[2], true))
 
 	const clickCount = useSignal(0)
 
@@ -40,8 +38,8 @@ export default component$(() => {
 		<main>
 			<div style={{ display: 'flex', justifyContent: 'space-around' }}>
 				{
-					otherPlayers.map((element, index) => {
-						return <General wujiang={element} key={index} />
+					otherPlayers.map((player, index) => {
+						return <General wujiang={player.general} key={index} />
 					})
 				}
 			</div>
