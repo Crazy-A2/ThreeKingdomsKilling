@@ -1,13 +1,8 @@
 import { component$ } from '@builder.io/qwik'
-import type { CardType } from '../../data/shoupai-junzheng'
+import type { Hand as ShouPai } from '../../data/shoupai-junzheng'
 
 export interface HandProps {
-	hand: {
-		name: string;
-		suits: string;
-		point: string;
-		type: CardType;
-	}
+	hand: ShouPai
 }
 
 /**
@@ -31,19 +26,20 @@ export const Hand = component$<HandProps>(props => {
 				backgroundSize: 'cover',
 				backgroundPosition: 'center',
 				backgroundRepeat: 'no-repeat',
+				position: 'relative',
+				bottom: props.hand.isChoosed ? 58 : 0,
 			}}
-			onClick$={() => { alert('点击了手牌') }}
-			// onMouseOver$={() => { alert('鼠标悬停在手牌上') }}
+			onClick$={() => { props.hand.isChoosed = !props.hand.isChoosed }}
 			stoppropagation:click
 		>
-
 			<div
 				style={{
 					display: 'flex',
 					flexDirection: 'column',
 					alignItems: 'center',
 					width: 23,
-				}}>
+				}}
+			>
 				<span style={{ fontSize: 18, fontWeight: 700 }}>
 					{props.hand.point}
 				</span>

@@ -1,4 +1,4 @@
-import { component$, useStore } from '@builder.io/qwik'
+import { component$, } from '@builder.io/qwik'
 import type { Skill } from '../../data/wujiang-junzheng-biaozhun'
 import type { Hand as ShouPai } from '../../data/shoupai-junzheng'
 import type { Player } from '../../utils/player'
@@ -11,14 +11,14 @@ export interface MyAreaProps {
 }
 
 /** 我的区域（真人玩家操控）*/
-export const MyArea = component$<MyAreaProps>((props) => {
+export const MyArea = component$<MyAreaProps>(({ player }) => {
     return (
         <div style={{ display: 'flex', width: '100%', position: 'fixed', bottom: 0 }}>
-            <General wujiang={props.player.general} />
+            <General wujiang={player.general} />
 
-            <SkillArea skillList={props.player.skillList} />
+            <SkillArea skillList={player.skillList} />
 
-            <HandArea handList={props.player.handList} />
+            <HandArea handList={player.handList} />
         </div>
     )
 })
@@ -41,7 +41,8 @@ const SkillArea = component$<SkillAreaProps>(({ skillList }) => {
                         <button
                             key={index}
                             style={{
-                                width: 87, height: 47, backgroundSize: 'cover', backgroundPosition: 'center',
+                                width: 87, height: 47, backgroundSize: 'cover',
+                                backgroundPosition: 'center',
                                 backgroundImage: `url(${import.meta.env.BASE_URL}image/skill/${skill.type}.png)`,
                             }}
                         >

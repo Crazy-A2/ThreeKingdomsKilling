@@ -52,7 +52,9 @@ export function shuffleDecks(decks: Hand[]): Hand[] {
  * @returns 摸到的牌的数组
  */
 export function drawTheCards(decks: Hand[], count: number = 2): Hand[] {
-	return decks.splice(-count, count)
+	return decks.splice(-count, count).map(item => {
+		return { ...item, isChoosed: false }
+	})
 }
 
 // 摸牌测试

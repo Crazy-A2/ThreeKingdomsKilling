@@ -1,19 +1,28 @@
-import { component$, useStore, useVisibleTask$, useSignal } from '@builder.io/qwik'
+import { component$, useStore, useVisibleTask$, useSignal, } from '@builder.io/qwik'
 import type { DocumentHead } from '@builder.io/qwik-city'
 import { General } from '../components/general/general'
 import { wujiangArray } from '../data/wujiang-junzheng-biaozhun'
 import type { General as WuJiang } from '../data/wujiang-junzheng-biaozhun'
 import type { Player } from '../utils/player'
-import { createPlayer, changePlayerGeneral } from '../utils/player'
+import { createPlayer, } from '../utils/player'
 import { MyArea } from '../components/my-area/my-area'
 import { Decks } from '../components/decks/decks'
 import { initDecks, drawTheCards } from '../utils/game'
 
 export default component$(() => {
-	const decks = useStore(initDecks()) // 牌堆
-	const wujiangList: WuJiang[] = useStore([...wujiangArray.slice(0, 7)])
+	/** 牌堆 */
+	const decks = useStore(initDecks())
+	/** 弃牌堆 */
+	const discardPile = useStore([])
+	/** 测试 其他玩家 */
+	const otherPlayers: WuJiang[] | Player[] = useStore([...wujiangArray.slice(0, 1)])
+	otherPlayers.forEach((element: WuJiang | Player, index) => {
+		// element.handList.push(...drawTheCards(decks, 4)) // 玩家摸牌
+		element = createPlayer(element as WuJiang)
+		console.log({ element, index })
+	})
 
-	const me: Player = useStore(createPlayer(wujiangList[2]))
+	const me: Player = useStore(createPlayer(wujiangArray[2]))
 
 	const clickCount = useSignal(0)
 
@@ -25,17 +34,13 @@ export default component$(() => {
 
 		me.handList.push(...drawTheCards(decks, 4)) // 玩家摸牌
 		console.log({ me })
-
-
-		// changePlayerGeneral(me, wujiangList[0]) // 更换指定玩家的武将
-		// console.log({ wujiang: wujiangArray[0] })
 	})
 
 	return (
 		<main>
-			<div style={{ display: 'flex', justifyContent: 'space-between' }}>
+			<div style={{ display: 'flex', justifyContent: 'space-around' }}>
 				{
-					wujiangList.map((element, index) => {
+					otherPlayers.map((element, index) => {
 						return <General wujiang={element} key={index} />
 					})
 				}
@@ -43,7 +48,7 @@ export default component$(() => {
 
 			<Decks deckSize={decks.length} />
 
-			<button onClick$={() => ++clickCount.value}>响应式测试</button>
+			<button onClick$={() => ++clickCount.value}>摸牌</button>
 
 			<MyArea player={me} />
 		</main>
