@@ -1,4 +1,4 @@
-import { component$, useStore, useVisibleTask$, useSignal, } from '@builder.io/qwik'
+import { component$, useStore, useVisibleTask$, useSignal,  } from '@builder.io/qwik'
 import type { DocumentHead } from '@builder.io/qwik-city'
 import { General } from '../components/general/general'
 import { wujiangArray } from '../data/wujiang-junzheng-biaozhun'
@@ -8,8 +8,11 @@ import { createPlayer, } from '../utils/player'
 import { MyArea } from '../components/my-area/my-area'
 import { Decks } from '../components/decks/decks'
 import { initDecks, drawTheCards } from '../utils/game'
+import { AskDialogBox } from '../components/ask-dialog-box/ask-dialog-box'
 
 export default component$(() => {
+	/** 是否展示选项对话框 */
+	const showAskDialog = useSignal(true)
 	/** 牌堆 */
 	const decks = useStore(initDecks())
 	/** 弃牌堆 */
@@ -20,9 +23,19 @@ export default component$(() => {
 		return createPlayer(wujiang)
 	})
 	const otherPlayers: Player[] = useStore(getOthers)
-
 	/** 我（真人玩家） */
 	const me: Player = useStore(createPlayer(wujiangArray[2], true))
+
+	const buttons = [
+		{
+			text: '确认',
+			// action: $(() => { })
+		},
+		{
+			text: '取消',
+			// action: $(() => { })
+		}
+	]
 
 	const clickCount = useSignal(0)
 
@@ -38,6 +51,7 @@ export default component$(() => {
 
 	return (
 		<main>
+			{/* 渲染电脑玩家的武将 */}
 			<div style={{ display: 'flex', justifyContent: 'space-around' }}>
 				{
 					otherPlayers.map((player, index) => {
@@ -52,6 +66,8 @@ export default component$(() => {
 			<Decks deckSize={decks.length} />
 
 			<button onClick$={() => ++clickCount.value}>摸牌</button>
+
+			{showAskDialog.value && <AskDialogBox word='是否开始游戏？' buttons={buttons} />}
 
 			<MyArea player={me} />
 		</main>
