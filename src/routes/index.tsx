@@ -7,8 +7,8 @@ import type { Player } from '../utils/player'
 import { createPlayer, } from '../utils/player'
 import { MyArea } from '../components/my-area/my-area'
 import { Decks } from '../components/decks/decks'
+import { OptionDialog } from '../components/option-dialog/option-dialog'
 import { initDecks, drawTheCards } from '../utils/game'
-import { AskDialogBox } from '../components/ask-dialog-box/ask-dialog-box'
 
 export default component$(() => {
 	/** 是否展示选项对话框 */
@@ -68,7 +68,7 @@ export default component$(() => {
 
 			<button onClick$={() => ++clickCount.value}>摸牌</button>
 
-			{showAskDialog.value && <AskDialogBox word='是否开始游戏？' buttons={buttons} />}
+			{showAskDialog.value && <OptionDialog word='是否开始游戏？' buttons={buttons} />}
 
 			<MyArea player={me} />
 		</main>

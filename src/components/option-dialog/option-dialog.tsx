@@ -5,13 +5,13 @@ interface Button {
     action?: () => void //          点击按钮后执行的操作
 }
 
-export interface AskDialogBoxProps {
+export interface OptionDialogProps {
     word: string //                 对话框消息
     buttons: Button[] //            按钮列表
 }
 
-/** 请求对话框 需要玩家（我）行动或响应时展示可选择的选项 */
-export const AskDialogBox = component$<AskDialogBoxProps>(({ word, buttons = [] }) => {
+/** 选项对话框 需要玩家（我）行动或响应时展示可选择的选项 */
+export const OptionDialog = component$<OptionDialogProps>(({ word, buttons = [] }) => {
     return (
         // 遮罩层
         // <div
@@ -28,17 +28,14 @@ export const AskDialogBox = component$<AskDialogBoxProps>(({ word, buttons = [] 
         <div style={{
             position: 'fixed',
             width: '100%',
-            bottom: 210,
             height: 150,
+            bottom: 210,
             textAlign: 'center',
             backgroundColor: 'rgba(94, 254, 201, 0.5)',
             zIndex: 999,
         }}>
             {/* 对话框消息 */}
-            <p style={{
-                fontSize: '1.4rem',
-                fontWeight: 700,
-            }}>
+            <p style={{ fontSize: '1.4rem', fontWeight: 700, }}>
                 {word}
             </p>
 
