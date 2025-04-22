@@ -1,4 +1,4 @@
-import { component$, useStore, useVisibleTask$, useSignal,  } from '@builder.io/qwik'
+import { component$, useStore, useVisibleTask$, useSignal, } from '@builder.io/qwik'
 import type { DocumentHead } from '@builder.io/qwik-city'
 import { General } from '../components/general/general'
 import { wujiangArray } from '../data/wujiang-junzheng-biaozhun'
@@ -45,7 +45,8 @@ export default component$(() => {
 
 		if (flag === 0) { return }
 
-		me.handList.push(...drawTheCards(decks, 4)) // 玩家摸牌
+		// me.handList.push(...drawTheCards(decks, 4)) // 玩家摸牌
+		drawTheCards(me, decks, 4) // 玩家摸牌
 		console.log({ me })
 	})
 

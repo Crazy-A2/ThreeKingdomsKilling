@@ -1,4 +1,5 @@
 import { shoupaiArray, type Hand } from '../data/shoupai-junzheng'
+import { type Player } from './player'
 
 export enum GameResult {
 	WIN, // 				胜利
@@ -50,15 +51,20 @@ export function shuffleDecks(decks: Hand[]): Hand[] {
 
 /**
  * 摸牌
- * @description 从牌堆中摸牌，返回摸到的牌，并从牌堆中删除摸到的牌
- * @param decks 牌堆
- * @param count 摸牌数量
- * @returns 摸到的牌的数组
+ * @description 玩家从牌堆中摸牌
+ * @param player 	要摸牌的玩家
+ * @param decks 	牌堆
+ * @param count 	摸牌数量（默认两张）
  */
-export function drawTheCards(decks: Hand[], count: number = 2): Hand[] {
-	return decks.splice(-count, count).map(item => {
+export function drawTheCards(player: Player, decks: Hand[], count?: number) {
+	// const hands = decks.splice(-count, count).map(item => {
+	// 	return { ...item, isChoosed: false }
+	// })
+	const hands = getCardsFromDecksTop(decks, count).map(item => {
 		return { ...item, isChoosed: false }
 	})
+
+	player.handList.push(...hands) // 添加到玩家的手牌数组中
 }
 
 // 摸牌测试
@@ -67,3 +73,13 @@ export function drawTheCards(decks: Hand[], count: number = 2): Hand[] {
 // const getCards = drawTheCards(arr)
 // console.log(arr)
 // console.log(getCards)
+
+/**
+ * 获取牌堆顶的 N 张牌
+ * @param decks 牌堆
+ * @param count 要获取的卡牌数
+ * @returns 获取到的卡牌数组
+ */
+function getCardsFromDecksTop(decks: Hand[], count: number = 2): Hand[] {
+	return decks.splice(-count, count)
+}

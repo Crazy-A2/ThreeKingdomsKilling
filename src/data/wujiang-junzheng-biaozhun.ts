@@ -58,6 +58,7 @@ export interface General {
 	skills: Skill[] // 						技能列表
 }
 
+/** 标准包 武将列表 */
 export const wujiangArray: General[] = [
 	{
 		name: '界刘备',
