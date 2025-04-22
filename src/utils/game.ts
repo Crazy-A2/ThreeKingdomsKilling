@@ -75,11 +75,11 @@ export function drawTheCards(player: Player, decks: Hand[], count?: number) {
 // console.log(getCards)
 
 /**
- * 获取牌堆顶的 N 张牌
+ * 获取牌堆顶的 count 张牌
  * @param decks 牌堆
  * @param count 要获取的卡牌数
  * @returns 获取到的卡牌数组
  */
-function getCardsFromDecksTop(decks: Hand[], count: number = 2): Hand[] {
+export function getCardsFromDecksTop(decks: Hand[], count: number = 2): Hand[] {
 	return decks.splice(-count, count)
 }

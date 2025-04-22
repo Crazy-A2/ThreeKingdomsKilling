@@ -4,13 +4,13 @@ import type { Hand } from '../data/shoupai-junzheng'
 
 /**表示每个回合阶段的枚举 */
 export enum HuiHe {
+	DAI_JI, //         	回合外待机状态
 	ZHUN_BEI, //        准备阶段
 	PAN_DING, //        判定阶段
 	MO_PAI, //          摸牌阶段
 	CHU_PAI, //         出牌阶段
 	QI_PAI, //          弃牌阶段
 	JIE_SHU, //         结束阶段
-	DAI_JI, //         	回合外待机状态
 }
 
 /**
@@ -88,7 +88,8 @@ function executePanDing(player: Player): boolean {
  */
 function executeMoPai(player: Player, params: { decks: Hand[] }): boolean {
 	console.log('摸牌阶段')
-	player.handList.push(...drawTheCards(params.decks))
+	// player.handList.push(...drawTheCards(params.decks))
+	drawTheCards(player, params.decks)
 	return true
 }
 
@@ -108,8 +109,8 @@ function executeQiPai(player: Player): boolean {
 	const discardCount = player.handList.length - player.general.currentHealth
 
 	// TODO 需要确认对话框组件
-	console.log(`弃掉 ${discardCount} 张牌`)
-	qiPai(player)
+	console.log(`还需弃掉 ${discardCount} 张牌`)
+	qiPai(player, discardCount)
 	return true
 }
 
@@ -119,7 +120,7 @@ function executeJieShu(player: Player): boolean {
 	return false
 }
 
-function qiPai(player: Player): boolean {
+function qiPai(player: Player, discardCount: number): boolean {
 	// player.handList.splice(0, discardCount)
 	return false
 }
