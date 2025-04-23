@@ -1,7 +1,7 @@
 import { component$, type CSSProperties, useStore, useVisibleTask$, useContext } from '@builder.io/qwik'
 import { themeColor } from '../../data/wujiang-junzheng-biaozhun'
 import type { General as WuJiang } from '../../data/wujiang-junzheng-biaozhun'
-import { addTargetGeneral2List } from '../../utils/player'
+import { addTargetGeneral2List, removeTargetGeneralFromList } from '../../utils/player'
 import { targetGeneralListContext } from '../../routes/index'
 
 export interface GeneralProps {
@@ -42,9 +42,12 @@ export const General = component$<GeneralProps>(props => {
                 borderRadius: '15px',
             }}
             onClick$={() => {
-                addTargetGeneral2List(props.wujiang.name, targetGeneralList)
+                !targetGeneralList.includes(props.wujiang.name)
+                    ? addTargetGeneral2List(props.wujiang.name, targetGeneralList)
+                    : removeTargetGeneralFromList(props.wujiang.name, targetGeneralList)
                 console.log({ targetGeneralList })
             }}
+            stoppropagation:click
         >
             <div style={{
                 display: 'flex',

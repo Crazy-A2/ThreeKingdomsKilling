@@ -45,8 +45,7 @@ export function addTargetGeneral2List(
 	generalName: string,
 	targetGeneralList: string[]
 ) {
-	!targetGeneralList.includes(generalName) &&
-		targetGeneralList.push(generalName)
+	targetGeneralList.includes(generalName) || targetGeneralList.push(generalName)
 }
 
 // /**
@@ -59,3 +58,16 @@ export function addTargetGeneral2List(
 // 	playerList: Player[],
 // 	targetPlayer: Player
 // ) {}
+
+/**
+ * 取消选中目标武将
+ * @param generalName 要取消选中的武将名
+ * @param targetGeneralList 目标武将列表
+ */
+export function removeTargetGeneralFromList(
+	generalName: string,
+	targetGeneralList: string[]
+): void {
+	const index = targetGeneralList.indexOf(generalName)
+	index !== -1 && targetGeneralList.splice(index, 1)
+}
