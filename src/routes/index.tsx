@@ -12,7 +12,7 @@ import { initDecks, drawTheCards } from '../utils/game'
 
 export default component$(() => {
 	/** 是否展示选项对话框 */
-	const showAskDialog = useSignal(true)
+	const showOptionDialog = useSignal(true)
 	/** 牌堆 */
 	const decks = useStore(initDecks())
 	/** 弃牌堆 */
@@ -68,7 +68,7 @@ export default component$(() => {
 
 			<button onClick$={() => ++clickCount.value}>摸牌</button>
 
-			{showAskDialog.value && <OptionDialog word='是否开始游戏？' buttons={buttons} />}
+			{showOptionDialog.value && <OptionDialog word='是否开始游戏？' buttons={buttons} />}
 
 			<MyArea player={me} />
 		</main>
