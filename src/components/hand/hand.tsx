@@ -1,6 +1,6 @@
 import { component$, useContext } from '@builder.io/qwik'
 import type { Hand as ShouPai } from '../../data/shoupai-junzheng'
-import { addHand2CastingPile, removeHandFromCastingPile } from '../../utils/game'
+import { addHand2CastingPile, removeHandFromCastingPile } from '../../utils/card'
 import { castingPileContext } from '../../routes/index'
 
 export interface HandProps {

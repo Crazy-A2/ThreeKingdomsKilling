@@ -1,5 +1,5 @@
 import type { Player } from './player'
-import { drawTheCards } from './game'
+import { drawTheCards } from './card'
 import type { Hand } from '../data/shoupai-junzheng'
 
 /**表示每个回合阶段的枚举 */

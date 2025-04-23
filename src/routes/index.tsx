@@ -8,7 +8,7 @@ import { createPlayer, } from '../utils/player'
 import { MyArea } from '../components/my-area/my-area'
 import { Decks } from '../components/decks/decks'
 import { OptionDialog } from '../components/option-dialog/option-dialog'
-import { initDecks, drawTheCards } from '../utils/game'
+import { initDecks, drawTheCards } from '../utils/card'
 import type { Hand } from '../data/shoupai-junzheng'
 
 export const targetGeneralListContext = createContextId<string[]>('targetGeneralList')
@@ -29,7 +29,7 @@ export default component$(() => {
 	const otherPlayers: Player[] = useStore(getOthers)
 	/** 我（真人玩家） */
 	const me: Player = useStore(createPlayer(wujiangArray[2], true))
-	
+
 	/** 目标武将列表 */
 	const targetGeneralList: string[] = useStore([])
 	useContextProvider(targetGeneralListContext, targetGeneralList)
