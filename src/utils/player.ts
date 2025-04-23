@@ -19,7 +19,7 @@ export interface Player {
  * 创建玩家对象
  * @param general 玩家使用的武将对象
  * @param isComputer 该玩家是否为电脑
- * @returns
+ * @returns 玩家对象
  */
 export function createPlayer(general: General, isComputer = false): Player {
 	return {
@@ -31,7 +31,31 @@ export function createPlayer(general: General, isComputer = false): Player {
 	}
 }
 
-export function changePlayerGeneral(player: Player, general: General) {
-	player.general = general
-	player.skillList = general.skills
+// export function changePlayerGeneral(player: Player, general: General) {
+// 	player.general = general
+// 	player.skillList = general.skills
+// }
+
+/**
+ * 将目标玩家的武将名添加到目标武将列表中
+ * @param generalName 选中玩家的武将名
+ * @param targetGeneralList 目标玩家所使用武将的列表
+ */
+export function addTargetGeneral2List(
+	generalName: string,
+	targetGeneralList: string[]
+) {
+	!targetGeneralList.includes(generalName) &&
+		targetGeneralList.push(generalName)
 }
+
+// /**
+//  * 获取目标玩家的索引
+//  * @param playerList 玩家列表
+//  * @param targetPlayer 目标玩家
+//  * @returns 目标玩家的索引，如果不存在则返回 0
+//  */
+// export function getTargetPlayerIndex(
+// 	playerList: Player[],
+// 	targetPlayer: Player
+// ) {}

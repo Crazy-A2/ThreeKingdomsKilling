@@ -1,7 +1,8 @@
-import { component$, type CSSProperties, useStore, useVisibleTask$ } from '@builder.io/qwik'
+import { component$, type CSSProperties, useStore, useVisibleTask$, useContext } from '@builder.io/qwik'
 import { themeColor } from '../../data/wujiang-junzheng-biaozhun'
 import type { General as WuJiang } from '../../data/wujiang-junzheng-biaozhun'
-// import type { Player } from '../../utils/player'
+import { addTargetGeneral2List } from '../../utils/player'
+import { targetGeneralListContext } from '../../routes/index'
 
 export interface GeneralProps {
     wujiang: WuJiang
@@ -29,58 +30,57 @@ export const General = component$<GeneralProps>(props => {
     // const width = 240
     // const height = 307.5
 
+    const targetGeneralList = useContext(targetGeneralListContext)
+
     return (
         <div
             style={{
-                width,
-                height,
+                width, height,
                 backgroundImage: `url(${import.meta.env.BASE_URL}image/general/${props.wujiang.name}/1.png)`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
-                borderRadius: '10px',
+                borderRadius: '15px',
+            }}
+            onClick$={() => {
+                addTargetGeneral2List(props.wujiang.name, targetGeneralList)
+                console.log({ targetGeneralList })
             }}
         >
-            <div
-                style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    height: '100%', width: '15%',
-                    borderTopLeftRadius: '15px',
-                    borderBottomLeftRadius: '15px',
-                    backgroundColor: themeColor.get(props.wujiang.country),
-                }}
-            >
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                height: '100%', width: '15%',
+                borderTopLeftRadius: '15px',
+                borderBottomLeftRadius: '15px',
+                paddingTop: '5px',
+                backgroundColor: themeColor.get(props.wujiang.country),
+            }}>
                 {/* 武将名 */}
                 <div style={{ color: 'black', textAlign: 'center', lineHeight: 1.2, }}>{props.wujiang.name}</div>
 
-                <div
-                    style={{ position: 'relative', height: '80px', paddingBottom: 10 }}
-                >
-                    {/* 血条（体力条） */}
+                <div style={{ position: 'relative', height: '80px', paddingBottom: 10 }}>
                     <HealthBar maxHealth={props.wujiang.maxHealth} currentHealth={props.wujiang.currentHealth} />
 
                     {/* 手牌计数 */}
                     {
                         props.isComputer &&
-                        <div
-                            style={{
-                                width: 40,
-                                height: 40,
-                                color: 'black',
-                                fontSize: 'larger',
-                                lineHeight: 1.8,
-                                fontWeight: 900,
-                                textAlign: 'center',
-                                left: -6,
-                                bottom: -18,
-                                backgroundSize: 'contain',
-                                backgroundPosition: 'center',
-                                backgroundRepeat: 'no-repeat',
-                                backgroundImage: `url(${import.meta.env.BASE_URL}image/icon/handcard.png)`,
-                                position: 'absolute',
-                            }}
-                        >
+                        <div style={{
+                            width: 40,
+                            height: 40,
+                            color: 'black',
+                            fontSize: 'larger',
+                            lineHeight: 1.8,
+                            fontWeight: 900,
+                            textAlign: 'center',
+                            left: -6,
+                            bottom: -18,
+                            backgroundSize: 'contain',
+                            backgroundPosition: 'center',
+                            backgroundRepeat: 'no-repeat',
+                            backgroundImage: `url(${import.meta.env.BASE_URL}image/icon/handcard.png)`,
+                            position: 'absolute',
+                        }}>
                             {props.handCount || 0}
                         </div>
                     }
@@ -92,6 +92,8 @@ export const General = component$<GeneralProps>(props => {
 
 export interface HealthBarProps { maxHealth: number, currentHealth: number }
 
+
+/** 血条（体力条） */
 const HealthBar = component$<HealthBarProps>((props) => {
     // + 用来预防传入字符串的情况
     const healthArray = useStore(new Array(+props.maxHealth).fill(0))

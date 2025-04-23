@@ -1,4 +1,4 @@
-import { component$, useStore, useVisibleTask$, useSignal, } from '@builder.io/qwik'
+import { component$, useStore, useVisibleTask$, useSignal, createContextId, useContextProvider } from '@builder.io/qwik'
 import type { DocumentHead } from '@builder.io/qwik-city'
 import { General } from '../components/general/general'
 import { wujiangArray } from '../data/wujiang-junzheng-biaozhun'
@@ -9,6 +9,8 @@ import { MyArea } from '../components/my-area/my-area'
 import { Decks } from '../components/decks/decks'
 import { OptionDialog } from '../components/option-dialog/option-dialog'
 import { initDecks, drawTheCards } from '../utils/game'
+
+export const targetGeneralListContext = createContextId<string[]>('targetGeneralList')
 
 export default component$(() => {
 	/** 是否展示选项对话框 */
@@ -25,6 +27,10 @@ export default component$(() => {
 	const otherPlayers: Player[] = useStore(getOthers)
 	/** 我（真人玩家） */
 	const me: Player = useStore(createPlayer(wujiangArray[2], true))
+	/** 目标武将列表 */
+	const targetGeneralList: string[] = useStore([])
+
+	useContextProvider(targetGeneralListContext, targetGeneralList)
 
 	const buttons = [
 		{
