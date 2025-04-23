@@ -1,5 +1,7 @@
-import { component$ } from '@builder.io/qwik'
+import { component$, useContext } from '@builder.io/qwik'
 import type { Hand as ShouPai } from '../../data/shoupai-junzheng'
+import { addHand2CastingPile, removeHandFromCastingPile } from '../../utils/game'
+import { castingPileContext } from '../../routes/index'
 
 export interface HandProps {
 	hand: ShouPai
@@ -16,6 +18,8 @@ export interface HandProps {
    7. 卡片技能
  */
 export const Hand = component$<HandProps>(props => {
+	const castingPile = useContext(castingPileContext)
+
 	return (
 		<div
 			style={{
@@ -29,17 +33,19 @@ export const Hand = component$<HandProps>(props => {
 				position: 'relative',
 				bottom: props.hand.isChoosed ? 58 : 0,
 			}}
-			onClick$={() => { props.hand.isChoosed = !props.hand.isChoosed }}
+			onClick$={() => {
+				props.hand.isChoosed = !props.hand.isChoosed
+				props.hand.isChoosed ? addHand2CastingPile(props.hand, castingPile) : removeHandFromCastingPile(props.hand, castingPile)
+				console.log({ castingPile })
+			}}
 			stoppropagation:click
 		>
-			<div
-				style={{
-					display: 'flex',
-					flexDirection: 'column',
-					alignItems: 'center',
-					width: 23,
-				}}
-			>
+			<div style={{
+				display: 'flex',
+				flexDirection: 'column',
+				alignItems: 'center',
+				width: 23,
+			}}>
 				<span style={{ fontSize: 18, fontWeight: 700 }}>
 					{props.hand.point}
 				</span>

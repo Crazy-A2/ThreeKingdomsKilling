@@ -9,8 +9,10 @@ import { MyArea } from '../components/my-area/my-area'
 import { Decks } from '../components/decks/decks'
 import { OptionDialog } from '../components/option-dialog/option-dialog'
 import { initDecks, drawTheCards } from '../utils/game'
+import type { Hand } from '../data/shoupai-junzheng'
 
 export const targetGeneralListContext = createContextId<string[]>('targetGeneralList')
+export const castingPileContext = createContextId<Hand[]>('castingPile')
 
 export default component$(() => {
 	/** 是否展示选项对话框 */
@@ -27,10 +29,13 @@ export default component$(() => {
 	const otherPlayers: Player[] = useStore(getOthers)
 	/** 我（真人玩家） */
 	const me: Player = useStore(createPlayer(wujiangArray[2], true))
+	
 	/** 目标武将列表 */
 	const targetGeneralList: string[] = useStore([])
-
 	useContextProvider(targetGeneralListContext, targetGeneralList)
+	/** 出牌区 */
+	const castingPile: Hand[] = useStore([])
+	useContextProvider(castingPileContext, castingPile)
 
 	const buttons = [
 		{
