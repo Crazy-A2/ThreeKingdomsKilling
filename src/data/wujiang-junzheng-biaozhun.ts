@@ -169,7 +169,6 @@ export const wujiangArray: General[] = [
 			},
 		],
 	},
-
 	{
 		name: '界赵云',
 		gender: Gender.MALE,

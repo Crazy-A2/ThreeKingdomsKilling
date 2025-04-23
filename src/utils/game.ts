@@ -57,9 +57,6 @@ export function shuffleDecks(decks: Hand[]): Hand[] {
  * @param count 	摸牌数量（默认两张）
  */
 export function drawTheCards(player: Player, decks: Hand[], count?: number) {
-	// const hands = decks.splice(-count, count).map(item => {
-	// 	return { ...item, isChoosed: false }
-	// })
 	const hands = getCardsFromDecksTop(decks, count).map(item => {
 		return { ...item, isChoosed: false }
 	})
