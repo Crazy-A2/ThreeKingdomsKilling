@@ -1,4 +1,4 @@
-import { component$, useStore, useVisibleTask$, useSignal, createContextId, useContextProvider } from '@builder.io/qwik'
+import { component$, useStore, useVisibleTask$, useSignal, createContextId, useContextProvider, $ } from '@builder.io/qwik'
 import type { DocumentHead } from '@builder.io/qwik-city'
 import { General } from '../components/general/general'
 import { wujiangArray } from '../data/wujiang-junzheng-biaozhun'
@@ -9,6 +9,7 @@ import { MyArea } from '../components/my-area/my-area'
 import { Decks } from '../components/decks/decks'
 import { OptionDialog } from '../components/option-dialog/option-dialog'
 import { initDecks, drawTheCards } from '../utils/card'
+import { sha, } from '../utils/hand-skills'
 import type { Hand } from '../data/shoupai-junzheng'
 
 export const targetGeneralListContext = createContextId<string[]>('targetGeneralList')
@@ -40,11 +41,19 @@ export default component$(() => {
 	const buttons = [
 		{
 			text: '确认',
-			// action: $(() => { })
+			action: $((index) => {
+				console.log(index)
+				console.log({ showOptionDialog })
+			})
 		},
 		{
 			text: '取消',
-			// action: $(() => { })
+			action: $(() => {
+				showOptionDialog.value = false
+				castingPile.length = 0
+				targetGeneralList.length = 0
+				console.log({ showOptionDialog })
+			})
 		}
 	]
 
@@ -77,9 +86,14 @@ export default component$(() => {
 
 			<Decks deckSize={decks.length} />
 
-			<button onClick$={() => ++clickCount.value}>摸牌</button>
+			<div style={{ display: 'flex', justifyContent: 'center' }}>
+				<button onClick$={() => ++clickCount.value}>摸牌</button>
+				<button onClick$={() => {
+					sha(castingPile[0], me, otherPlayers[0], discardPile, castingPile)
+				}}>出杀</button>
+			</div>
 
-			{showOptionDialog.value && <OptionDialog word='是否开始游戏？' buttons={buttons} />}
+			{showOptionDialog.value && <OptionDialog word='请选择目标' buttons={buttons} />}
 
 			<MyArea player={me} />
 		</main>

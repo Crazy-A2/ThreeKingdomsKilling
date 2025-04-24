@@ -1,5 +1,6 @@
 // import { HuiHe } from './round-stage'
 import type { Player } from './player'
+import type { Hand } from '../data/shoupai-junzheng'
 
 /**
  * 杀
@@ -7,16 +8,42 @@ import type { Player } from './player'
  * @param user 使用者
  * @param target 目标玩家
  */
-export function sha(user: Player, target: Player) {
-	// TODO 判断目标玩家是否在攻击范围内
+export function sha(
+	hand: Hand,
+	user: Player,
+	target: Player,
+	castingPile: Hand[],
+	discardPile: Hand[]
+): void {
+	// TODO 判断目标玩家是否在攻击范围内 在选择手牌时根据手牌类型添加这段逻辑
 	// TODO 等待目标玩家的响应
-	// TODO 扣血并弃牌
+
+	// TODO 将牌从手牌中移除
+	user.handList.splice(user.handList.indexOf(hand), 1)
+	// TODO 将牌从出牌区中移除
+	// castingPile.splice(castingPile.indexOf(hand), 1)
+
+
+
+
+
+	// // TODO 将手牌置入弃牌堆
+	// discardPile.push(hand)
+	// // TODO 目标玩家扣血
+	// target.general.currentHealth -= 1
+	// TODO 检查是否死亡
+
+	console.log({ discardPile })
+	console.log({ castingPile })
 }
 
 /**
  * 闪
  */
-export function shan() {}
+export function shan() {
+	console.log('shan')
+	
+}
 
 /**
  * 桃

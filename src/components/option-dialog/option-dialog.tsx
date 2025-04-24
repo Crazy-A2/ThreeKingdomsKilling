@@ -1,8 +1,8 @@
-import { component$, } from '@builder.io/qwik';
+import { component$, type QRL } from '@builder.io/qwik';
 
 interface Button {
-    text: string //                 按钮文本
-    action?: () => void //          点击按钮后执行的操作
+    text: string
+    action: QRL<(arg?: any) => void>
 }
 
 export interface OptionDialogProps {
@@ -31,7 +31,7 @@ export const OptionDialog = component$<OptionDialogProps>(({ word, buttons = [] 
             height: 150,
             bottom: 210,
             textAlign: 'center',
-            backgroundColor: 'rgba(94, 254, 201, 0.5)',
+            backgroundColor: 'rgba(0, 0, 0, 0.6)',
             zIndex: 999,
         }}>
             {/* 对话框消息 */}
@@ -51,7 +51,6 @@ export const OptionDialog = component$<OptionDialogProps>(({ word, buttons = [] 
                 {
                     buttons.map((button, index) => {
                         return <button key={index}
-                            // onClick$={$(button.action)}
                             style={{
                                 // position: 'absolute',
                                 // top: '50%',
@@ -65,6 +64,7 @@ export const OptionDialog = component$<OptionDialogProps>(({ word, buttons = [] 
                                 borderRadius: '10px',
                                 zIndex: 1000,
                             }}
+                            onClick$={() => button.action(index)}
                         >
                             {button.text}
                         </button>
