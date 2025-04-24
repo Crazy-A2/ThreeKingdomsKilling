@@ -1,29 +1,6 @@
 import { shoupaiArray, type Hand } from '../data/shoupai-junzheng'
 import { type Player } from './player'
 
-// export enum GameResult {
-// 	WIN, // 				胜利
-// 	LOSE, // 				失败
-// 	UNKNOWN, // 			未知
-// }
-
-// interface GameState {
-// 	isOver: boolean // 		游戏是否结束
-// 	isPaused: boolean // 	游戏是否暂停
-// 	result: GameResult // 	游戏结果
-// }
-
-// // 定义游戏对象 包含整局游戏状态和通用游戏逻辑
-// export class Game {
-// 	state: GameState = {
-// 		isOver: false,
-// 		isPaused: false,
-// 		result: GameResult.UNKNOWN,
-// 	}
-
-// 	// 游戏逻辑
-// }
-
 /**
  * 初始化牌堆
  * @description 牌堆初始值为完整的军争手牌数组
