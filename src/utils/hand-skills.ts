@@ -4,7 +4,7 @@ import { findChoosedHandAndDiscarded } from './card'
 
 /**
  * 杀
- * @description 杀的使用条件：目标玩家在攻击范围内
+ * @description 出牌阶段，对你攻击范围内的另一名角色使用，对该角色造成 1 点伤害
  * @param user 使用者
  * @param target 目标玩家
  * @param discardPile 弃牌堆
@@ -31,6 +31,13 @@ export function shan(user: Player, discardPile: Hand[]): void {}
 
 /**
  * 桃
+ * @description 两种使用方式：
+ * 
+ * 1. 出牌阶段，对自己使用，回复 1 点体力
+ * 
+ * 2. 当有角色处于濒死状态时，你可以对该角色使用桃，令其回复 1 点体力
+ * @param user 使用者
+ * @param discardPile 弃牌堆
  */
 export function tao(user: Player, discardPile: Hand[]): void {
 	findChoosedHandAndDiscarded(user, discardPile)
