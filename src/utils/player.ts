@@ -1,4 +1,4 @@
-import type { Hand } from '../data/ShouPai-JunZheng'
+import type { Hand } from '../data/hands'
 import type { General, Skill } from '../data/wujiang-junzheng-biaozhun'
 import { HuiHe } from './round-stage'
 

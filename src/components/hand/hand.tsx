@@ -1,5 +1,5 @@
 import { component$ } from '@builder.io/qwik'
-import type { Hand as ShouPai } from '../../data/ShouPai-JunZheng'
+import type { Hand as ShouPai } from '../../data/hands'
 
 export interface HandProps {
 	hand: ShouPai

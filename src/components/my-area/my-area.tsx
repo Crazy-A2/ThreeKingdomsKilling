@@ -1,6 +1,6 @@
 import { component$, } from '@builder.io/qwik'
 import type { Skill } from '../../data/wujiang-junzheng-biaozhun'
-import type { Hand as ShouPai } from '../../data/ShouPai-JunZheng'
+import type { Hand as ShouPai } from '../../data/hands'
 import type { Player } from '../../utils/player'
 import { General } from '../general/general'
 
