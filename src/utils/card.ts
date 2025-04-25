@@ -6,7 +6,7 @@ import { type Player } from './player'
  * @description 牌堆初始值为完整的军争手牌数组
  * @returns 牌堆数组
  */
-export function initDecks(): Hand[] {
+export function initDeck(): Hand[] {
 	return shuffleDecks([...shoupaiArray])
 }
 

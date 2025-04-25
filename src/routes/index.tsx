@@ -8,7 +8,7 @@ import { createPlayer, } from '../utils/player'
 import { MyArea } from '../components/my-area/my-area'
 import { Decks } from '../components/decks/decks'
 import { OptionDialog } from '../components/option-dialog/option-dialog'
-import { initDecks, drawTheCards } from '../utils/card'
+import { initDeck, drawTheCards } from '../utils/card'
 import { sha, } from '../utils/hand-skills'
 import type { Hand } from '../data/shoupai-junzheng'
 
@@ -19,7 +19,7 @@ export default component$(() => {
 	/** 是否展示选项对话框 */
 	const showOptionDialog = useSignal(true)
 	/** 牌堆 */
-	const decks = useStore(initDecks())
+	const decks = useStore(initDeck())
 	/** 弃牌堆 */
 	const discardPile = useStore([])
 
