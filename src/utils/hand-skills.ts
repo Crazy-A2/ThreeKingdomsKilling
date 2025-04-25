@@ -17,7 +17,8 @@ export function sha(user: Player, target: Player, discardPile: Hand[]): void {
 
 	findChoosedHandAndDiscarded(user, discardPile)
 	// 目标玩家扣血
-	target.general.currentHealth -= 1
+	target.general.currentHealth -= 1 + user.drinkingCount
+	user.drinkingCount = 0
 	// TODO 检查是否死亡
 
 	console.log('after', { discardPile })
@@ -32,9 +33,9 @@ export function shan(user: Player, discardPile: Hand[]): void {}
 /**
  * 桃
  * @description 两种使用方式：
- * 
+ *
  * 1. 出牌阶段，对自己使用，回复 1 点体力
- * 
+ *
  * 2. 当有角色处于濒死状态时，你可以对该角色使用桃，令其回复 1 点体力
  * @param user 使用者
  * @param discardPile 弃牌堆
@@ -43,35 +44,30 @@ export function tao(user: Player, discardPile: Hand[]): void {
 	findChoosedHandAndDiscarded(user, discardPile)
 
 	user.general.currentHealth += 1
+
+	// TODO 濒死回复
 }
 
 /**
  * 酒
+ * @description 两种使用方式：
+ *
+ * 1. 出牌阶段，对自己使用，回合内使用的下一张【杀】伤害+1（每回合限一次）
+ *
+ * 2. 濒死状态，对自己使用，回复 1 点体力
+ *
  */
-export function jiu() {}
+export function jiu(user: Player, discardPile: Hand[]) {
+	findChoosedHandAndDiscarded(user, discardPile)
+
+	// TODO 回合内使用的下一张【杀】伤害+1（每回合限一次）
+	user.drinkingCount += 1
+	// TODO 濒死回血
+}
 
 // 技能不是最重要的，重要的是技能的触发条件
+// 触发条件达成后，对应卡牌亮起，可以点击来选中
 // 但需要先实现出牌流程逻辑，空有技能触发条件，没有出牌逻辑，技能无法触发
-// 武将牌渲染也还没搞定，需要先搞定武将牌渲染，才能实现技能
-// 但是一开始，我最好实现一两个武将的技能，来验证最基础的敌我出牌交互逻辑
 
 // 回合阶段也需要先实现，因为技能触发条件中，有回合阶段
 // 回合阶段像状态机，完成一个阶段，切换下一个阶段
-// 来一段伪代码：
-// while (true) {
-// 	// 游戏主循环
-// 	HuiHe.ZHUN_BEI
-
-// 	// 准备阶段
-// 	// 准备阶段结束，切换到判定阶段
-// 	// 判定阶段
-// 	// 判定阶段结束，切换到摸牌阶段
-// 	// 摸牌阶段
-// 	// 摸牌阶段结束，切换到出牌阶段
-// 	// 出牌阶段
-// 	// 出牌阶段结束，切换到弃牌阶段
-// 	// 弃牌阶段
-// 	// 弃牌阶段结束，切换到结束阶段
-// 	// 结束阶段
-// 	// 回合结束，切换到下一玩家回合
-// }

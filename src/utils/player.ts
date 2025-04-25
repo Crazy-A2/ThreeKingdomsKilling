@@ -11,6 +11,7 @@ export interface Player {
 	handList: Hand[] //                    		玩家手牌列表
 	skillList: Skill[] //                  		玩家技能列表
 	currentState: HuiHe //       				当前所处的回合阶段
+	drinkingCount: number // 					当前回合喝酒的次数
 	//  TODO 装备区
 	// materielList
 }
@@ -25,6 +26,7 @@ export function createPlayer(general: General, isComputer = false): Player {
 	return {
 		isComputer,
 		general,
+		drinkingCount: 0,
 		handList: [],
 		skillList: general.skills,
 		currentState: HuiHe.DAI_JI,
