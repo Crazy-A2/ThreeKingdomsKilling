@@ -239,12 +239,12 @@ export const wujiangArray: General[] = [
 		skills: [
 			{
 				name: '苦肉',
-				type:SkillType.CHU_PAI,
+				type: SkillType.CHU_PAI,
 				description: `出牌阶段限一次，你可以弃置一张牌，然后失去一点体力。`,
 			},
 			{
 				name: '诈降',
-				type:SkillType.BEI_DONG,
+				type: SkillType.BEI_DONG,
 				description: `锁定技，当你失去一点体力后，你摸三张牌。
                 若此时是你的出牌阶段，你使用红色【杀】无距离限制且不可被【闪】响应，且此回合的出【杀】次数+1。
                 `,

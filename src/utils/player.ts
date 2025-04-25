@@ -1,5 +1,5 @@
 import type { Hand } from '../data/hands'
-import type { General, Skill } from '../data/wujiang-junzheng-biaozhun'
+import type { General, Skill } from '../data/general/jie_xian_tu_po'
 import { HuiHe } from './round-stage'
 
 /**

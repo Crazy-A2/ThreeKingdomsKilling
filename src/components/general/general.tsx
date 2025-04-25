@@ -1,6 +1,6 @@
 import { component$, type CSSProperties, useStore, useVisibleTask$, useContext } from '@builder.io/qwik'
-import { themeColor } from '../../data/wujiang-junzheng-biaozhun'
-import type { General as WuJiang } from '../../data/wujiang-junzheng-biaozhun'
+import { themeColor } from '../../data/general/jie_xian_tu_po'
+import type { General as WuJiang } from '../../data/general/jie_xian_tu_po'
 import { addTargetGeneral2List, removeTargetGeneralFromList } from '../../utils/player'
 import { targetGeneralListContext } from '../../routes/index'
 
