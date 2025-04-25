@@ -1,4 +1,3 @@
-// import { HuiHe } from './round-stage'
 import type { Player } from './player'
 import type { Hand } from '../data/shoupai-junzheng'
 
@@ -7,34 +6,34 @@ import type { Hand } from '../data/shoupai-junzheng'
  * @description 杀的使用条件：目标玩家在攻击范围内
  * @param user 使用者
  * @param target 目标玩家
+ * @param discardPile 弃牌堆
  */
 export function sha(
-	hand: Hand,
 	user: Player,
 	target: Player,
-	castingPile: Hand[],
 	discardPile: Hand[]
 ): void {
 	// TODO 判断目标玩家是否在攻击范围内 在选择手牌时根据手牌类型添加这段逻辑
 	// TODO 等待目标玩家的响应
 
+	console.log('before', { discardPile })
+
+	const hand = user.handList.findIndex(item => {
+		return item.isChoosed
+	})
+
 	// TODO 将牌从手牌中移除
-	user.handList.splice(user.handList.indexOf(hand), 1)
-	// TODO 将牌从出牌区中移除
-	// castingPile.splice(castingPile.indexOf(hand), 1)
-
-
-
-
+	const cards = user.handList.splice(hand, 1)
+	console.log({ cards })
 
 	// // TODO 将手牌置入弃牌堆
-	// discardPile.push(hand)
+	discardPile.push(...cards)
 	// // TODO 目标玩家扣血
-	// target.general.currentHealth -= 1
+	target.general.currentHealth -= 1
 	// TODO 检查是否死亡
 
-	console.log({ discardPile })
-	console.log({ castingPile })
+	console.log('after', { discardPile })
+	console.log('after', { target })
 }
 
 /**
@@ -42,7 +41,6 @@ export function sha(
  */
 export function shan() {
 	console.log('shan')
-	
 }
 
 /**

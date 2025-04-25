@@ -61,26 +61,3 @@ export function drawTheCards(
 export function getCardsFromDecksTop(decks: Hand[], count: number = 2): Hand[] {
 	return decks.splice(-count, count)
 }
-
-/**
- * 添加手牌到出牌区中
- * @param hand 要添加的手牌
- * @param castingPile 出牌区
- */
-export function addHand2CastingPile(hand: Hand, castingPile: Hand[]): void {
-	castingPile.includes(hand) || castingPile.push(hand)
-	console.log(1, { castingPile })
-}
-
-/**
- * 移除出牌区中的手牌
- * @param hand 要移除的手牌
- * @param castingPile 出牌区
- */
-export function removeHandFromCastingPile(
-	hand: Hand,
-	castingPile: Hand[]
-): void {
-	castingPile.includes(hand) && castingPile.splice(castingPile.indexOf(hand), 1)
-	console.log(2, { castingPile })
-}

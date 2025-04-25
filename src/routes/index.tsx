@@ -10,10 +10,8 @@ import { Decks } from '../components/decks/decks'
 import { OptionDialog } from '../components/option-dialog/option-dialog'
 import { initDeck, drawTheCards } from '../utils/card'
 import { sha, } from '../utils/hand-skills'
-import type { Hand } from '../data/shoupai-junzheng'
 
 export const targetGeneralListContext = createContextId<string[]>('targetGeneralList')
-export const castingPileContext = createContextId<Hand[]>('castingPile')
 
 export default component$(() => {
 	/** 是否展示选项对话框 */
@@ -34,9 +32,6 @@ export default component$(() => {
 	/** 目标武将列表 */
 	const targetGeneralList: string[] = useStore([])
 	useContextProvider(targetGeneralListContext, targetGeneralList)
-	/** 出牌区 */
-	const castingPile: Hand[] = useStore([])
-	useContextProvider(castingPileContext, castingPile)
 
 	const buttons = [
 		{
@@ -50,7 +45,6 @@ export default component$(() => {
 			text: '取消',
 			action: $(() => {
 				showOptionDialog.value = false
-				castingPile.length = 0
 				targetGeneralList.length = 0
 				console.log({ showOptionDialog })
 			})
@@ -65,7 +59,6 @@ export default component$(() => {
 
 		if (flag === 0) { return }
 
-		// me.handList.push(...drawTheCards(decks, 4)) // 玩家摸牌
 		drawTheCards(me, decks, 4) // 玩家摸牌
 		console.log({ me })
 	})
@@ -88,9 +81,7 @@ export default component$(() => {
 
 			<div style={{ display: 'flex', justifyContent: 'center' }}>
 				<button onClick$={() => ++clickCount.value}>摸牌</button>
-				<button onClick$={() => {
-					sha(castingPile[0], me, otherPlayers[0], discardPile, castingPile)
-				}}>出杀</button>
+				<button onClick$={() => { sha(me, otherPlayers[0], discardPile) }}>出牌</button>
 			</div>
 
 			{showOptionDialog.value && <OptionDialog word='请选择目标' buttons={buttons} />}
