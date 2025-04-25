@@ -1,6 +1,6 @@
 import type { Player } from './player'
 import { drawTheCards } from './card'
-import type { Hand } from '../data/shoupai-junzheng'
+import type { Hand } from '../data/ShouPai-JunZheng'
 
 /**表示每个回合阶段的枚举 */
 export enum HuiHe {

@@ -1,4 +1,4 @@
-import { shoupaiArray, type Hand } from '../data/shoupai-junzheng'
+import { shoupaiArray, type Hand } from '../data/ShouPai-JunZheng'
 import { type Player } from './player'
 
 /**
