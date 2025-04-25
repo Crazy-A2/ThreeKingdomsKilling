@@ -61,3 +61,20 @@ export function drawTheCards(
 export function getCardsFromDecksTop(decks: Hand[], count: number = 2): Hand[] {
 	return decks.splice(-count, count)
 }
+
+/**
+ * 找到被选中的手牌并将其置入弃牌堆
+ * @param user 使用者
+ * @param discardPile 弃牌堆
+ */
+export function findChoosedHandAndDiscarded(
+	user: Player,
+	discardPile: Hand[]
+): void {
+	const index = user.handList.findIndex(item => {
+		return item.isChoosed
+	})
+	const cards = user.handList.splice(index, 1)
+
+	discardPile.push(...cards)
+}

@@ -1,5 +1,6 @@
 import type { Player } from './player'
 import type { Hand } from '../data/shoupai-junzheng'
+import { findChoosedHandAndDiscarded } from './card'
 
 /**
  * 杀
@@ -8,27 +9,14 @@ import type { Hand } from '../data/shoupai-junzheng'
  * @param target 目标玩家
  * @param discardPile 弃牌堆
  */
-export function sha(
-	user: Player,
-	target: Player,
-	discardPile: Hand[]
-): void {
+export function sha(user: Player, target: Player, discardPile: Hand[]): void {
 	// TODO 判断目标玩家是否在攻击范围内 在选择手牌时根据手牌类型添加这段逻辑
 	// TODO 等待目标玩家的响应
 
 	console.log('before', { discardPile })
 
-	const hand = user.handList.findIndex(item => {
-		return item.isChoosed
-	})
-
-	// TODO 将牌从手牌中移除
-	const cards = user.handList.splice(hand, 1)
-	console.log({ cards })
-
-	// // TODO 将手牌置入弃牌堆
-	discardPile.push(...cards)
-	// // TODO 目标玩家扣血
+	findChoosedHandAndDiscarded(user, discardPile)
+	// 目标玩家扣血
 	target.general.currentHealth -= 1
 	// TODO 检查是否死亡
 
@@ -39,14 +27,16 @@ export function sha(
 /**
  * 闪
  */
-export function shan() {
-	console.log('shan')
-}
+export function shan(user: Player, discardPile: Hand[]): void {}
 
 /**
  * 桃
  */
-export function tao() {}
+export function tao(user: Player, discardPile: Hand[]): void {
+	findChoosedHandAndDiscarded(user, discardPile)
+
+	user.general.currentHealth += 1
+}
 
 /**
  * 酒
