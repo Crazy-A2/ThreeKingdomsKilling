@@ -36,7 +36,6 @@ export const roundStateArray: HuiHe[] = [
 export function executeRoundAction(
 	action: HuiHe,
 	player: Player,
-	// params: Object = {}
 	params: any = {}
 ): boolean {
 	let result = false
