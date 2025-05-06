@@ -1,15 +1,15 @@
 import { component$, useStore, useVisibleTask$, useSignal, createContextId, useContextProvider, $ } from '@builder.io/qwik'
 import type { DocumentHead } from '@builder.io/qwik-city'
 import { General } from '../components/general/general'
-import { wujiangArray } from '../data/wujiang-junzheng-biaozhun'
-import type { General as WuJiang } from '../data/wujiang-junzheng-biaozhun'
+import { wujiangArray } from '../data/general/界限突破'
+import type { General as WuJiang } from '../data/general/界限突破'
 import type { Player } from '../utils/player'
 import { createPlayer, } from '../utils/player'
 import { MyArea } from '../components/my-area/my-area'
 import { Decks } from '../components/decks/decks'
 import { OptionDialog } from '../components/option-dialog/option-dialog'
 import { initDeck, drawTheCards } from '../utils/card'
-import { sha, tao } from '../utils/hand-skills'
+import {HandSkill} from '../utils/hand-skills'
 
 export const targetGeneralListContext = createContextId<string[]>('targetGeneralList')
 
@@ -81,8 +81,9 @@ export default component$(() => {
 
 			<div style={{ display: 'flex', justifyContent: 'center' }}>
 				<button onClick$={() => ++clickCount.value}>摸牌</button>
-				<button onClick$={() => { sha(me, otherPlayers[0], discardPile) }}>出杀</button>
-				<button onClick$={() => { tao(me, discardPile) }}>吃桃</button>
+				{/* <button onClick$={() => { HandSkill[HandSkill.SKILL_NAME_MAP['杀']](me, otherPlayers[0], discardPile) }}>出杀</button> */}
+				{/* <button onClick$={() => { 杀(me, otherPlayers[0], discardPile) }}>出杀</button> */}
+				{/* <button onClick$={() => { HandSkill.tao(me, discardPile) }}>吃桃</button> */}
 			</div>
 
 			{showOptionDialog.value && <OptionDialog word='请选择目标' buttons={buttons} />}
