@@ -2,7 +2,6 @@ import type { Player } from './player'
 import type { Hand } from '../data/hands'
 import { findChoosedHandAndDiscarded } from './card'
 
-
 // 触发条件达成后，对应卡牌亮起，可以点击来选中
 // 但需要先实现出牌流程逻辑，空有技能触发条件，没有出牌逻辑，技能无法触发
 // 技能不是最重要的，重要的是技能的触发条件
