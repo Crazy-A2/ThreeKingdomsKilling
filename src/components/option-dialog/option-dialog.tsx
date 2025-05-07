@@ -1,4 +1,5 @@
-import { component$, type QRL } from '@builder.io/qwik';
+import { component$, } from '@builder.io/qwik';
+import type { QRL, } from '@builder.io/qwik';
 
 interface Button {
     text: string
@@ -6,8 +7,8 @@ interface Button {
 }
 
 export interface OptionDialogProps {
-    word: string //                 对话框消息
-    buttons: Button[] //            按钮列表
+    word: string //             对话框消息
+    buttons?: Button[] //       按钮列表
 }
 
 /** 选项对话框 需要玩家（我）行动或响应时展示可选择的选项 */

@@ -1,4 +1,4 @@
-import { component$, useStore, useVisibleTask$, useSignal, createContextId, useContextProvider, $ } from '@builder.io/qwik'
+import { component$, useStore, useVisibleTask$, useSignal, createContextId, useContextProvider,$ } from '@builder.io/qwik'
 import type { DocumentHead } from '@builder.io/qwik-city'
 import { General } from '../components/general/general'
 import { wujiangArray } from '../data/general/界限突破'
@@ -70,8 +70,8 @@ export default component$(() => {
 				{
 					otherPlayers.map((player, index) => {
 						return <General
-							key={index}
-							wujiang={player.general} isComputer={true} handCount={player.handList.length}
+							key={index} wujiang={player.general}
+							isComputer={true} handCount={player.handList.length}
 						/>
 					})
 				}
@@ -81,7 +81,7 @@ export default component$(() => {
 
 			<div style={{ display: 'flex', justifyContent: 'center' }}>
 				<button onClick$={() => ++clickCount.value}>摸牌</button>
-				<button onClick$={() => { HandSkill['sha'](me, otherPlayers[0], discardPile) }}>出杀</button>
+				<button onClick$={() => { HandSkill.sha(me, otherPlayers[0], discardPile) }}>出杀</button>
 				<button onClick$={() => { HandSkill.tao(me, discardPile) }}>吃桃</button>
 			</div>
 
