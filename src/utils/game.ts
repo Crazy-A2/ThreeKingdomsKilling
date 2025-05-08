@@ -1,5 +1,3 @@
-import { type Player } from './player'
-
 export enum GameResult {
 	WIN, // 胜利
 	LOSE, // 失败

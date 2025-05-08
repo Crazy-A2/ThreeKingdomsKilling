@@ -1,6 +1,8 @@
 import type { Player } from './player'
 import { drawTheCards } from './card'
+import { type Game } from './game'
 import type { Hand } from '../data/hands'
+import { type Signal } from '@builder.io/qwik'
 
 /**表示每个回合阶段的枚举 */
 export enum HuiHe {
@@ -28,14 +30,56 @@ export const roundStateArray: HuiHe[] = [
 ]
 
 /**
+ * 执行游戏主循环
+ * @param players 本局玩家数组
+ * @param gameRound 当前游戏轮数
+ * @param game 游戏对象
+ */
+export function executeGameLoop(
+	players: Player[],
+	gameRound: Signal<number>,
+	game: Game
+) {
+	let i = 0
+	while (true) {
+		executeRound(players[i])
+
+		if (i < players.length) {
+			++i
+			continue
+		}
+
+		i = 0
+		++gameRound.value
+
+		if (game.state.isOver) break
+	}
+
+	console.log('游戏结束！！！！！！！！！！！！！！')
+}
+
+/**
+ * 执行一名玩家的回合
+ * @param player 玩家对象
+ */
+function executeRound(player: Player) {
+	for (let i = 0; i < roundStateArray.length; i++) {
+		player.currentState = roundStateArray[i]
+		executeStage(player, roundStateArray[i])
+	}
+
+	player.currentState = HuiHe.DAI_JI
+}
+
+/**
  * 执行某一回合阶段对应的操作
  * @param action 要执行的回合阶段操作
  * @param player 执行操作的玩家
  * @param params 给具体执行函数的额外参数
  */
-export function executeRoundAction(
-	action: HuiHe,
+function executeStage(
 	player: Player,
+	action: HuiHe,
 	params: any = {}
 ): boolean {
 	let result = false
@@ -123,66 +167,3 @@ function qiPai(player: Player, discardCount: number): boolean {
 	// player.handList.splice(0, discardCount)
 	return false
 }
-
-// 定义玩家回合内每个阶段的逻辑
-// class LinearStateMachine {
-// 	constructor() {
-// 	  this.states = Object.freeze({
-// 		S1: 'S1',
-// 		S2: 'S2',
-// 		S3: 'S3',
-// 		S4: 'S4',
-// 		S5: 'S5',
-// 		S6: 'S6'
-// 	  });
-
-// 	  this.transitions = Object.freeze({
-// 		[this.states.S1]: this.states.S2,
-// 		[this.states.S2]: this.states.S3,
-// 		[this.states.S3]: this.states.S4,
-// 		[this.states.S4]: this.states.S5,
-// 		[this.states.S5]: this.states.S6,
-// 		[this.states.S6]: null // 终态
-// 	  });
-
-// 	  this.currentState = this.states.S1;
-// 	}
-
-// 	// 转移到下一个状态
-// 	next() {
-// 	  const nextState = this.transitions[this.currentState];
-// 	  if (nextState) {
-// 		console.log(`从 ${this.currentState} 转换到 ${nextState}`);
-// 		this.currentState = nextState;
-// 		return true;
-// 	  }
-// 	  console.log('当前已是最终状态');
-// 	  return false;
-// 	}
-
-// 	// 获取当前状态
-// 	getState() {
-// 	  return this.currentState;
-// 	}
-
-// 	// 重置状态机
-// 	reset() {
-// 	  this.currentState = this.states.S1;
-// 	  console.log('重置状态到 S1');
-// 	}
-//   }
-
-//   // 使用示例
-//   const sm = new LinearStateMachine();
-
-//   // 正常流程
-//   sm.next(); // S1 -> S2
-//   sm.next(); // S2 -> S3
-//   sm.next(); // S3 -> S4
-//   sm.next(); // S4 -> S5
-//   sm.next(); // S5 -> S6
-//   sm.next(); // 已经是最终状态
-
-//   // 重置测试
-//   sm.reset();
-//   console.log('当前状态:', sm.getState()); // S1
