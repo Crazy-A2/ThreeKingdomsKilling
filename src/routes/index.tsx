@@ -1,4 +1,4 @@
-import { component$, useStore, useVisibleTask$, useSignal, createContextId, useContextProvider,$ } from '@builder.io/qwik'
+import { component$, useStore, useVisibleTask$, useSignal, createContextId, useContextProvider, $ } from '@builder.io/qwik'
 import type { DocumentHead } from '@builder.io/qwik-city'
 import { General } from '../components/general/general'
 import { wujiangArray } from '../data/general/界限突破'
@@ -8,8 +8,11 @@ import { createPlayer, } from '../utils/player'
 import { MyArea } from '../components/my-area/my-area'
 import { Decks } from '../components/decks/decks'
 import { OptionDialog } from '../components/option-dialog/option-dialog'
-import { initDeck, drawTheCards } from '../utils/card'
 import { HandSkill } from '../utils/hand-skills'
+import { executeGameLoop } from '../utils/round-stage'
+import type { GameState } from '../utils/game'
+import { GameResult } from '../utils/game'
+import { initDeck } from '../utils/card'
 
 export const targetGeneralListContext = createContextId<string[]>('targetGeneralList')
 
@@ -20,6 +23,14 @@ export default component$(() => {
 	const decks = useStore(initDeck())
 	/** 弃牌堆 */
 	const discardPile = useStore([])
+	/** 游戏轮数 */
+	const gameRound = useSignal(1)
+	/** 游戏状态 */
+	const gameState = useStore<GameState>({
+		isOver: false,
+		isPaused: false,
+		result: GameResult.UNKNOWN
+	})
 
 	/** 其他玩家（电脑） */
 	const getOthers = [...wujiangArray.slice(0, 1)].map((wujiang: WuJiang) => {
@@ -36,7 +47,7 @@ export default component$(() => {
 	const buttons = [
 		{
 			text: '确认',
-			action: $((index) => {
+			action: $((index: number) => {
 				console.log(index)
 				console.log({ showOptionDialog })
 			})
@@ -51,16 +62,10 @@ export default component$(() => {
 		}
 	]
 
-	const clickCount = useSignal(0)
-
-	useVisibleTask$(({ track }) => {
-		const flag = track(clickCount)
-		console.log({ flag })
-
-		if (flag === 0) { return }
-
-		drawTheCards(me, decks, 4) // 玩家摸牌
-		console.log({ me })
+	// 初始化游戏循环
+	useVisibleTask$(async () => {
+		const allPlayers = [me, ...otherPlayers]
+		await executeGameLoop(allPlayers, gameRound, gameState)
 	})
 
 	return (
@@ -80,7 +85,8 @@ export default component$(() => {
 			<Decks deckSize={decks.length} />
 
 			<div style={{ display: 'flex', justifyContent: 'center' }}>
-				<button onClick$={() => ++clickCount.value}>摸牌</button>
+				<button onClick$={() => gameState.isOver = true}>结束游戏</button>
+				{/* <button onClick$={() => ++clickCount.value}>摸牌</button> */}
 				<button onClick$={() => { HandSkill.sha(me, otherPlayers[0], discardPile) }}>出杀</button>
 				<button onClick$={() => { HandSkill.tao(me, discardPile) }}>吃桃</button>
 			</div>

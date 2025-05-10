@@ -1,6 +1,6 @@
 import type { Player } from './player'
 import { drawTheCards } from './card'
-import { type Game } from './game'
+import { type GameState } from './game'
 import type { Hand } from '../data/hands'
 import { type Signal } from '@builder.io/qwik'
 
@@ -35,37 +35,53 @@ export const roundStateArray: HuiHe[] = [
  * @param gameRound 当前游戏轮数
  * @param game 游戏对象
  */
-export function executeGameLoop(
+export async function executeGameLoop(
 	players: Player[],
 	gameRound: Signal<number>,
-	game: Game
-) {
+	game: GameState
+): Promise<void> {
 	let i = 0
-	while (true) {
-		executeRound(players[i])
+	while (!game.isOver) {
+		await executePlayerRound(players[i], game)
 
-		if (i < players.length) {
-			++i
+		// 本轮结束，开启下一轮
+		if (i === players.length - 1) {
+			i = 0
+			++gameRound.value
+			console.log(`本轮结束，开启下一轮`)
 			continue
 		}
 
-		i = 0
-		++gameRound.value
-
-		if (game.state.isOver) break
+		++i
 	}
-
-	console.log('游戏结束！！！！！！！！！！！！！！')
+	console.log('游戏结束，退出游戏循环')
 }
 
 /**
  * 执行一名玩家的回合
  * @param player 玩家对象
+ * @param game 游戏对象
  */
-function executeRound(player: Player) {
+async function executePlayerRound(player: Player, game: GameState) {
+	if (game.isOver) {
+		console.log('游戏结束，停止执行回合')
+		return
+	}
+
 	for (let i = 0; i < roundStateArray.length; i++) {
+		if (game.isOver) {
+			console.log('游戏结束，停止执行阶段')
+			return
+		}
+
+		const startTime = Date.now()
+		await new Promise(resolve => setTimeout(resolve, 300))
+
 		player.currentState = roundStateArray[i]
-		executeStage(player, roundStateArray[i])
+		await executeStageAction(player, roundStateArray[i], {}, game)
+
+		const timeInterval = Date.now() - startTime
+		console.log(`${roundStateArray[i]} 执行时间：${timeInterval}ms`)
 	}
 
 	player.currentState = HuiHe.DAI_JI
@@ -73,15 +89,25 @@ function executeRound(player: Player) {
 
 /**
  * 执行某一回合阶段对应的操作
- * @param action 要执行的回合阶段操作
  * @param player 执行操作的玩家
+ * @param action 要执行的回合阶段操作
  * @param params 给具体执行函数的额外参数
+ * @param game 游戏对象
+ * @returns 执行结果
  */
-function executeStage(
+async function executeStageAction(
 	player: Player,
 	action: HuiHe,
-	params: any = {}
-): boolean {
+	params: any = {},
+	game: GameState
+): Promise<boolean> {
+	if (game.isOver) {
+		console.log('游戏结束，停止执行阶段操作')
+		return false
+	}
+
+	player.currentState = action
+
 	let result = false
 	switch (action) {
 		case HuiHe.ZHUN_BEI:
@@ -102,11 +128,13 @@ function executeStage(
 		case HuiHe.JIE_SHU:
 			result = executeJieShu(player)
 			break
+
 		case HuiHe.DAI_JI:
 			console.log('回合外待机状态')
 			break
+
 		default:
-			console.log('action 参数错误')
+			console.error('action 参数错误')
 	}
 	return result
 }
@@ -131,8 +159,7 @@ function executePanDing(player: Player): boolean {
  */
 function executeMoPai(player: Player, params: { decks: Hand[] }): boolean {
 	console.log('摸牌阶段')
-	// player.handList.push(...drawTheCards(params.decks))
-	drawTheCards(player, params.decks)
+	// drawTheCards(player, params.decks)
 	return true
 }
 
@@ -145,15 +172,15 @@ function executeChuPai(player: Player): boolean {
 // 弃牌阶段逻辑
 function executeQiPai(player: Player): boolean {
 	console.log('弃牌阶段')
-	if (player.handList.length <= player.general.currentHealth) {
-		return true
-	}
-	// 手牌数量大于当前体力值，需弃掉多出的手牌
-	const discardCount = player.handList.length - player.general.currentHealth
+	// if (player.handList.length <= player.general.currentHealth) {
+	// 	return true
+	// }
+	// // 手牌数量大于当前体力值，需弃掉多出的手牌
+	// const discardCount = player.handList.length - player.general.currentHealth
 
-	// TODO 需要确认对话框组件
-	console.log(`还需弃掉 ${discardCount} 张牌`)
-	qiPai(player, discardCount)
+	// // TODO 需要确认对话框组件
+	// console.log(`还需弃掉 ${discardCount} 张牌`)
+	// qiPai(player, discardCount)
 	return true
 }
 
