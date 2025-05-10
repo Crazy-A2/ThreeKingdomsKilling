@@ -2,7 +2,6 @@ import type { Player } from './player'
 import { drawTheCards } from './card'
 import { type GameState } from './game'
 import type { Hand } from '../data/hands'
-import { type Signal } from '@builder.io/qwik'
 
 /**表示每个回合阶段的枚举 */
 export enum HuiHe {
@@ -30,39 +29,11 @@ export const roundStateArray: HuiHe[] = [
 ]
 
 /**
- * 执行游戏主循环
- * @param players 本局玩家数组
- * @param gameRound 当前游戏轮数
- * @param game 游戏对象
- */
-export async function executeGameLoop(
-	players: Player[],
-	gameRound: Signal<number>,
-	game: GameState
-): Promise<void> {
-	let i = 0
-	while (!game.isOver) {
-		await executePlayerRound(players[i], game)
-
-		// 本轮结束，开启下一轮
-		if (i === players.length - 1) {
-			i = 0
-			++gameRound.value
-			console.log(`本轮结束，开启下一轮`)
-			continue
-		}
-
-		++i
-	}
-	console.log('游戏结束，退出游戏循环')
-}
-
-/**
  * 执行一名玩家的回合
  * @param player 玩家对象
  * @param game 游戏对象
  */
-async function executePlayerRound(player: Player, game: GameState) {
+export async function executePlayerRound(player: Player, game: GameState) {
 	if (game.isOver) {
 		console.log('游戏结束，停止执行回合')
 		return

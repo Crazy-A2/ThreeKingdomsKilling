@@ -9,9 +9,8 @@ import { MyArea } from '../components/my-area/my-area'
 import { Decks } from '../components/decks/decks'
 import { OptionDialog } from '../components/option-dialog/option-dialog'
 import { HandSkill } from '../utils/hand-skills'
-import { executeGameLoop } from '../utils/round-stage'
+import { executeGameLoop, GameResult } from '../utils/game'
 import type { GameState } from '../utils/game'
-import { GameResult } from '../utils/game'
 import { initDeck } from '../utils/card'
 
 export const targetGeneralListContext = createContextId<string[]>('targetGeneralList')
