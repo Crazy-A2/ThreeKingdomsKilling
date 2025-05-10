@@ -10,9 +10,9 @@ export enum GameResult {
 }
 
 export interface GameState {
-	isOver: boolean // 		游戏是否结束
-	isPaused: boolean // 	游戏是否暂停
-	result: GameResult // 	游戏结果
+	isOver: boolean // 					游戏是否结束
+	isPaused: boolean // 				游戏是否暂停
+	result: GameResult // 				游戏结果
 }
 
 /**
