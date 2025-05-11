@@ -9,26 +9,26 @@ export enum GameResult {
 	NEI_JIAN_WIN, // 					内奸胜利
 }
 
-export interface GameState {
-	isOver: boolean // 					游戏是否结束
-	isPaused: boolean // 				游戏是否暂停
-	result: GameResult // 				游戏结果
+export enum GameState {
+	NOT_STARTED, // 					游戏未开始
+	PAUSED, // 							游戏暂停
+	OVER, // 							游戏结束
 }
 
 /**
  * 执行游戏主循环
  * @param players 本局玩家数组
  * @param gameRound 当前游戏轮数
- * @param game 游戏对象
+ * @param gameState 游戏状态对象
  */
 export async function executeGameLoop(
 	players: Player[],
 	gameRound: Signal<number>,
-	game: GameState
+	gameState: Signal<GameState>
 ): Promise<void> {
 	let i = 0
-	while (!game.isOver) {
-		await executePlayerRound(players[i], game)
+	while (gameState.value !== GameState.OVER) {
+		await executePlayerRound(players[i], gameState)
 
 		// 本轮结束，开启下一轮
 		if (i === players.length - 1) {

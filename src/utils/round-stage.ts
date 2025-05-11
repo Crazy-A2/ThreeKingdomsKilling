@@ -1,7 +1,8 @@
 import type { Player } from './player'
 import { drawTheCards } from './card'
-import { type GameState } from './game'
+import { GameState } from './game'
 import type { Hand } from '../data/hands'
+import { type Signal } from '@builder.io/qwik'
 
 /**表示每个回合阶段的枚举 */
 export enum HuiHe {
@@ -31,16 +32,19 @@ export const roundStateArray: HuiHe[] = [
 /**
  * 执行一名玩家的回合
  * @param player 玩家对象
- * @param game 游戏对象
+ * @param gameState 游戏状态对象
  */
-export async function executePlayerRound(player: Player, game: GameState) {
-	if (game.isOver) {
+export async function executePlayerRound(
+	player: Player,
+	gameState: Signal<GameState>
+): Promise<void> {
+	if (gameState.value === GameState.OVER) {
 		console.log('游戏结束，停止执行回合')
 		return
 	}
 
 	for (let i = 0; i < roundStateArray.length; i++) {
-		if (game.isOver) {
+		if (gameState.value === GameState.OVER) {
 			console.log('游戏结束，停止执行阶段')
 			return
 		}
@@ -49,13 +53,13 @@ export async function executePlayerRound(player: Player, game: GameState) {
 		await new Promise(resolve => setTimeout(resolve, 300))
 
 		player.currentState = roundStateArray[i]
-		await executeStageAction(player, roundStateArray[i], {}, game)
+		await executeStageAction(player, roundStateArray[i], {}, gameState)
 
 		const timeInterval = Date.now() - startTime
 		console.log(`${roundStateArray[i]} 执行时间：${timeInterval}ms`)
 	}
 
-	player.currentState = HuiHe.DAI_JI
+	// player.currentState = HuiHe.DAI_JI
 }
 
 /**
@@ -63,16 +67,16 @@ export async function executePlayerRound(player: Player, game: GameState) {
  * @param player 执行操作的玩家
  * @param action 要执行的回合阶段操作
  * @param params 给具体执行函数的额外参数
- * @param game 游戏对象
+ * @param gameState 游戏状态对象
  * @returns 执行结果
  */
 async function executeStageAction(
 	player: Player,
 	action: HuiHe,
 	params: any = {},
-	game: GameState
+	gameState: Signal<GameState>
 ): Promise<boolean> {
-	if (game.isOver) {
+	if (gameState.value === GameState.OVER) {
 		console.log('游戏结束，停止执行阶段操作')
 		return false
 	}

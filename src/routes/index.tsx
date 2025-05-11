@@ -9,8 +9,7 @@ import { MyArea } from '../components/my-area/my-area'
 import { Decks } from '../components/decks/decks'
 import { OptionDialog } from '../components/option-dialog/option-dialog'
 import { HandSkill } from '../utils/hand-skills'
-import { executeGameLoop, GameResult } from '../utils/game'
-import type { GameState } from '../utils/game'
+import { executeGameLoop, GameState } from '../utils/game'
 import { initDeck } from '../utils/card'
 
 export const targetGeneralListContext = createContextId<string[]>('targetGeneralList')
@@ -25,11 +24,7 @@ export default component$(() => {
 	/** 游戏轮数 */
 	const gameRound = useSignal(1)
 	/** 游戏状态 */
-	const gameState = useStore<GameState>({
-		isOver: false,
-		isPaused: false,
-		result: GameResult.UNKNOWN
-	})
+	const gameState = useSignal(GameState.NOT_STARTED)
 
 	/** 其他玩家（电脑） */
 	const getOthers = [...wujiangArray.slice(0, 1)].map((wujiang: WuJiang) => {
@@ -84,7 +79,7 @@ export default component$(() => {
 			<Decks deckSize={decks.length} />
 
 			<div style={{ display: 'flex', justifyContent: 'center' }}>
-				<button onClick$={() => gameState.isOver = true}>结束游戏</button>
+				<button onClick$={() => gameState.value = GameState.OVER}>结束游戏</button>
 				{/* <button onClick$={() => ++clickCount.value}>摸牌</button> */}
 				<button onClick$={() => { HandSkill.sha(me, otherPlayers[0], discardPile) }}>出杀</button>
 				<button onClick$={() => { HandSkill.tao(me, discardPile) }}>吃桃</button>
