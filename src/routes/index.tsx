@@ -33,7 +33,7 @@ export default component$(() => {
 	})
 	const otherPlayers: Player[] = useStore(getOthers)
 	/** 我（真人玩家） */
-	const me: Player = useStore(createPlayer(wujiangArray[2], true))
+	const me: Player = useStore(createPlayer(wujiangArray[2], false))
 
 	/** 目标武将列表 */
 	const targetGeneralList: string[] = useStore([])
@@ -60,7 +60,7 @@ export default component$(() => {
 	// 初始化游戏循环
 	useVisibleTask$(async () => {
 		const allPlayers = [me, ...otherPlayers]
-		await executeGameLoop(allPlayers, gameRound, gameState)
+		// await executeGameLoop(allPlayers, gameRound, gameState)
 	})
 
 	return (

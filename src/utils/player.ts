@@ -22,7 +22,7 @@ export interface Player {
  * @param isComputer 该玩家是否为电脑
  * @returns 玩家对象
  */
-export function createPlayer(general: General, isComputer = false): Player {
+export function createPlayer(general: General, isComputer = true): Player {
 	return {
 		isComputer,
 		general,
