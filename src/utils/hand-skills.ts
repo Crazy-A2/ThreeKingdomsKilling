@@ -22,6 +22,7 @@ export const HandSkill = {
 		// TODO 等待目标玩家的响应
 
 		console.log('before discardPile', { ...discardPile })
+		console.log('before target', { ...target })
 
 		findChoosedHandAndDiscarded(user, discardPile)
 		// 目标玩家扣血

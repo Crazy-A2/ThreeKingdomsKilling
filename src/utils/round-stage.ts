@@ -102,6 +102,7 @@ async function executeStageAction(
 			break
 		case HuiHe.JIE_SHU:
 			result = executeJieShu(player)
+			player.currentState = HuiHe.DAI_JI
 			break
 
 		case HuiHe.DAI_JI:

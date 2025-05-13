@@ -25,7 +25,7 @@ export const Decks = component$<DecksProps>((props) => {
           textAlign: 'center',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          backgroundImage: `url(${import.meta.env.BASE_URL}image/card/卡背.png)`,
+          backgroundImage: `url(${import.meta.env.BASE_URL}image/card/background.png)`,
         }}
       >
         {props.deckSize}
