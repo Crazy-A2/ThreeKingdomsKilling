@@ -2,12 +2,35 @@ import { shoupaiArray, type Hand } from '../data/hands'
 import { type Player } from './player'
 
 /**
+ * 玩家弃牌 （包括不限于弃牌阶段、过河拆桥、武将技能等）
+ * @param player 要弃牌的玩家
+ * @param discardArray 要弃掉的牌组成的数组
+ * @param discardPile 弃牌堆
+ */
+export function qiPai(
+	player: Player,
+	discardArray: Hand[],
+	discardPile: Hand[]
+): void {
+	const arr: Hand[] = []
+	player.handList.forEach((item, index) => {
+		if (discardArray.find(delItem => delItem.srcIndex === item.srcIndex)) {
+			const arr2 = player.handList.splice(index, 1)
+			arr.push(arr2[0])
+		}
+	})
+	discardPile.push(...arr)
+}
+
+/**
  * 初始化牌堆
  * @description 牌堆初始值为完整的军争手牌数组
  * @returns 牌堆数组
  */
 export function initDeck(): Hand[] {
-	return shuffleDecks([...shoupaiArray])
+	return shuffleDecks([...shoupaiArray]).map((item, index) => {
+		return { ...item, isChoosed: false, srcIndex: index }
+	})
 }
 
 /**
@@ -38,9 +61,10 @@ export function drawTheCards(
 	decks: Hand[],
 	count?: number
 ): void {
-	const hands = getCardsFromDecksTop(decks, count).map(item => {
-		return { ...item, isChoosed: false }
-	})
+	const hands = getCardsFromDecksTop(decks, count)
+	// 	.map(item => {
+	// 	return { ...item, isChoosed: false }
+	// })
 
 	player.handList.push(...hands)
 }

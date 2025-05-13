@@ -16,7 +16,7 @@ export interface Hand {
 	suits: string // 			花色
 	point: string // 			点数
 	type: CardType // 			牌型
-	srcIndex?: number // 		原始索引位置
+	srcIndex?: number // 		原始索引位置 手牌的唯一id
 	isChoosed?: boolean // 		是否被选中
 }
 

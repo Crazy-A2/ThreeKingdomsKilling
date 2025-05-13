@@ -1,5 +1,5 @@
 import type { Player } from './player'
-import { drawTheCards } from './card'
+import { drawTheCards,qiPai } from './card'
 import { GameState } from './game'
 import type { Hand } from '../data/hands'
 import { type Signal } from '@builder.io/qwik'
@@ -163,10 +163,5 @@ function executeQiPai(player: Player): boolean {
 // 结束阶段逻辑
 function executeJieShu(player: Player): boolean {
 	console.log('结束阶段')
-	return false
-}
-
-function qiPai(player: Player, discardCount: number): boolean {
-	// player.handList.splice(0, discardCount)
 	return false
 }
