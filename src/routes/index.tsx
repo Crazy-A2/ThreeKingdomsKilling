@@ -10,8 +10,8 @@ import { Decks } from '../components/decks/decks'
 import { OptionDialog } from '../components/option-dialog/option-dialog'
 import { HandSkill } from '../utils/hand-skills'
 import { executeGameLoop, GameState } from '../utils/game'
-import { initDeck } from '../utils/card'
-
+import { initDeck, drawTheCardsIf } from '../utils/card'
+import { type Hand } from '../data/hands'
 export const targetGeneralListContext = createContextId<string[]>('targetGeneralList')
 
 export default component$(() => {
@@ -83,6 +83,7 @@ export default component$(() => {
 				{/* <button onClick$={() => ++clickCount.value}>摸牌</button> */}
 				<button onClick$={() => { HandSkill.sha(me, otherPlayers[0], discardPile) }}>出杀</button>
 				<button onClick$={() => { HandSkill.tao(me, discardPile) }}>吃桃</button>
+				<button onClick$={() => { drawTheCardsIf(me, decks, getSha) }}>摸杀</button>
 			</div>
 
 			{showOptionDialog.value && <OptionDialog word='请选择目标' buttons={buttons} />}
@@ -91,6 +92,18 @@ export default component$(() => {
 		</main>
 	)
 })
+
+/** 
+ * @description 从牌堆摸n张普通杀（默认1张）
+ * @param player 玩家
+ * @param decks 牌堆
+ * @param count 摸牌数量
+ * @returns 摸到的普通杀数组
+ */
+function getSha(player: Player, decks: Hand[], count: number = 1): Hand[] {
+	const index = decks.findLastIndex((item: Hand) => item.name === 'sha')
+	return decks.splice(index, count)
+}
 
 // 定义该页面头部信息
 export const head: DocumentHead = {

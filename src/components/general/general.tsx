@@ -49,6 +49,7 @@ export const General = component$<GeneralProps>(props => {
             }}
             stoppropagation:click
         >
+            {/* 左侧属性条 */}
             <div style={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -95,22 +96,46 @@ export const General = component$<GeneralProps>(props => {
 
 export interface HealthBarProps { maxHealth: number, currentHealth: number }
 
-
 /** 血条（体力条） */
 const HealthBar = component$<HealthBarProps>((props) => {
     // + 用来预防传入字符串的情况
-    const healthArray = useStore(new Array(+props.maxHealth).fill(0))
+    // Initialize with string '0' for consistency with image names (0.png)
+    const healthArray = useStore(new Array(+props.maxHealth).fill('0'))
 
-    useVisibleTask$(() => {
-        // 根据当前血量改变勾玉颜色
-        healthArray.fill(
-            `${(+props.currentHealth === +props.maxHealth)
-                ? 3
-                : props.currentHealth > 1
-                    ? 2
-                    : props.currentHealth}`,
-            0, +props.currentHealth
-        )
+    useVisibleTask$(({ track }) => { // Add track for explicit dependency tracking
+        track(() => props.currentHealth);
+        track(() => props.maxHealth);
+
+        const currentHp = +props.currentHealth;
+        const maxHp = +props.maxHealth;
+
+        // 1. Reset all health pips to '0' (empty/default state)
+        // This ensures that when health decreases, previously active pips are cleared.
+        for (let i = 0; i < healthArray.length; i++) {
+            healthArray[i] = '0';
+        }
+        // An alternative for resetting if array length is fixed: healthArray.fill('0');
+
+        // 2. Determine the icon type for active health pips based on current health
+        let activeIconType = '0'; // Default to '0' (e.g., for 0 or negative HP)
+        if (currentHp > 0) {
+            if (currentHp >= maxHp) { // Use >= to handle cases where currentHp might exceed maxHp
+                activeIconType = '3'; // Full health icon (e.g., green)
+            } else if (currentHp > 1) {
+                activeIconType = '2'; // Injured icon (e.g., yellow)
+            } else { // currentHp === 1
+                activeIconType = '1'; // Critical/Low health icon (e.g., red)
+            }
+        }
+
+        // 3. Set the state for active health pips
+        // Fill elements from index 0 up to currentHp - 1 with the active icon type
+        for (let i = 0; i < currentHp; i++) {
+            // Boundary check, although currentHp should ideally not exceed maxHp (healthArray.length)
+            if (i < healthArray.length) {
+                healthArray[i] = activeIconType;
+            }
+        }
     })
 
     return (
