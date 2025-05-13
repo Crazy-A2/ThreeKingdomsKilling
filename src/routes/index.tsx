@@ -10,7 +10,7 @@ import { Decks } from '../components/decks/decks'
 import { OptionDialog } from '../components/option-dialog/option-dialog'
 import { HandSkill } from '../utils/hand-skills'
 import { executeGameLoop, GameState } from '../utils/game'
-import { initDeck, drawTheCardsIf } from '../utils/card'
+import { initDeck, drawTheCardsIf, drawTheCards } from '../utils/card'
 import { type Hand } from '../data/hands'
 
 export const targetGeneralListContext = createContextId<string[]>('targetGeneralList')
@@ -80,11 +80,12 @@ export default component$(() => {
 			<Decks deckSize={decks.length} />
 
 			<div style={{ display: 'flex', justifyContent: 'center' }}>
-				<button onClick$={() => gameState.value = GameState.OVER}>结束游戏</button>
-				{/* <button onClick$={() => ++clickCount.value}>摸牌</button> */}
-				<button onClick$={() => { HandSkill.sha(me, otherPlayers[0], discardPile) }}>出杀</button>
-				<button onClick$={() => { HandSkill.tao(me, discardPile) }}>吃桃</button>
-				<button onClick$={() => { drawTheCardsIf(me, decks, (item: Hand) => item.name === 'sha') }}>摸杀</button>
+				{/* <button onClick$={() => gameState.value = GameState.OVER}>结束游戏</button> */}
+				<button onClick$={() => { drawTheCards(me, decks) }}>摸牌</button>
+				<button onClick$={() => { }}>弃牌</button>
+				{/* <button onClick$={() => { HandSkill.tao(me, discardPile) }}>吃桃</button> */}
+				{/* <button onClick$={() => { drawTheCardsIf(me, decks, (item: Hand) => item.name === 'sha') }}>摸杀</button> */}
+				{/* <button onClick$={() => { HandSkill.sha(me, otherPlayers[0], discardPile) }}>出杀</button> */}
 			</div>
 
 			{showOptionDialog.value && <OptionDialog word='请选择目标' buttons={buttons} />}

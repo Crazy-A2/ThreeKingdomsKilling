@@ -24,8 +24,8 @@ export interface Player {
  */
 export function createPlayer(general: General, isComputer = true): Player {
 	return {
-		isComputer,
 		general,
+		isComputer,
 		drinkingCount: 0,
 		handList: [],
 		skillList: general.skills,
