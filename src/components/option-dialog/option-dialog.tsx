@@ -1,5 +1,5 @@
 import { component$, $, useContext, type QRL, type Signal } from '@builder.io/qwik'
-import type { NotSureObject } from '../../utils/game'
+import type { NotSureObject } from '../../utils/typedef'
 import { targetGeneralListContext } from '../../routes/index'
 
 interface Button {

@@ -1,5 +1,6 @@
 import { shoupaiArray, type Hand } from '../data/hands'
 import { type Player } from './player'
+import type { SkillCommonParam } from './typedef'
 
 /**
  * 玩家弃牌 （包括不限于弃牌阶段、过河拆桥、武将技能等）
@@ -7,20 +8,16 @@ import { type Player } from './player'
  * @param discardArray 要弃掉的牌组成的数组
  * @param discardPile 弃牌堆
  */
-export function qiPai(
-	player: Player,
-	discardArray: Hand[],
-	discardPile: Hand[]
-): void {
-	const arr: Hand[] = []
-	player.handList.forEach((item, index) => {
-		if (discardArray.find(delItem => delItem.srcIndex === item.srcIndex)) {
-			const arr2 = player.handList.splice(index, 1)
-			arr.push(arr2[0])
-		}
-	})
+export function qiPai(player: Player, discardArray: Hand[], discardPile: Hand[]): void {
+    const arr: Hand[] = []
+    player.handList.forEach((item, index) => {
+        if (discardArray.find(delItem => delItem.srcIndex === item.srcIndex)) {
+            const arr2 = player.handList.splice(index, 1)
+            arr.push(arr2[0])
+        }
+    })
 
-	discardPile.push(...arr)
+    discardPile.push(...arr)
 }
 
 /**
@@ -29,9 +26,9 @@ export function qiPai(
  * @returns 牌堆数组
  */
 export function initDeck(): Hand[] {
-	return shuffleDecks([...shoupaiArray]).map((item, index) => {
-		return { ...item, isChoosed: false, srcIndex: index }
-	})
+    return shuffleDecks([...shoupaiArray]).map((item, index) => {
+        return { ...item, isChoosed: false, srcIndex: index }
+    })
 }
 
 /**
@@ -42,7 +39,7 @@ export function initDeck(): Hand[] {
  * @example shuffleDecks(getDecks()) // 打乱牌堆
  */
 export function shuffleDecks(decks: Hand[]): Hand[] {
-	return decks.sort(() => Math.random() - 0.5)
+    return decks.sort(() => Math.random() - 0.5)
 }
 
 // 洗牌测试
@@ -57,17 +54,13 @@ export function shuffleDecks(decks: Hand[]): Hand[] {
  * @param decks 	牌堆
  * @param count 	摸牌数量（默认两张）
  */
-export function drawTheCards(
-	player: Player,
-	decks: Hand[],
-	count?: number
-): void {
-	const hands = getCardsFromDecksTop(decks, count)
-	// 	.map(item => {
-	// 	return { ...item, isChoosed: false }
-	// })
+export function drawTheCards(player: Player, decks: Hand[], count?: number): void {
+    const hands = getCardsFromDecksTop(decks, count)
+    // 	.map(item => {
+    // 	return { ...item, isChoosed: false }
+    // })
 
-	player.handList.push(...hands)
+    player.handList.push(...hands)
 }
 
 /**
@@ -78,17 +71,17 @@ export function drawTheCards(
  * @param count 	摸牌数量（默认1张）
  */
 export function drawTheCardsIf(
-	player: Player,
-	decks: Hand[],
-	callback: (item: Hand, index?: number) => boolean,
-	count?: number
+    player: Player,
+    decks: Hand[],
+    callback: (item: Hand, index?: number) => boolean,
+    count?: number,
 ): void {
-	const index = decks.findLastIndex(callback)
-	const hands = decks.splice(index, count || 1).map(item => {
-		return { ...item, isChoosed: false }
-	})
+    const index = decks.findLastIndex(callback)
+    const hands = decks.splice(index, count || 1).map(item => {
+        return { ...item, isChoosed: false }
+    })
 
-	player.handList.push(...hands)
+    player.handList.push(...hands)
 }
 
 // 摸牌测试
@@ -105,7 +98,7 @@ export function drawTheCardsIf(
  * @returns 获取到的卡牌数组
  */
 export function getCardsFromDecksTop(decks: Hand[], count: number = 2): Hand[] {
-	return decks.splice(-count, count)
+    return decks.splice(-count, count)
 }
 
 /**
@@ -113,14 +106,11 @@ export function getCardsFromDecksTop(decks: Hand[], count: number = 2): Hand[] {
  * @param user 使用者
  * @param discardPile 弃牌堆
  */
-export function findChoosedHandAndDiscarded(
-	user: Player,
-	discardPile: Hand[]
-): void {
-	const index = user.handList.findIndex(item => {
-		return item.isChoosed
-	})
-	const cards = user.handList.splice(index, 1)
+export function findChoosedHandAndDiscarded({ user, discardPile }: SkillCommonParam): void {
+    const index = user.handList.findIndex(item => {
+        return item.isChoosed
+    })
+    const cards = user.handList.splice(index, 1)
 
-	discardPile.push(...cards)
+    discardPile.push(...cards)
 }

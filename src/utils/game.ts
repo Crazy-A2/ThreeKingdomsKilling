@@ -2,12 +2,6 @@ import type { Signal } from '@builder.io/qwik'
 import type { Player } from './player'
 import { executePlayerRound } from './round-stage'
 
-/** 成员不确定的对象 */
-export type NotSureObject = Record<string, any>
-
-/** 任意参数，任意返回值的函数类型 */
-export type AnyFunction = (...args: any[]) => any
-
 export enum GameResult {
 	UNKNOWN, // 						未知
 	ZHU_GONG_AND_ZHONG_CHENG_WIN, // 	主公和忠臣胜利

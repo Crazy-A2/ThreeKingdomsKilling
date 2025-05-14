@@ -66,8 +66,8 @@ export default component$(() => {
 				<button onClick$={() => { drawTheCards(me, decks) }}>摸牌</button>
 				<button onClick$={() => { }}>弃牌</button>
 				{/* <button onClick$={() => { HandSkill.tao(me, discardPile) }}>吃桃</button> */}
-				{/* <button onClick$={() => { drawTheCardsIf(me, decks, (item: Hand) => item.name === 'sha') }}>摸杀</button> */}
-				{/* <button onClick$={() => { HandSkill.sha(me, otherPlayers[0], discardPile) }}>出杀</button> */}
+				{/* <button onClick$={() => { drawTheCardsIf(me, decks, (item: Hand) => item.name === 'sha') }}>摸杀</button>
+				<button onClick$={() => { HandSkill.sha({ user: me, target: otherPlayers[0], discardPile })  }}>出杀</button> */}
 			</div>
 
 			{showOptionDialog.value && <OptionDialog showOptionDialog={showOptionDialog} word='请选择目标' />}
