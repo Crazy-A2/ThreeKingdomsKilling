@@ -1,6 +1,7 @@
 import { component$, $, useContext, type QRL, type Signal } from '@builder.io/qwik'
 import type { NotSureObject } from '../../utils/typedef'
 import { targetGeneralListContext } from '../../routes/index'
+import type { Callback } from '../../utils/typedef'
 
 interface Button {
     text: string //                         按钮文本
@@ -8,20 +9,27 @@ interface Button {
 }
 
 export interface OptionDialogProps {
-    showOptionDialog: Signal<boolean> //    是否展示选项对话框
-    word: string //                         对话框消息
-    buttons?: Button[] //                   按钮列表
+    /** 是否展示选项对话框 */
+    showOptionDialog: Signal<boolean>
+    /** 对话框消息 */
+    word: string
+    /** 按钮数组 */
+    buttons?: Button[]
+    /** 确认按钮的参数 */
+    confirmParam?: NotSureObject
+    /** 取消按钮的参数 */
+    // cancelParam?: NotSureObject
 }
 
 /** 选项对话框 需要玩家（我）行动或响应时展示可选择的选项 */
-export const OptionDialog = component$<OptionDialogProps>((props) => {
+export const OptionDialog = component$<OptionDialogProps>(props => {
     const targetGeneralList = useContext(targetGeneralListContext)
 
     const defaultButtons: Button[] = [
         {
             text: '确认',
-            action: $((callback?: (param?: NotSureObject) => void, param?: NotSureObject) => {
-                callback?.(param)
+            action: $((callback?: Callback) => {
+                callback?.(props.confirmParam)
             }),
         },
         {

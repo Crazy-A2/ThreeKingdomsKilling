@@ -7,6 +7,9 @@ export type NotSureObject = Record<string, any>
 /** 任意参数，任意返回值的函数类型 */
 export type AnyFunction = (...args: any[]) => any
 
+/** 回调函数类型 */
+export type Callback = (param?: NotSureObject) => void
+
 /** 通用 技能参数接口 */
 export interface SkillCommonParam {
     /** 技能使用者 */
