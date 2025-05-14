@@ -18,7 +18,7 @@ export const MyArea = component$<MyAreaProps>(({ player }) => {
 
             <SkillArea skillList={player.skillList} />
 
-            <HandArea handList={player.handList} />
+            <HandArea handList={player.handList} handCeiling={player.general.maxHealth} />
         </div>
     )
 })
@@ -60,8 +60,10 @@ const SkillArea = component$<SkillAreaProps>(({ skillList }) => {
 })
 
 interface HandAreaProps {
+    /** 玩家的所有手牌组成的数组 */
     handList: ShouPai[]
-    ceiling: number
+    /** 手牌上限（一般等于体力值） */
+    handCeiling: number
 }
 
 /** 手牌区 */
@@ -84,10 +86,19 @@ const HandArea = component$<HandAreaProps>(props => {
                 return <Hand hand={hand} key={index} />
             })}
 
-            <div>
-                {
-                    // ` / ${}`
-                }
+            {/* 手牌计数 */}
+            <div
+                style={{
+                    position: 'absolute',
+                    bottom: 10,
+                    right: 10,
+                    zIndex: 2,
+                    fontSize: 36,
+                    color: 'white',
+                }}
+            >
+                {/* 当前手牌数 / 手牌上限 */}
+                {`${props.handList.length} / ${props.handCeiling}`}
             </div>
         </div>
     )
