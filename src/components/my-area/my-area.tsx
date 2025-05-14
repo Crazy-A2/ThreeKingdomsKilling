@@ -1,4 +1,4 @@
-import { component$, } from '@builder.io/qwik'
+import { component$ } from '@builder.io/qwik'
 import type { Skill } from '../../data/general/界限突破'
 import type { Hand as ShouPai } from '../../data/hands'
 import type { Player } from '../../utils/player'
@@ -29,33 +29,40 @@ interface SkillAreaProps {
 
 /** 技能区 */
 const SkillArea = component$<SkillAreaProps>(({ skillList }) => {
-
     return (
-        <div style={{
-            display: 'flex', flexDirection: 'column-reverse', alignItems: 'center',
-            width: 100, backgroundColor: 'red'
-        }}>
-            {
-                skillList.map((skill, index) => {
-                    return (
-                        <button
-                            key={index}
-                            style={{
-                                width: 87, height: 47, backgroundSize: 'cover',
-                                backgroundPosition: 'center',
-                                backgroundImage: `url(${import.meta.env.BASE_URL}image/skill/${skill.type}.png)`,
-                            }}
-                        >
-                            {skill.name}
-                        </button>
-                    )
-                })
-            }
+        <div
+            style={{
+                display: 'flex',
+                flexDirection: 'column-reverse',
+                alignItems: 'center',
+                width: 100,
+                backgroundColor: 'red',
+            }}
+        >
+            {skillList.map((skill, index) => {
+                return (
+                    <button
+                        key={index}
+                        style={{
+                            width: 87,
+                            height: 47,
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center',
+                            backgroundImage: `url(${import.meta.env.BASE_URL}image/skill/${skill.type}.png)`,
+                        }}
+                    >
+                        {skill.name}
+                    </button>
+                )
+            })}
         </div>
     )
 })
 
-interface HandAreaProps { handList: ShouPai[] }
+interface HandAreaProps {
+    handList: ShouPai[]
+    ceiling: number
+}
 
 /** 手牌区 */
 const HandArea = component$<HandAreaProps>(props => {
@@ -63,19 +70,25 @@ const HandArea = component$<HandAreaProps>(props => {
     return (
         <div
             style={{
-                display: 'flex', alignItems: 'end', flex: 1,
+                display: 'flex',
+                alignItems: 'end',
+                flex: 1,
                 overflowX: 'scroll',
                 backgroundColor: 'yellow',
             }}
             onClick$={() => {
-                alert('手牌区被点击了！！！');
+                alert('手牌区被点击了！！！')
             }}
         >
-            {
-                props.handList.map((hand, index) => {
-                    return <Hand hand={hand} key={index} />
-                })
-            }
+            {props.handList.map((hand, index) => {
+                return <Hand hand={hand} key={index} />
+            })}
+
+            <div>
+                {
+                    // ` / ${}`
+                }
+            </div>
         </div>
     )
 })
