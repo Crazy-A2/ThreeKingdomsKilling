@@ -1,10 +1,10 @@
-import { component$, $, useContext, type QRL, type Signal } from '@builder.io/qwik';
-import type { NotSureObject } from '../../utils/game';
+import { component$, $, useContext, type QRL, type Signal } from '@builder.io/qwik'
+import type { NotSureObject } from '../../utils/game'
 import { targetGeneralListContext } from '../../routes/index'
 
 interface Button {
-    text: string
-    action: QRL<(arg?: any) => void>
+    text: string //                         按钮文本
+    action: QRL<(arg?: any) => void> //     按钮点击后执行的逻辑
 }
 
 export interface OptionDialogProps {
@@ -22,16 +22,16 @@ export const OptionDialog = component$<OptionDialogProps>((props) => {
             text: '确认',
             action: $((callback?: (param?: NotSureObject) => void, param?: NotSureObject) => {
                 callback?.(param)
-            })
+            }),
         },
         {
             text: '取消',
             action: $(() => {
                 if (Array.isArray(targetGeneralList)) {
-                    targetGeneralList.length = 0;
+                    targetGeneralList.length = 0
                 }
-            })
-        }
+            }),
+        },
     ]
 
     const { showOptionDialog, word } = props
@@ -50,32 +50,35 @@ export const OptionDialog = component$<OptionDialogProps>((props) => {
         //         zIndex: 999,
         //     }}
         // />
-        <div style={{
-            position: 'fixed',
-            width: '100%',
-            height: 230,
-            bottom: 210,
-            textAlign: 'center',
-            backgroundColor: 'rgba(0, 0, 0, 0.6)',
-            zIndex: 999,
-        }}>
+        <div
+            style={{
+                position: 'fixed',
+                width: '100%',
+                height: 230,
+                bottom: 210,
+                textAlign: 'center',
+                backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                zIndex: 999,
+            }}
+        >
             {/* 对话框消息 */}
-            <p style={{ fontSize: '1.4rem', fontWeight: 700, }}>
-                {word}
-            </p>
+            <p style={{ fontSize: '1.4rem', fontWeight: 700 }}>{word}</p>
 
-            <div style={{
-                position: 'absolute',
-                bottom: 0,
-                left: '50%',
-                transform: 'translateX(-50%)',
-                display: 'flex',
-                justifyContent: 'space-around',
-            }}>
+            <div
+                style={{
+                    position: 'absolute',
+                    bottom: 0,
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    display: 'flex',
+                    justifyContent: 'space-around',
+                }}
+            >
                 {/* 选项按钮列表 */}
-                {
-                    buttonsToRender.map((button, index) => {
-                        return <button key={index}
+                {buttonsToRender.map((button, index) => {
+                    return (
+                        <button
+                            key={index}
                             style={{
                                 // position: 'absolute',
                                 // top: '50%',
@@ -98,8 +101,8 @@ export const OptionDialog = component$<OptionDialogProps>((props) => {
                         >
                             {button.text}
                         </button>
-                    })
-                }
+                    )
+                })}
             </div>
         </div>
     )
