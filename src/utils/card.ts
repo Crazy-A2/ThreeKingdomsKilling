@@ -19,6 +19,7 @@ export function qiPai(
 			arr.push(arr2[0])
 		}
 	})
+
 	discardPile.push(...arr)
 }
 
@@ -73,16 +74,16 @@ export function drawTheCards(
  * @description 玩家从牌堆中摸符合条件的牌
  * @param player 	要摸牌的玩家
  * @param decks 	牌堆
- * @param fn 		摸牌条件 类似各种数组方法的回调函数 用来筛选需要的牌
+ * @param callback 	类似各种数组方法的回调函数 用来筛选需要的牌
  * @param count 	摸牌数量（默认1张）
  */
 export function drawTheCardsIf(
 	player: Player,
 	decks: Hand[],
-	fn: (item: Hand, index?: number) => boolean,
+	callback: (item: Hand, index?: number) => boolean,
 	count?: number
 ): void {
-	const index = decks.findLastIndex(fn)
+	const index = decks.findLastIndex(callback)
 	const hands = decks.splice(index, count || 1).map(item => {
 		return { ...item, isChoosed: false }
 	})

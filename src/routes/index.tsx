@@ -10,6 +10,7 @@ import { Decks } from '../components/decks/decks'
 import { OptionDialog } from '../components/option-dialog/option-dialog'
 import { HandSkill } from '../utils/hand-skills'
 import { executeGameLoop, GameState } from '../utils/game'
+import type { NotSureObject } from '../utils/game'
 import { initDeck, drawTheCardsIf, drawTheCards } from '../utils/card'
 import { type Hand } from '../data/hands'
 
@@ -42,17 +43,20 @@ export default component$(() => {
 	const buttons = [
 		{
 			text: '确认',
-			action: $((index: number) => {
-				console.log(index)
-				console.log({ showOptionDialog })
+			/** 通用确认按钮的逻辑 参数为可选的回调函数 和 可选的回调函数参数
+			 * 
+			 * 如果传入回调函数 则执行回调函数 并传入参数
+			 * 
+			 * 如果未传入回调函数 则不执行任何操作
+			 */
+			action: $((callback?: (param?: NotSureObject) => void, param?: NotSureObject) => {
+				callback?.(param)
 			})
 		},
 		{
 			text: '取消',
 			action: $(() => {
-				showOptionDialog.value = false
 				targetGeneralList.length = 0
-				console.log({ showOptionDialog })
 			})
 		}
 	]
@@ -65,7 +69,7 @@ export default component$(() => {
 
 	return (
 		<main>
-			{/* 渲染电脑玩家的武将 */}
+			{/* 渲染除我以外的玩家武将 */}
 			<div style={{ display: 'flex', justifyContent: 'space-around' }}>
 				{
 					otherPlayers.map((player, index) => {
@@ -88,7 +92,7 @@ export default component$(() => {
 				{/* <button onClick$={() => { HandSkill.sha(me, otherPlayers[0], discardPile) }}>出杀</button> */}
 			</div>
 
-			{showOptionDialog.value && <OptionDialog word='请选择目标' buttons={buttons} />}
+			{showOptionDialog.value && <OptionDialog showOptionDialog={showOptionDialog} word='请选择目标' buttons={buttons} />}
 
 			<MyArea player={me} />
 		</main>
