@@ -1,4 +1,4 @@
-import { component$, useStore, useVisibleTask$, useSignal, createContextId, useContextProvider, $ } from '@builder.io/qwik'
+import { component$, useStore, useVisibleTask$, useSignal, createContextId, useContextProvider } from '@builder.io/qwik'
 import type { DocumentHead } from '@builder.io/qwik-city'
 import { General } from '../components/general/general'
 import { wujiangArray } from '../data/general/界限突破'
@@ -10,7 +10,6 @@ import { Decks } from '../components/decks/decks'
 import { OptionDialog } from '../components/option-dialog/option-dialog'
 import { HandSkill } from '../utils/hand-skills'
 import { executeGameLoop, GameState } from '../utils/game'
-import type { NotSureObject } from '../utils/game'
 import { initDeck, drawTheCardsIf, drawTheCards } from '../utils/card'
 import { type Hand } from '../data/hands'
 
@@ -39,27 +38,6 @@ export default component$(() => {
 	/** 目标武将列表 */
 	const targetGeneralList: string[] = useStore([])
 	useContextProvider(targetGeneralListContext, targetGeneralList)
-
-	const buttons = [
-		{
-			text: '确认',
-			/** 通用确认按钮的逻辑 参数为可选的回调函数 和 可选的回调函数参数
-			 * 
-			 * 如果传入回调函数 则执行回调函数 并传入参数
-			 * 
-			 * 如果未传入回调函数 则不执行任何操作
-			 */
-			action: $((callback?: (param?: NotSureObject) => void, param?: NotSureObject) => {
-				callback?.(param)
-			})
-		},
-		{
-			text: '取消',
-			action: $(() => {
-				targetGeneralList.length = 0
-			})
-		}
-	]
 
 	// 初始化游戏循环
 	useVisibleTask$(async () => {
@@ -92,7 +70,7 @@ export default component$(() => {
 				{/* <button onClick$={() => { HandSkill.sha(me, otherPlayers[0], discardPile) }}>出杀</button> */}
 			</div>
 
-			{showOptionDialog.value && <OptionDialog showOptionDialog={showOptionDialog} word='请选择目标' buttons={buttons} />}
+			{showOptionDialog.value && <OptionDialog showOptionDialog={showOptionDialog} word='请选择目标' />}
 
 			<MyArea player={me} />
 		</main>

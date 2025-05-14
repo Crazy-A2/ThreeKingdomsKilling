@@ -1,5 +1,6 @@
-import { component$, } from '@builder.io/qwik';
-import type { QRL, } from '@builder.io/qwik';
+import { component$, $, useContext, type QRL, type Signal } from '@builder.io/qwik';
+import type { NotSureObject } from '../../utils/game';
+import { targetGeneralListContext } from '../../routes/index'
 
 interface Button {
     text: string
@@ -7,12 +8,35 @@ interface Button {
 }
 
 export interface OptionDialogProps {
-    word: string //             对话框消息
-    buttons?: Button[] //       按钮列表
+    showOptionDialog: Signal<boolean> //    是否展示选项对话框
+    word: string //                         对话框消息
+    buttons?: Button[] //                   按钮列表
 }
 
 /** 选项对话框 需要玩家（我）行动或响应时展示可选择的选项 */
-export const OptionDialog = component$<OptionDialogProps>(({ word, buttons = [] }) => {
+export const OptionDialog = component$<OptionDialogProps>((props) => {
+    const targetGeneralList = useContext(targetGeneralListContext)
+
+    const defaultButtons: Button[] = [
+        {
+            text: '确认',
+            action: $((callback?: (param?: NotSureObject) => void, param?: NotSureObject) => {
+                callback?.(param)
+            })
+        },
+        {
+            text: '取消',
+            action: $(() => {
+                if (Array.isArray(targetGeneralList)) {
+                    targetGeneralList.length = 0;
+                }
+            })
+        }
+    ]
+
+    const { showOptionDialog, word } = props
+    const buttonsToRender = props.buttons ?? defaultButtons
+
     return (
         // 遮罩层
         // <div
@@ -29,7 +53,7 @@ export const OptionDialog = component$<OptionDialogProps>(({ word, buttons = [] 
         <div style={{
             position: 'fixed',
             width: '100%',
-            height: 150,
+            height: 230,
             bottom: 210,
             textAlign: 'center',
             backgroundColor: 'rgba(0, 0, 0, 0.6)',
@@ -50,7 +74,7 @@ export const OptionDialog = component$<OptionDialogProps>(({ word, buttons = [] 
             }}>
                 {/* 选项按钮列表 */}
                 {
-                    buttons.map((button, index) => {
+                    buttonsToRender.map((button, index) => {
                         return <button key={index}
                             style={{
                                 // position: 'absolute',
@@ -65,7 +89,12 @@ export const OptionDialog = component$<OptionDialogProps>(({ word, buttons = [] 
                                 borderRadius: '10px',
                                 zIndex: 1000,
                             }}
-                            onClick$={() => button.action(index)}
+                            onClick$={async () => {
+                                showOptionDialog.value = false
+                                if (button.action) {
+                                    await button.action()
+                                }
+                            }}
                         >
                             {button.text}
                         </button>
