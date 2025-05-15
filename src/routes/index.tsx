@@ -16,7 +16,7 @@ import { type Hand } from '../data/hands'
 export const targetGeneralListContext = createContextId<string[]>('targetGeneralList')
 
 export default component$(() => {
-    /** 是否展示选项对话框 */
+    /** 选项对话框的开关 */
     const showOptionDialog = useSignal(true)
     /** 牌堆 */
     const decks = useStore(initDeck())
