@@ -12,12 +12,15 @@ import { HandSkill } from '../utils/hand-skills'
 import { executeGameLoop, GameState } from '../utils/game'
 import { initDeck, drawTheCardsIf, drawTheCards } from '../utils/card'
 import { type Hand } from '../data/hands'
+import { executeQiPai } from '../utils/round-stage'
 
 export const targetGeneralListContext = createContextId<string[]>('targetGeneralList')
 
 export default component$(() => {
     /** 选项对话框的开关 */
-    const showOptionDialog = useSignal(true)
+    const showOptionDialog = useSignal(false)
+    /** 选项对话框的文本 */
+    const optionDialogText = useSignal('请选择目标')
     /** 牌堆 */
     const decks = useStore(initDeck())
     /** 弃牌堆 */
@@ -71,14 +74,22 @@ export default component$(() => {
                 >
                     摸牌
                 </button>
-                <button onClick$={() => {}}>弃牌</button>
+                <button
+                    onClick$={() => {
+                        executeQiPai(me, { showOptionDialog, optionDialogText, discardPile })
+                    }}
+                >
+                    弃牌阶段测试
+                </button>
                 {/* <button onClick$={() => gameState.value = GameState.OVER}>结束游戏</button> */}
                 {/* <button onClick$={() => { HandSkill.tao(me, discardPile) }}>吃桃</button> */}
                 {/* <button onClick$={() => { drawTheCardsIf(me, decks, (item: Hand) => item.name === 'sha') }}>摸杀</button>
 				<button onClick$={() => { HandSkill.sha({ user: me, target: otherPlayers[0], discardPile })  }}>出杀</button> */}
             </div>
 
-            {showOptionDialog.value && <OptionDialog me={me} showOptionDialog={showOptionDialog} word="请选择目标" />}
+            {showOptionDialog.value && (
+                <OptionDialog me={me} showOptionDialog={showOptionDialog} word={optionDialogText} />
+            )}
 
             <MyArea player={me} />
         </main>

@@ -15,7 +15,7 @@ export interface OptionDialogProps {
     /** 是否展示选项对话框 */
     showOptionDialog: Signal<boolean>
     /** 对话框消息 */
-    word: string
+    word: Signal<string>
     /** 按钮数组 */
     buttons?: Button[]
     /** 确认按钮的参数 */
@@ -50,7 +50,7 @@ export const OptionDialog = component$<OptionDialogProps>(props => {
     const buttonsToRender = props.buttons ?? defaultButtons
 
     // 检查是否有任何手牌被选中
-    const isAnyCardSelected = me.handList.some(hand => hand.isChoosed)
+    const isAnyHandChoosed = me.handList.some(hand => hand.isChoosed)
 
     return (
         // 遮罩层
@@ -93,7 +93,7 @@ export const OptionDialog = component$<OptionDialogProps>(props => {
                 {buttonsToRender.map((button, index) => {
                     // 检查是否是确认按钮 (基于默认按钮的假设，或者可以根据 text 判断)
                     const isConfirmButton = button.text === '确认'
-                    const isDisabled = isConfirmButton && !isAnyCardSelected
+                    const isDisabled = isConfirmButton && !isAnyHandChoosed
 
                     return (
                         <button

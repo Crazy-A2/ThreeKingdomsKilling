@@ -5,13 +5,13 @@ import type { SkillCommonParam } from './typedef'
 /**
  * 玩家弃牌 （包括不限于弃牌阶段、过河拆桥、武将技能等）
  * @param player 要弃牌的玩家
- * @param discardArray 要弃掉的牌组成的数组
+ * @param abandonedHands 要弃掉的手牌组成的数组
  * @param discardPile 弃牌堆
  */
-export function qiPai(player: Player, discardArray: Hand[], discardPile: Hand[]): void {
+export function qiPai(player: Player, abandonedHands: Hand[], discardPile: Hand[]): void {
     const arr: Hand[] = []
     player.handList.forEach((item, index) => {
-        if (discardArray.find(delItem => delItem.srcIndex === item.srcIndex)) {
+        if (abandonedHands.find(delItem => delItem.srcIndex === item.srcIndex)) {
             const arr2 = player.handList.splice(index, 1)
             arr.push(arr2[0])
         }
