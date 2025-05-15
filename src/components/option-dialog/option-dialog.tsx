@@ -2,6 +2,7 @@ import { component$, $, useContext, type QRL, type Signal } from '@builder.io/qw
 import type { NotSureObject } from '../../utils/typedef'
 import { targetGeneralListContext } from '../../routes/index'
 import type { Callback } from '../../utils/typedef'
+import type { Player } from '../../utils/player'
 
 interface Button {
     text: string //                         按钮文本
@@ -9,6 +10,8 @@ interface Button {
 }
 
 export interface OptionDialogProps {
+    /** 我 */
+    me: Player
     /** 是否展示选项对话框 */
     showOptionDialog: Signal<boolean>
     /** 对话框消息 */
@@ -29,6 +32,7 @@ export const OptionDialog = component$<OptionDialogProps>(props => {
         {
             text: '确认',
             action: $((callback?: Callback) => {
+                // if (props.me.handList.) return
                 callback?.(props.confirmParam)
             }),
         },

@@ -78,7 +78,7 @@ export default component$(() => {
 				<button onClick$={() => { HandSkill.sha({ user: me, target: otherPlayers[0], discardPile })  }}>出杀</button> */}
             </div>
 
-            {showOptionDialog.value && <OptionDialog showOptionDialog={showOptionDialog} word="请选择目标" />}
+            {showOptionDialog.value && <OptionDialog me={me} showOptionDialog={showOptionDialog} word="请选择目标" />}
 
             <MyArea player={me} />
         </main>
