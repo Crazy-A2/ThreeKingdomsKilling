@@ -46,8 +46,11 @@ export const OptionDialog = component$<OptionDialogProps>(props => {
         },
     ]
 
-    const { showOptionDialog, word } = props
+    const { showOptionDialog, word, me } = props
     const buttonsToRender = props.buttons ?? defaultButtons
+
+    // 检查是否有任何手牌被选中
+    const isAnyCardSelected = me.handList.some(hand => hand.isChoosed)
 
     return (
         // 遮罩层
@@ -88,6 +91,10 @@ export const OptionDialog = component$<OptionDialogProps>(props => {
             >
                 {/* 选项按钮列表 */}
                 {buttonsToRender.map((button, index) => {
+                    // 检查是否是确认按钮 (基于默认按钮的假设，或者可以根据 text 判断)
+                    const isConfirmButton = button.text === '确认'
+                    const isDisabled = isConfirmButton && !isAnyCardSelected
+
                     return (
                         <button
                             key={index}
@@ -103,7 +110,9 @@ export const OptionDialog = component$<OptionDialogProps>(props => {
                                 border: '5px solid #7b503d',
                                 borderRadius: '10px',
                                 zIndex: 1000,
+                                opacity: isDisabled ? 0.5 : 1, // 根据是否禁用设置透明度
                             }}
+                            disabled={isDisabled} // 设置按钮的 disabled 状态
                             onClick$={async () => {
                                 showOptionDialog.value = false
                                 if (button.action) {
