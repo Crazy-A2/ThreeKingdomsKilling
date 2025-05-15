@@ -40,23 +40,29 @@ export async function executePlayerRound(player: Player, gameState: Signal<GameS
         return
     }
 
-    for (let i = 0; i < roundStateArray.length; i++) {
+    // DAI_JI 阶段在回合开始前，不应在循环内。或者说，一个玩家的回合开始于 ZHUN_BEI 阶段。
+    // 我们将从 ZHUN_BEI 开始循环，并在 JIE_SHU 后设置回 DAI_JI
+    const actualRoundStates = roundStateArray.filter(state => state !== HuiHe.DAI_JI)
+
+    for (const currentStage of actualRoundStates) {
         if (gameState.value === GameState.OVER) {
             console.log('游戏结束，停止执行阶段')
             return
         }
 
         const startTime = Date.now()
-        await new Promise(resolve => setTimeout(resolve, 300))
+        // await new Promise(resolve => setTimeout(resolve, 300)) // 移除固定等待
 
-        player.currentState = roundStateArray[i]
-        await executeStageAction(player, roundStateArray[i], {}, gameState)
+        player.currentState = currentStage
+        console.log(`--- 开始执行阶段: ${player.general.name} - ${currentStage} ---`)
+        await executeStageAction(player, currentStage, {}, gameState) // 等待阶段动作完成
 
         const timeInterval = Date.now() - startTime
-        console.log(`${roundStateArray[i]} 执行时间：${timeInterval}ms`)
+        console.log(`--- 阶段结束: ${player.general.name} - ${currentStage} (耗时: ${timeInterval}ms) ---`)
     }
 
-    // player.currentState = HuiHe.DAI_JI
+    player.currentState = HuiHe.DAI_JI // 回合结束后设为待机
+    console.log(`--- ${player.general.name} 的回合结束 ---`)
 }
 
 /**
@@ -65,104 +71,212 @@ export async function executePlayerRound(player: Player, gameState: Signal<GameS
  * @param action 要执行的回合阶段操作
  * @param params 给具体执行函数的额外参数
  * @param gameState 游戏状态对象
- * @returns 执行结果
  */
 async function executeStageAction(
     player: Player,
     action: HuiHe,
     params: any = {},
     gameState: Signal<GameState>,
-): Promise<boolean> {
+): Promise<void> {
+    // 返回值改为 Promise<void>
     if (gameState.value === GameState.OVER) {
         console.log('游戏结束，停止执行阶段操作')
-        return false
+        return
     }
 
     player.currentState = action
 
-    let result = false
+    // let result = false // 不再需要 result
     switch (action) {
         case HuiHe.ZHUN_BEI:
-            result = executeZhunBei(player)
+            await executeZhunBei(player) // await Promise
             break
         case HuiHe.PAN_DING:
-            result = executePanDing(player)
+            await executePanDing(player) // await Promise
             break
         case HuiHe.MO_PAI:
-            result = executeMoPai(player, params)
+            //  TODO: params.decks 应该从 gameState 或者其他地方获取，而不是写死的 {}
+            await executeMoPai(player, params as { decks?: Hand[]; gameDecks?: Hand[] }) // await Promise
             break
         case HuiHe.CHU_PAI:
-            result = executeChuPai(player)
+            await executeChuPai(player) // await Promise
             break
         case HuiHe.QI_PAI:
-            result = executeQiPai(player)
+            // TODO: param: { showOptionDialog: Signal<boolean>; optionDialogText: Signal<string>; discardPile: Hand[] } 应从外部传入
+            await executeQiPai(
+                player,
+                params as {
+                    showOptionDialog?: Signal<boolean>
+                    optionDialogText?: Signal<string>
+                    discardPile?: Hand[]
+                    cardsToDiscard?: Hand[]
+                },
+            ) // await Promise, params 需要类型断言或正确传递
             break
         case HuiHe.JIE_SHU:
-            result = executeJieShu(player)
-            player.currentState = HuiHe.DAI_JI
+            await executeJieShu(player) // await Promise
+            // player.currentState = HuiHe.DAI_JI // 移到 executePlayerRound 循环外
             break
 
-        case HuiHe.DAI_JI:
-            console.log('回合外待机状态')
-            break
+        // DAI_JI 状态不应该在这里作为 action 被执行，它是一个回合外的状态
+        // case HuiHe.DAI_JI:
+        //     console.log('回合外待机状态')
+        //     break
 
         default:
-            console.error('action 参数错误')
+            // 检查是否是 DAI_JI，如果是，则忽略，否则报错
+            if (action !== HuiHe.DAI_JI) {
+                console.error('action 参数错误或为 DAI_JI:', action)
+            }
     }
-    return result
+    // return result // 不再返回 result
 }
 
 // 准备阶段逻辑
-function executeZhunBei(player: Player): boolean {
-    console.log('准备阶段')
-    return false
+function executeZhunBei(player: Player): Promise<void> {
+    console.log(`${player.general.name} - 准备阶段`)
+    // 实际准备阶段逻辑，例如处理乐不思蜀等
+    return new Promise(resolve => {
+        // 模拟异步操作
+        setTimeout(() => {
+            console.log(`${player.general.name} - 准备阶段完成`)
+            resolve()
+        }, 100) // 假设准备阶段需要100ms
+    })
 }
 
 // 判定阶段逻辑
-function executePanDing(player: Player): boolean {
-    console.log('判定阶段')
-    return false
+function executePanDing(player: Player): Promise<void> {
+    console.log(`${player.general.name} - 判定阶段`)
+    // 实际判定阶段逻辑
+    return new Promise(resolve => {
+        setTimeout(() => {
+            console.log(`${player.general.name} - 判定阶段完成`)
+            resolve()
+        }, 300) // 假设判定阶段需要300ms
+    })
 }
 
 /**
  * 摸牌阶段逻辑
  * @param player 玩家对象
- * @param params 包含被摸牌的指定牌堆的参数对象
- * @returns
+ * @param params 包含被摸牌的指定牌堆的参数对象 { decks: Hand[] }
  */
-function executeMoPai(player: Player, params: { decks: Hand[] }): boolean {
-    console.log('摸牌阶段')
-    // drawTheCards(player, params.decks)
-    return true
+function executeMoPai(player: Player, params: { decks?: Hand[]; gameDecks?: Hand[] }): Promise<void> {
+    console.log(`${player.general.name} - 摸牌阶段`)
+    return new Promise(resolve => {
+        // 实际摸牌逻辑
+        if (params.gameDecks) {
+            drawTheCards(player, params.gameDecks, 2)
+            console.log(`${player.general.name} 从牌堆摸了两张牌 (实际效果取决于 drawTheCards 实现)`)
+        } else {
+            console.warn(`${player.general.name} - 摸牌阶段：未提供牌堆参数 (params.gameDecks)`)
+        }
+        setTimeout(() => {
+            console.log(`${player.general.name} - 摸牌阶段完成`)
+            resolve()
+        }, 200) // 假设摸牌需要200ms
+    })
 }
 
 // 出牌阶段逻辑
-function executeChuPai(player: Player): boolean {
-    console.log('出牌阶段')
-    return false
+function executeChuPai(player: Player): Promise<void> {
+    console.log(`${player.general.name} - 出牌阶段`)
+    // 实际出牌阶段逻辑，可能涉及玩家交互，会比较复杂
+    return new Promise(resolve => {
+        // 模拟玩家思考和出牌
+        const duration = player.isComputer ? 1000 : 3000 // 电脑快一些，玩家慢一些
+        console.log(`${player.general.name} 正在出牌... (等待 ${duration}ms)`)
+        setTimeout(() => {
+            console.log(`${player.general.name} - 出牌阶段完成`)
+            resolve()
+        }, duration)
+    })
 }
 
 // 弃牌阶段逻辑
-function executeQiPai(player: Player, param: { discardPile: Hand[] }): boolean {
-    console.log('弃牌阶段')
+export function executeQiPai(
+    player: Player,
+    // TODO: 这里的 params 类型需要与实际调用处匹配，目前 executeStageAction 传递的是 {}
+    params: {
+        showOptionDialog?: Signal<boolean>
+        optionDialogText?: Signal<string>
+        discardPile?: Hand[]
+        cardsToDiscard?: Hand[]
+    },
+): Promise<void> {
+    console.log(`${player.general.name} - 弃牌阶段`)
 
-    // 手牌数小于体力值 跳过弃牌
-    if (player.handList.length <= player.general.currentHealth) {
-        return true
-    }
+    return new Promise(resolve => {
+        // 手牌数小于等于最大手牌上限（通常是体力值，但武将技能可能改变上限）
+        // 假设 player.general.maxHealth 是最大手牌上限
+        const maxHand = player.general.currentHealth // 简单处理，通常是当前体力值，也可能是maxHealth
+        if (player.handList.length <= maxHand) {
+            console.log(`${player.general.name} 手牌未超出上限，无需弃牌`)
+            resolve()
+            return
+        }
 
-    // 需弃掉的手牌数 = 手牌数 - 体力值
-    const discardCount = player.handList.length - player.general.currentHealth
+        const discardCount = player.handList.length - maxHand
+        console.log(`${player.general.name} 需要弃掉 ${discardCount} 张牌`)
 
-    // TODO 需要确认对话框组件
-    console.log(`还需弃掉 ${discardCount} 张牌`)
+        if (!(params.showOptionDialog && params.optionDialogText)) {
+            console.warn(`${player.general.name} - 弃牌阶段：缺少对话框参数，无法执行交互弃牌`)
+            // 如果是电脑，或者没有交互，可以实现自动弃牌逻辑
+            // const autoSelectedCards = autoSelectCardsToDiscard(player, discardCount);
+            // if (params.discardPile) {
+            //     qiPai(player, autoSelectedCards, params.discardPile);
+            //     console.log(`${player.general.name} （模拟）自动弃牌完成`);
+            // } else {
+            //     console.warn(`${player.general.name} - （模拟）自动弃牌：缺少 discardPile 参数`);
+            // }
+            console.log(`${player.general.name} （模拟）自动弃牌完成 (实际qiPai调用需要参数)`)
+            resolve()
+        }
 
-    // qiPai(player, , param.discardPile)
-    return true
+        // if (params.showOptionDialog && params.optionDialogText) {
+        params.showOptionDialog?.value && (params.showOptionDialog.value = true)
+        params.optionDialogText?.value &&
+            (params.optionDialogText.value = `${player.general.name} 请弃掉 ${discardCount} 张牌`)
+        // 此处应该有一个等待玩家操作的机制，例如等待 OptionDialog 的 Promise
+        // 目前仅为模拟
+        console.log('（模拟）等待玩家弃牌操作...')
+        setTimeout(
+            () => {
+                // 模拟弃牌完成
+                // 实际的弃牌逻辑
+                if (params.cardsToDiscard && params.discardPile) {
+                    qiPai(player, params.cardsToDiscard, params.discardPile)
+                    console.log(`${player.general.name} （模拟）通过 qiPai 函数弃牌完成`)
+                } else {
+                    console.warn(`${player.general.name} - （模拟）弃牌：缺少 cardsToDiscard 或 discardPile 参数`)
+                }
+                if (params.showOptionDialog) params.showOptionDialog.value = false
+                resolve()
+            },
+            player.isComputer ? 500 : 2500,
+        ) // 电脑弃牌快，玩家慢
+        // }
+    })
 }
 
 // 结束阶段逻辑
-function executeJieShu(player: Player): boolean {
-    console.log('结束阶段')
-    return false
+function executeJieShu(player: Player): Promise<void> {
+    console.log(`${player.general.name} - 结束阶段`)
+    // 实际结束阶段逻辑
+    return new Promise(resolve => {
+        setTimeout(() => {
+            console.log(`${player.general.name} - 结束阶段完成`)
+            resolve()
+        }, 100) // 假设结束阶段很快
+    })
 }
+
+// 弃牌阶段
+// 手牌溢出
+// 弹出提醒弃牌对话框
+// 选择要弃掉的手牌
+// 点击确定
+// 关闭对话框
+// 弃牌
+// 返回 Promise（弃牌成功后 resolve）
