@@ -20,7 +20,7 @@ export enum HuiHe {
  * @description 包含了回合内的各个阶段状态，方便进行状态转换和操作
  */
 export const roundStateArray: HuiHe[] = [
-    HuiHe.DAI_JI,
+    // HuiHe.DAI_JI,
     HuiHe.ZHUN_BEI,
     HuiHe.PAN_DING,
     HuiHe.MO_PAI,
@@ -40,11 +40,8 @@ export async function executePlayerRound(player: Player, gameState: Signal<GameS
         return
     }
 
-    // DAI_JI 阶段在回合开始前，不应在循环内。或者说，一个玩家的回合开始于 ZHUN_BEI 阶段。
     // 我们将从 ZHUN_BEI 开始循环，并在 JIE_SHU 后设置回 DAI_JI
-    const actualRoundStates = roundStateArray.filter(state => state !== HuiHe.DAI_JI)
-
-    for (const currentStage of actualRoundStates) {
+    for (const currentStage of roundStateArray) {
         if (gameState.value === GameState.OVER) {
             console.log('游戏结束，停止执行阶段')
             return
@@ -78,7 +75,6 @@ async function executeStageAction(
     params: any = {},
     gameState: Signal<GameState>,
 ): Promise<void> {
-    // 返回值改为 Promise<void>
     if (gameState.value === GameState.OVER) {
         console.log('游戏结束，停止执行阶段操作')
         return
@@ -86,20 +82,19 @@ async function executeStageAction(
 
     player.currentState = action
 
-    // let result = false // 不再需要 result
     switch (action) {
         case HuiHe.ZHUN_BEI:
-            await executeZhunBei(player) // await Promise
+            await executeZhunBei(player)
             break
         case HuiHe.PAN_DING:
-            await executePanDing(player) // await Promise
+            await executePanDing(player)
             break
         case HuiHe.MO_PAI:
             //  TODO: params.decks 应该从 gameState 或者其他地方获取，而不是写死的 {}
-            await executeMoPai(player, params as { decks?: Hand[]; gameDecks?: Hand[] }) // await Promise
+            await executeMoPai(player, params as { decks?: Hand[]; gameDecks?: Hand[] })
             break
         case HuiHe.CHU_PAI:
-            await executeChuPai(player) // await Promise
+            await executeChuPai(player)
             break
         case HuiHe.QI_PAI:
             // TODO: param: { showOptionDialog: Signal<boolean>; optionDialogText: Signal<string>; discardPile: Hand[] } 应从外部传入
@@ -111,31 +106,20 @@ async function executeStageAction(
                     discardPile?: Hand[]
                     cardsToDiscard?: Hand[]
                 },
-            ) // await Promise, params 需要类型断言或正确传递
+            ) // params 需要类型断言或正确传递
             break
         case HuiHe.JIE_SHU:
-            await executeJieShu(player) // await Promise
-            // player.currentState = HuiHe.DAI_JI // 移到 executePlayerRound 循环外
+            await executeJieShu(player)
             break
-
-        // DAI_JI 状态不应该在这里作为 action 被执行，它是一个回合外的状态
-        // case HuiHe.DAI_JI:
-        //     console.log('回合外待机状态')
-        //     break
-
         default:
-            // 检查是否是 DAI_JI，如果是，则忽略，否则报错
-            if (action !== HuiHe.DAI_JI) {
-                console.error('action 参数错误或为 DAI_JI:', action)
-            }
+            console.error('action 参数错误:', action)
     }
-    // return result // 不再返回 result
 }
 
-// 准备阶段逻辑
+/** 准备阶段逻辑 */
 function executeZhunBei(player: Player): Promise<void> {
     console.log(`${player.general.name} - 准备阶段`)
-    // 实际准备阶段逻辑，例如处理乐不思蜀等
+    // 实际准备阶段逻辑
     return new Promise(resolve => {
         // 模拟异步操作
         setTimeout(() => {
@@ -145,7 +129,7 @@ function executeZhunBei(player: Player): Promise<void> {
     })
 }
 
-// 判定阶段逻辑
+/** 判定阶段逻辑 */
 function executePanDing(player: Player): Promise<void> {
     console.log(`${player.general.name} - 判定阶段`)
     // 实际判定阶段逻辑
@@ -160,7 +144,7 @@ function executePanDing(player: Player): Promise<void> {
 /**
  * 摸牌阶段逻辑
  * @param player 玩家对象
- * @param params 包含被摸牌的指定牌堆的参数对象 { decks: Hand[] }
+ * @param params 包含被摸牌的指定牌堆的参数对象
  */
 function executeMoPai(player: Player, params: { decks?: Hand[]; gameDecks?: Hand[] }): Promise<void> {
     console.log(`${player.general.name} - 摸牌阶段`)
@@ -235,8 +219,8 @@ export function executeQiPai(
         }
 
         // if (params.showOptionDialog && params.optionDialogText) {
-        params.showOptionDialog?.value && (params.showOptionDialog.value = true)
-        params.optionDialogText?.value &&
+        params.showOptionDialog && (params.showOptionDialog.value = true)
+        params.optionDialogText &&
             (params.optionDialogText.value = `${player.general.name} 请弃掉 ${discardCount} 张牌`)
         // 此处应该有一个等待玩家操作的机制，例如等待 OptionDialog 的 Promise
         // 目前仅为模拟
