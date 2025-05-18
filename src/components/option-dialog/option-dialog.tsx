@@ -1,7 +1,6 @@
 import { component$, $, useContext, type QRL, type Signal } from '@builder.io/qwik'
-import type { NotSureObject } from '../../utils/typedef'
+import type { NotSureObject, Callback } from '../../utils/typedef'
 import { targetGeneralListContext } from '../../routes/index'
-import type { Callback } from '../../utils/typedef'
 import type { Player } from '../../utils/player'
 
 interface Button {

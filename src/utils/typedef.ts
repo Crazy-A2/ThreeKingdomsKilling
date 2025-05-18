@@ -19,3 +19,9 @@ export interface SkillCommonParam {
     /** 弃牌堆 */
     discardPile: Hand[]
 }
+
+/** 游戏通用参数 */
+export interface GameCommonParam {
+    /** 牌堆 */
+    decks: Hand[]
+}

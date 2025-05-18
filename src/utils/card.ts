@@ -56,9 +56,6 @@ export function shuffleDecks(decks: Hand[]): Hand[] {
  */
 export function drawTheCards(player: Player, decks: Hand[], count?: number): void {
     const hands = getCardsFromDecksTop(decks, count)
-    // 	.map(item => {
-    // 	return { ...item, isChoosed: false }
-    // })
 
     player.handList.push(...hands)
 }
