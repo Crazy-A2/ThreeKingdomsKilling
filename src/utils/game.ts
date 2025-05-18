@@ -20,13 +20,13 @@ export enum GameState {
 /**
  * 执行游戏主循环
  * @param players 本局玩家数组
- * @param gameRound 当前游戏轮数
+ * @param gameRoundCount 当前游戏轮数
  * @param gameState 游戏状态对象
  * @param params 游戏通用参数
  */
 export async function executeGameLoop(
     players: Player[],
-    gameRound: Signal<number>,
+    gameRoundCount: Signal<number>,
     gameState: Signal<GameState>,
     params: GameCommonParam,
 ): Promise<void> {
@@ -37,7 +37,7 @@ export async function executeGameLoop(
         // 本轮结束，开启下一轮
         if (i === players.length - 1) {
             i = 0
-            ++gameRound.value
+            ++gameRoundCount.value
             console.log(`本轮结束，开启下一轮`)
             continue
         }

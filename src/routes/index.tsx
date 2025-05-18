@@ -26,7 +26,7 @@ export default component$(() => {
     /** 弃牌堆 */
     const discardPile = useStore([])
     /** 游戏轮数 */
-    const gameRound = useSignal(1)
+    const gameRoundCount = useSignal(1)
     /** 游戏状态 */
     const gameState = useSignal(GameState.NOT_STARTED)
 
@@ -45,7 +45,7 @@ export default component$(() => {
     // 初始化游戏循环
     useVisibleTask$(async () => {
         const allPlayers = [me, ...otherPlayers]
-        await executeGameLoop(allPlayers, gameRound, gameState, { decks })
+        await executeGameLoop(allPlayers, gameRoundCount, gameState, { decks })
     })
 
     return (
