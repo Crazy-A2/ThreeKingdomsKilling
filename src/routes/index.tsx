@@ -45,7 +45,7 @@ export default component$(() => {
     // 初始化游戏循环
     useVisibleTask$(async () => {
         const allPlayers = [me, ...otherPlayers]
-        // await executeGameLoop(allPlayers, gameRound, gameState)
+        await executeGameLoop(allPlayers, gameRound, gameState, { decks })
     })
 
     return (
@@ -81,7 +81,7 @@ export default component$(() => {
                 >
                     弃牌阶段测试
                 </button>
-                {/* <button onClick$={() => gameState.value = GameState.OVER}>结束游戏</button> */}
+                <button onClick$={() => (gameState.value = GameState.OVER)}>结束游戏</button>
                 {/* <button onClick$={() => { HandSkill.tao(me, discardPile) }}>吃桃</button> */}
                 {/* <button onClick$={() => { drawTheCardsIf(me, decks, (item: Hand) => item.name === 'sha') }}>摸杀</button>
 				<button onClick$={() => { HandSkill.sha({ user: me, target: otherPlayers[0], discardPile })  }}>出杀</button> */}

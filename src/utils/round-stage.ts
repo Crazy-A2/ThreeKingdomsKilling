@@ -3,6 +3,7 @@ import { drawTheCards, qiPai } from './card'
 import { GameState } from './game'
 import type { Hand } from '../data/hands'
 import { type Signal } from '@builder.io/qwik'
+import type { GameCommonParam } from './typedef'
 
 /**表示每个回合阶段的枚举 */
 export enum HuiHe {
@@ -20,7 +21,6 @@ export enum HuiHe {
  * @description 包含了回合内的各个阶段状态，方便进行状态转换和操作
  */
 export const roundStateArray: HuiHe[] = [
-    // HuiHe.DAI_JI,
     HuiHe.ZHUN_BEI,
     HuiHe.PAN_DING,
     HuiHe.MO_PAI,
@@ -30,11 +30,16 @@ export const roundStateArray: HuiHe[] = [
 ]
 
 /**
- * 执行一名玩家的回合
+ * 执行一名玩家的回合，包括准备阶段、判定阶段、摸牌阶段、出牌阶段、弃牌阶段和结束阶段
  * @param player 玩家对象
  * @param gameState 游戏状态对象
+ * @param params 游戏通用参数
  */
-export async function executePlayerRound(player: Player, gameState: Signal<GameState>): Promise<void> {
+export async function executePlayerRound(
+    player: Player,
+    gameState: Signal<GameState>,
+    params: GameCommonParam,
+): Promise<void> {
     if (gameState.value === GameState.OVER) {
         console.log('游戏结束，停止执行回合')
         return
@@ -52,7 +57,7 @@ export async function executePlayerRound(player: Player, gameState: Signal<GameS
 
         player.currentState = currentStage
         console.log(`--- 开始执行阶段: ${player.general.name} - ${currentStage} ---`)
-        await executeStageAction(player, currentStage, {}, gameState) // 等待阶段动作完成
+        await executeStageAction(player, currentStage, gameState, params) // 等待阶段动作完成
 
         const timeInterval = Date.now() - startTime
         console.log(`--- 阶段结束: ${player.general.name} - ${currentStage} (耗时: ${timeInterval}ms) ---`)
@@ -66,14 +71,14 @@ export async function executePlayerRound(player: Player, gameState: Signal<GameS
  * 执行某一回合阶段对应的操作
  * @param player 执行操作的玩家
  * @param action 要执行的回合阶段操作
- * @param params 给具体执行函数的额外参数
  * @param gameState 游戏状态对象
+ * @param params 给具体执行函数的额外参数
  */
 async function executeStageAction(
     player: Player,
     action: HuiHe,
-    params: any = {},
     gameState: Signal<GameState>,
+    params: GameCommonParam,
 ): Promise<void> {
     if (gameState.value === GameState.OVER) {
         console.log('游戏结束，停止执行阶段操作')
@@ -90,8 +95,7 @@ async function executeStageAction(
             await executePanDing(player)
             break
         case HuiHe.MO_PAI:
-            //  TODO: params.decks 应该从 gameState 或者其他地方获取，而不是写死的 {}
-            await executeMoPai(player, params as { decks?: Hand[]; gameDecks?: Hand[] })
+            await executeMoPai(player, params)
             break
         case HuiHe.CHU_PAI:
             await executeChuPai(player)
@@ -118,12 +122,12 @@ async function executeStageAction(
 
 /** 准备阶段逻辑 */
 function executeZhunBei(player: Player): Promise<void> {
-    console.log(`${player.general.name} - 准备阶段`)
+    console.log(`${player.general.name} - 准备阶段 - 开始`)
     // 实际准备阶段逻辑
     return new Promise(resolve => {
         // 模拟异步操作
         setTimeout(() => {
-            console.log(`${player.general.name} - 准备阶段完成`)
+            console.log(`${player.general.name} - 准备阶段 - 完成`)
             resolve()
         }, 100) // 假设准备阶段需要100ms
     })
@@ -131,11 +135,11 @@ function executeZhunBei(player: Player): Promise<void> {
 
 /** 判定阶段逻辑 */
 function executePanDing(player: Player): Promise<void> {
-    console.log(`${player.general.name} - 判定阶段`)
+    console.log(`${player.general.name} - 判定阶段 - 开始`)
     // 实际判定阶段逻辑
     return new Promise(resolve => {
         setTimeout(() => {
-            console.log(`${player.general.name} - 判定阶段完成`)
+            console.log(`${player.general.name} - 判定阶段 - 完成`)
             resolve()
         }, 300) // 假设判定阶段需要300ms
     })
@@ -146,18 +150,15 @@ function executePanDing(player: Player): Promise<void> {
  * @param player 玩家对象
  * @param params 包含被摸牌的指定牌堆的参数对象
  */
-function executeMoPai(player: Player, params: { decks?: Hand[]; gameDecks?: Hand[] }): Promise<void> {
-    console.log(`${player.general.name} - 摸牌阶段`)
+function executeMoPai(player: Player, params: GameCommonParam): Promise<void> {
+    console.log(`${player.general.name} - 摸牌阶段 - 开始`)
     return new Promise(resolve => {
         // 实际摸牌逻辑
-        if (params.gameDecks) {
-            drawTheCards(player, params.gameDecks, 2)
-            console.log(`${player.general.name} 从牌堆摸了两张牌 (实际效果取决于 drawTheCards 实现)`)
-        } else {
-            console.warn(`${player.general.name} - 摸牌阶段：未提供牌堆参数 (params.gameDecks)`)
-        }
+        drawTheCards(player, params.decks)
+        console.log(`${player.general.name} 从牌堆摸了两张牌`)
+
         setTimeout(() => {
-            console.log(`${player.general.name} - 摸牌阶段完成`)
+            console.log(`${player.general.name} - 摸牌阶段 - 完成`)
             resolve()
         }, 200) // 假设摸牌需要200ms
     })
@@ -165,14 +166,14 @@ function executeMoPai(player: Player, params: { decks?: Hand[]; gameDecks?: Hand
 
 // 出牌阶段逻辑
 function executeChuPai(player: Player): Promise<void> {
-    console.log(`${player.general.name} - 出牌阶段`)
+    console.log(`${player.general.name} - 出牌阶段 - 开始`)
     // 实际出牌阶段逻辑，可能涉及玩家交互，会比较复杂
     return new Promise(resolve => {
         // 模拟玩家思考和出牌
         const duration = player.isComputer ? 1000 : 3000 // 电脑快一些，玩家慢一些
         console.log(`${player.general.name} 正在出牌... (等待 ${duration}ms)`)
         setTimeout(() => {
-            console.log(`${player.general.name} - 出牌阶段完成`)
+            console.log(`${player.general.name} - 出牌阶段 - 完成`)
             resolve()
         }, duration)
     })
@@ -189,7 +190,7 @@ export function executeQiPai(
         cardsToDiscard?: Hand[]
     },
 ): Promise<void> {
-    console.log(`${player.general.name} - 弃牌阶段`)
+    console.log(`${player.general.name} - 弃牌阶段 - 开始`)
 
     return new Promise(resolve => {
         // 手牌数小于等于最大手牌上限（通常是体力值，但武将技能可能改变上限）
@@ -220,8 +221,7 @@ export function executeQiPai(
 
         // if (params.showOptionDialog && params.optionDialogText) {
         params.showOptionDialog && (params.showOptionDialog.value = true)
-        params.optionDialogText &&
-            (params.optionDialogText.value = `${player.general.name} 请弃掉 ${discardCount} 张牌`)
+        params.optionDialogText && (params.optionDialogText.value = `${player.general.name} 请弃掉 ${discardCount} 张牌`)
         // 此处应该有一个等待玩家操作的机制，例如等待 OptionDialog 的 Promise
         // 目前仅为模拟
         console.log('（模拟）等待玩家弃牌操作...')
