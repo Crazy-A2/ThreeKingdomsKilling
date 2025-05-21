@@ -1,5 +1,6 @@
 import type { Player } from './player'
 import type { Hand } from '../data/hands'
+import { type Signal } from '@builder.io/qwik'
 
 /** 成员不确定的对象 */
 export type NotSureObject = Record<string, any>
@@ -24,4 +25,12 @@ export interface SkillCommonParam {
 export interface GameCommonParam {
     /** 牌堆 */
     decks: Hand[]
+    /** 是否显示选项对话框 */
+    showOptionDialog?: Signal<boolean>
+    /** 选项对话框文本 */
+    optionDialogText?: Signal<string>
+    /** 弃牌堆 */
+    discardPile?: Hand[]
+    /** 需要弃掉的牌 */
+    cardsToDiscard?: Hand[]
 }

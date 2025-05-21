@@ -24,7 +24,7 @@ export interface OptionDialogProps {
 }
 
 /** 选项对话框 需要玩家（我）行动或响应时展示可选择的选项 */
-export const OptionDialog = component$<OptionDialogProps>(props => {
+export const OptionDialog = component$<OptionDialogProps>(({ showOptionDialog, word, me, confirmParam, buttons }) => {
     const targetGeneralList = useContext(targetGeneralListContext)
 
     const defaultButtons: Button[] = [
@@ -32,7 +32,7 @@ export const OptionDialog = component$<OptionDialogProps>(props => {
             text: '确认',
             action: $((callback?: Callback) => {
                 // if (props.me.handList.) return
-                callback?.(props.confirmParam)
+                callback?.(confirmParam)
             }),
         },
         {
@@ -45,8 +45,8 @@ export const OptionDialog = component$<OptionDialogProps>(props => {
         },
     ]
 
-    const { showOptionDialog, word, me } = props
-    const buttonsToRender = props.buttons ?? defaultButtons
+    // const { showOptionDialog, word, me } = props
+    const buttonsToRender = buttons ?? defaultButtons
 
     // 检查是否有任何手牌被选中
     const isAnyHandChoosed = me.handList.some(hand => hand.isChoosed)
@@ -114,9 +114,7 @@ export const OptionDialog = component$<OptionDialogProps>(props => {
                             disabled={isDisabled} // 设置按钮的 disabled 状态
                             onClick$={async () => {
                                 showOptionDialog.value = false
-                                if (button.action) {
-                                    await button.action()
-                                }
+                                await button.action()
                             }}
                         >
                             {button.text}

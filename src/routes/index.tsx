@@ -45,7 +45,12 @@ export default component$(() => {
     // 初始化游戏循环
     useVisibleTask$(async () => {
         const allPlayers = [me, ...otherPlayers]
-        await executeGameLoop(allPlayers, gameRoundCount, gameState, { decks })
+        await executeGameLoop(allPlayers, gameRoundCount, gameState, {
+            decks,
+            showOptionDialog,
+            optionDialogText,
+            discardPile,
+        })
     })
 
     return (

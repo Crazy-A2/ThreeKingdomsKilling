@@ -63,7 +63,7 @@ export async function executePlayerRound(
         console.log(`--- 阶段结束: ${player.general.name} - ${currentStage} (耗时: ${timeInterval}ms) ---`)
     }
 
-    player.currentState = HuiHe.DAI_JI // 回合结束后设为待机
+    player.currentState = HuiHe.DAI_JI // 回合结束后将玩家设为待机状态
     console.log(`--- ${player.general.name} 的回合结束 ---`)
 }
 
@@ -101,16 +101,7 @@ async function executeStageAction(
             await executeChuPai(player)
             break
         case HuiHe.QI_PAI:
-            // TODO: param: { showOptionDialog: Signal<boolean>; optionDialogText: Signal<string>; discardPile: Hand[] } 应从外部传入
-            await executeQiPai(
-                player,
-                params as {
-                    showOptionDialog?: Signal<boolean>
-                    optionDialogText?: Signal<string>
-                    discardPile?: Hand[]
-                    cardsToDiscard?: Hand[]
-                },
-            ) // params 需要类型断言或正确传递
+            await executeQiPai(player, params)
             break
         case HuiHe.JIE_SHU:
             await executeJieShu(player)
@@ -179,23 +170,17 @@ function executeChuPai(player: Player): Promise<void> {
     })
 }
 
-// 弃牌阶段逻辑
-export function executeQiPai(
-    player: Player,
-    // TODO: 这里的 params 类型需要与实际调用处匹配，目前 executeStageAction 传递的是 {}
-    params: {
-        showOptionDialog?: Signal<boolean>
-        optionDialogText?: Signal<string>
-        discardPile?: Hand[]
-        cardsToDiscard?: Hand[]
-    },
-): Promise<void> {
+/** 弃牌阶段逻辑
+ * @param player 玩家对象
+ * @param params 包含弃牌相关参数的参数对象
+ */
+export function executeQiPai(player: Player, params: GameCommonParam): Promise<void> {
     console.log(`${player.general.name} - 弃牌阶段 - 开始`)
 
     return new Promise(resolve => {
-        // 手牌数小于等于最大手牌上限（通常是体力值，但武将技能可能改变上限）
-        // 假设 player.general.maxHealth 是最大手牌上限
-        const maxHand = player.general.currentHealth // 简单处理，通常是当前体力值，也可能是maxHealth
+        const maxHand = player.general.currentHealth
+
+        // 手牌数未超出最大手牌上限（通常是体力值，但武将技能可能改变上限），不弃牌
         if (player.handList.length <= maxHand) {
             console.log(`${player.general.name} 手牌未超出上限，无需弃牌`)
             resolve()
@@ -220,11 +205,16 @@ export function executeQiPai(
         }
 
         // if (params.showOptionDialog && params.optionDialogText) {
-        params.showOptionDialog && (params.showOptionDialog.value = true)
         params.optionDialogText && (params.optionDialogText.value = `${player.general.name} 请弃掉 ${discardCount} 张牌`)
+        params.showOptionDialog && !player.isComputer && (params.showOptionDialog.value = true)
+
         // 此处应该有一个等待玩家操作的机制，例如等待 OptionDialog 的 Promise
+        // OptionDialog 返回一个 promise 结果
+        // 或者 OptionDialog 修改主路由文件定义的 promise 信号
+
         // 目前仅为模拟
         console.log('（模拟）等待玩家弃牌操作...')
+
         setTimeout(
             () => {
                 // 模拟弃牌完成
@@ -235,7 +225,7 @@ export function executeQiPai(
                 } else {
                     console.warn(`${player.general.name} - （模拟）弃牌：缺少 cardsToDiscard 或 discardPile 参数`)
                 }
-                if (params.showOptionDialog) params.showOptionDialog.value = false
+                params.showOptionDialog && (params.showOptionDialog.value = false)
                 resolve()
             },
             player.isComputer ? 500 : 2500,
